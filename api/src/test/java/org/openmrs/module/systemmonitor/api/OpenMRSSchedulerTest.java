@@ -12,6 +12,7 @@ import org.openmrs.scheduler.Task;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
+@Ignore
 public class OpenMRSSchedulerTest extends BaseModuleContextSensitiveTest {
 
 	private static Log log = LogFactory.getLog(OpenMRSSchedulerTest.class);
@@ -21,7 +22,6 @@ public class OpenMRSSchedulerTest extends BaseModuleContextSensitiveTest {
 	 * by e.g: private static boolean registerTask(String name, String
 	 * description, Class<? extends Task> clazz, long interval) {
 	 */
-	@Ignore
 	public void test_openmrsScheduler() {
 		String name = "";
 		Class<? extends Task> clazz = null;
