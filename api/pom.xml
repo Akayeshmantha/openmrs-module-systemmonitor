@@ -39,8 +39,23 @@
 		<dependency>
 		    <groupId>com.github.dblock</groupId>
 		    <artifactId>oshi-core</artifactId>
-		    <version>2.5.2</version>
+		    <version>2.6-SNAPSHOT</version>
+		    <scope>compile</scope>
 		</dependency>
+		
+		<!-- Emulates curl command of command line interface may be -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.8</version>
+		</dependency>
+		<!-- http://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20160212</version>
+		</dependency>
+		
 	</dependencies>
 	
 	<build>

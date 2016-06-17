@@ -13,15 +13,19 @@
  */
 package org.openmrs.module.systemmonitor.api;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
+import org.openmrs.api.context.Context;
+import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 /**
  * Tests {@link ${SystemMonitorService}}.
  */
-public class  SystemMonitorServiceTest/* extends BaseModuleContextSensitiveTest*/ {
+public class  SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 	
 	@Test
 	public void shouldSetupContext() {
-		//assertNotNull(Context.getService(SystemMonitorService.class));
+		assertNotNull(Context.getService(SystemMonitorService.class));
 	}
 }
