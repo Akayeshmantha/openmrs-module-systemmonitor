@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 import org.junit.Test;
-import org.openmrs.module.systemmonitor.extension.curl.CurlEmulator;
+import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;

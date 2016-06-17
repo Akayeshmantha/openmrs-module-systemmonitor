@@ -1,4 +1,4 @@
-package org.openmrs.module.systemmonitor.extension.curl;
+package org.openmrs.module.systemmonitor.curl;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
