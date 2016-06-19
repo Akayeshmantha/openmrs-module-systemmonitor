@@ -39,5 +39,4 @@ public class SystemMonitorActivator implements Activator {
 		log.info("Shutting down System Monitor Module");
 	}
 	
-		
 }

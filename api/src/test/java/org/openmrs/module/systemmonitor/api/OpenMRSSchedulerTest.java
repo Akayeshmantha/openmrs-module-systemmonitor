@@ -36,7 +36,7 @@ public class OpenMRSSchedulerTest extends BaseModuleContextSensitiveTest {
 				Calendar cal = Calendar.getInstance();
 				cal.add(Calendar.MINUTE, 20);
 				taskDef = new TaskDefinition();
-				// taskDef.setTaskClass(clazz.getCanonicalName());
+				//taskDef.setTaskClass(clazz.getCanonicalName());
 				taskDef.setStartOnStartup(true);
 				taskDef.setRepeatInterval(interval);
 				taskDef.setStarted(true);

@@ -131,7 +131,7 @@ public class TestOSHILibrary {
 
 		System.out.println(
 				"\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\nFAN SPEED(rpm): " + s.getFanSpeeds());
-		System.out.println("CPU TEMPERATURE (degrees celcius): " + s.getCpuTemperature());
+		System.out.println("CPU TEMPERATURE (degrees celcius): " + s.getCpuTemperature() + "°C");
 		System.out.println("CPU VOLTAGE(Volts): " + s.getCpuVoltage()
 				+ "\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
 	}
