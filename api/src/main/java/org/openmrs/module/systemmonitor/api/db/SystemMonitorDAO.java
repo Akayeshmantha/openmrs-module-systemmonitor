@@ -48,7 +48,7 @@ public interface SystemMonitorDAO {
 
 	Date getLastWeekEndDate();
 
-	Integer getTotalPatientsNewToday(Boolean includeRetired);
+	Integer getTotalPatientsToday(Boolean includeRetired);
 
 	Integer getTotalVisitsToday(Boolean includeRetired);
 
@@ -69,6 +69,124 @@ public interface SystemMonitorDAO {
 	Integer getTotalEncountersThisYear(Boolean includeRetired);
 
 	Integer getTotalEncountersLastYear(Boolean includeRetired);
+
+	Integer getTotalUsersThisWeek(Boolean includeRetired);
+
+	Integer getTotalUsersLastWeek(Boolean includeRetired);
+
+	Integer getTotalUsersLastMonth(Boolean includeRetired);
+
+	Integer getTotalUsersThisMonth(Boolean includeRetired);
+
+	Integer getTotalUsersThisYear(Boolean includeRetired);
+
+	Integer getTotalUsersLastYear(Boolean includeRetired);
+
+	Integer getTotalObservationsThisWeek(Boolean includeRetired);
+
+	Integer getTotalObservationsLastWeek(Boolean includeRetired);
+
+	Integer getTotalObservationsLastMonth(Boolean includeRetired);
+
+	Integer getTotalObservationsThisMonth(Boolean includeRetired);
+
+	Integer getTotalObservationsThisYear(Boolean includeRetired);
+
+	Integer getTotalObservationsLastYear(Boolean includeRetired);
+
+	Integer getTotalVisitsThisWeek(Boolean includeRetired);
+
+	Integer getTotalVisitsLastWeek(Boolean includeRetired);
+
+	Integer getTotalVisitsThisMonth(Boolean includeRetired);
+
+	Integer getTotalVisitsLastMonth(Boolean includeRetired);
+
+	Integer getTotalVisitsThisYear(Boolean includeRetired);
+
+	Integer getTotalVisitsLastYear(Boolean includeRetired);
+
+	Integer getTotalPatientsThisWeek(Boolean includeRetired);
+
+	Integer getTotalPatientsLastWeek(Boolean includeRetired);
+
+	Integer getTotalPatientsLastMonth(Boolean includeRetired);
+
+	Integer getTotalPatientsThisMonth(Boolean includeRetired);
+
+	Integer getTotalPatientsThisYear(Boolean includeRetired);
+
+	Integer getTotalPatientsLastYear(Boolean includeRetired);
+
+	Integer getTotalLocationsToday(Boolean includeRetired);
+
+	Integer getTotalLocationsThisWeek(Boolean includeRetired);
+
+	Integer getTotalLocationsLastWeek(Boolean includeRetired);
+
+	Integer getTotalLocationsLastMonth(Boolean includeRetired);
+
+	Integer getTotalLocationsThisMonth(Boolean includeRetired);
+
+	Integer getTotalLocationsThisYear(Boolean includeRetired);
+
+	Integer getTotalLocationsLastYear(Boolean includeRetired);
+
+	Integer getTotalConceptsLastYear(Boolean includeRetired);
+
+	Integer getTotalConceptsToday(Boolean includeRetired);
+
+	Integer getTotalConceptsThisWeek(Boolean includeRetired);
+
+	Integer getTotalConceptsLastWeek(Boolean includeRetired);
+
+	Integer getTotalConceptsLastMonth(Boolean includeRetired);
+
+	Integer getTotalConceptsThisMonth(Boolean includeRetired);
+
+	Integer getTotalConceptsThisYear(Boolean includeRetired);
+
+	Integer getTotalFormsLastYear(Boolean includeRetired);
+
+	Integer getTotalFormsToday(Boolean includeRetired);
+
+	Integer getTotalFormsThisWeek(Boolean includeRetired);
+
+	Integer getTotalFormsLastWeek(Boolean includeRetired);
+
+	Integer getTotalFormsLastMonth(Boolean includeRetired);
+
+	Integer getTotalFormsThisMonth(Boolean includeRetired);
+
+	Integer getTotalFormsThisYear(Boolean includeRetired);
+
+	Integer getTotalOrdersLastYear(Boolean includeRetired);
+
+	Integer getTotalOrdersToday(Boolean includeRetired);
+
+	Integer getTotalOrdersThisWeek(Boolean includeRetired);
+
+	Integer getTotalOrdersLastWeek(Boolean includeRetired);
+
+	Integer getTotalOrdersLastMonth(Boolean includeRetired);
+
+	Integer getTotalOrdersThisMonth(Boolean includeRetired);
+
+	Integer getTotalProvidersLastYear(Boolean includeRetired);
+
+	Integer getTotalProvidersToday(Boolean includeRetired);
+
+	Integer getTotalProvidersThisWeek(Boolean includeRetired);
+
+	Integer getTotalProvidersLastWeek(Boolean includeRetired);
+
+	Integer getTotalProvidersLastMonth(Boolean includeRetired);
+
+	Integer getTotalProvidersThisMonth(Boolean includeRetired);
+
+	Integer getTotalProvidersThisYear(Boolean includeRetired);
+
+	Integer getTotalOrdersThisYear(Boolean includeRetired);
 	
 	/*
 	 * Add DAO methods here

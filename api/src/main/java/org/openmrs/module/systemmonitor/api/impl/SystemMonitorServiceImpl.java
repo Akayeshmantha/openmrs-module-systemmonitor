@@ -112,8 +112,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	@Override
-	public Integer getTotalPatientsNewToday(Boolean includeRetired) {
-		return dao.getTotalPatientsNewToday(includeRetired);
+	public Integer getTotalPatientsToday(Boolean includeRetired) {
+		return dao.getTotalPatientsToday(includeRetired);
 	}
 
 	@Override
@@ -164,5 +164,300 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	@Override
 	public Integer getTotalEncountersLastYear(Boolean includeRetired) {
 		return dao.getTotalEncountersLastYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalUsersThisWeek(Boolean includeRetired) {
+		return dao.getTotalUsersThisWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalUsersLastWeek(Boolean includeRetired) {
+		return dao.getTotalUsersLastWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalUsersLastMonth(Boolean includeRetired) {
+		return dao.getTotalUsersLastMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalUsersThisMonth(Boolean includeRetired) {
+		return dao.getTotalUsersThisMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalUsersThisYear(Boolean includeRetired) {
+		return dao.getTotalUsersThisYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalUsersLastYear(Boolean includeRetired) {
+		return dao.getTotalUsersLastYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalObservationsThisWeek(Boolean includeRetired) {
+		return dao.getTotalObservationsThisWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalObservationsLastWeek(Boolean includeRetired) {
+		return dao.getTotalObservationsLastWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalObservationsLastMonth(Boolean includeRetired) {
+		return dao.getTotalObservationsLastMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalObservationsThisMonth(Boolean includeRetired) {
+		return dao.getTotalObservationsThisMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalObservationsThisYear(Boolean includeRetired) {
+		return dao.getTotalObservationsThisYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalObservationsLastYear(Boolean includeRetired) {
+		return dao.getTotalObservationsLastYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalVisitsThisWeek(Boolean includeRetired) {
+		return dao.getTotalVisitsThisWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalVisitsLastWeek(Boolean includeRetired) {
+		return dao.getTotalVisitsLastWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalVisitsThisMonth(Boolean includeRetired) {
+		return dao.getTotalVisitsThisMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalVisitsLastMonth(Boolean includeRetired) {
+		return dao.getTotalVisitsLastMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalVisitsThisYear(Boolean includeRetired) {
+		return dao.getTotalVisitsThisYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalVisitsLastYear(Boolean includeRetired) {
+		return dao.getTotalVisitsLastYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalPatientsThisWeek(Boolean includeRetired) {
+		return dao.getTotalPatientsThisWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalPatientsLastWeek(Boolean includeRetired) {
+		return dao.getTotalPatientsLastWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalPatientsLastMonth(Boolean includeRetired) {
+		return dao.getTotalPatientsLastMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalPatientsThisMonth(Boolean includeRetired) {
+		return dao.getTotalPatientsThisMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalPatientsThisYear(Boolean includeRetired) {
+		return dao.getTotalPatientsThisYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalPatientsLastYear(Boolean includeRetired) {
+		return dao.getTotalPatientsLastYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalLocationsToday(Boolean includeRetired) {
+		return dao.getTotalLocationsToday(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalLocationsThisWeek(Boolean includeRetired) {
+		return dao.getTotalLocationsThisWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalLocationsLastWeek(Boolean includeRetired) {
+		return dao.getTotalLocationsLastWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalLocationsLastMonth(Boolean includeRetired) {
+		return dao.getTotalLocationsLastMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalLocationsThisMonth(Boolean includeRetired) {
+		return dao.getTotalLocationsThisMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalLocationsThisYear(Boolean includeRetired) {
+		return dao.getTotalLocationsThisYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalLocationsLastYear(Boolean includeRetired) {
+		return dao.getTotalLocationsLastYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalConceptsLastYear(Boolean includeRetired) {
+		return dao.getTotalConceptsLastYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalConceptsToday(Boolean includeRetired) {
+		return dao.getTotalConceptsToday(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalConceptsThisWeek(Boolean includeRetired) {
+		return dao.getTotalConceptsThisWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalConceptsLastWeek(Boolean includeRetired) {
+		return dao.getTotalConceptsLastWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalConceptsLastMonth(Boolean includeRetired) {
+		return dao.getTotalConceptsLastMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalConceptsThisMonth(Boolean includeRetired) {
+		return dao.getTotalConceptsThisMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalConceptsThisYear(Boolean includeRetired) {
+		return dao.getTotalConceptsThisYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalFormsLastYear(Boolean includeRetired) {
+		return dao.getTotalFormsLastYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalFormsToday(Boolean includeRetired) {
+		return dao.getTotalFormsToday(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalFormsThisWeek(Boolean includeRetired) {
+		return dao.getTotalFormsThisWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalFormsLastWeek(Boolean includeRetired) {
+		return dao.getTotalFormsLastWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalFormsLastMonth(Boolean includeRetired) {
+		return dao.getTotalFormsLastMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalFormsThisMonth(Boolean includeRetired) {
+		return dao.getTotalFormsThisMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalFormsThisYear(Boolean includeRetired) {
+		return dao.getTotalFormsThisYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalOrdersLastYear(Boolean includeRetired) {
+		return dao.getTotalOrdersLastYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalOrdersToday(Boolean includeRetired) {
+		return dao.getTotalOrdersToday(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalOrdersThisWeek(Boolean includeRetired) {
+		return dao.getTotalOrdersThisWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalOrdersLastWeek(Boolean includeRetired) {
+		return dao.getTotalOrdersLastWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalOrdersLastMonth(Boolean includeRetired) {
+		return dao.getTotalOrdersLastMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalOrdersThisMonth(Boolean includeRetired) {
+		return dao.getTotalOrdersThisMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalProvidersLastYear(Boolean includeRetired) {
+		return dao.getTotalProvidersLastYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalProvidersToday(Boolean includeRetired) {
+		return dao.getTotalProvidersToday(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalProvidersThisWeek(Boolean includeRetired) {
+		return dao.getTotalProvidersThisWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalProvidersLastWeek(Boolean includeRetired) {
+		return dao.getTotalProvidersLastWeek(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalProvidersLastMonth(Boolean includeRetired) {
+		return dao.getTotalProvidersLastMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalProvidersThisMonth(Boolean includeRetired) {
+		return dao.getTotalProvidersThisMonth(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalProvidersThisYear(Boolean includeRetired) {
+		return dao.getTotalProvidersThisYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalOrdersThisYear(Boolean includeRetired) {
+		return dao.getTotalOrdersThisYear(includeRetired);
 	}
 }

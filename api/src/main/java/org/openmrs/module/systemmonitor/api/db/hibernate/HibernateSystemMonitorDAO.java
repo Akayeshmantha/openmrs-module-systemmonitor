@@ -22,9 +22,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.Concept;
 import org.openmrs.Encounter;
+import org.openmrs.Form;
+import org.openmrs.Location;
 import org.openmrs.Obs;
+import org.openmrs.Order;
 import org.openmrs.Patient;
+import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.Visit;
 import org.openmrs.api.context.Context;
@@ -215,15 +220,363 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer getTotalEncountersToday(Boolean includeRetired) {
-		return getSessionFactory().getCurrentSession().createCriteria(Encounter.class)
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Encounter.class);
+	}
+
+	@Override
+	public Integer getTotalEncountersThisWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Encounter.class);
+	}
+
+	@Override
+	public Integer getTotalEncountersLastWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Encounter.class);
+	}
+
+	@Override
+	public Integer getTotalEncountersLastMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Encounter.class);
+	}
+
+	@Override
+	public Integer getTotalEncountersThisMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Encounter.class);
+	}
+
+	@Override
+	public Integer getTotalEncountersThisYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Encounter.class);
+	}
+
+	@Override
+	public Integer getTotalEncountersLastYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Encounter.class);
+	}
+
+	@Override
+	public Integer getTotalUsersToday(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, User.class);
+	}
+
+	@Override
+	public Integer getTotalUsersThisWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, User.class);
+	}
+
+	@Override
+	public Integer getTotalUsersLastWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, User.class);
+	}
+
+	@Override
+	public Integer getTotalUsersLastMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, User.class);
+	}
+
+	@Override
+	public Integer getTotalUsersThisMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, User.class);
+	}
+
+	@Override
+	public Integer getTotalUsersThisYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, User.class);
+	}
+
+	@Override
+	public Integer getTotalUsersLastYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, User.class);
+	}
+
+	@Override
+	public Integer getTotalObservationsToday(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Obs.class);
+	}
+
+	@Override
+	public Integer getTotalObservationsThisWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Obs.class);
+	}
+
+	@Override
+	public Integer getTotalObservationsLastWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Obs.class);
+	}
+
+	@Override
+	public Integer getTotalObservationsLastMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Obs.class);
+	}
+
+	@Override
+	public Integer getTotalObservationsThisMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Obs.class);
+	}
+
+	@Override
+	public Integer getTotalObservationsThisYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Obs.class);
+	}
+
+	@Override
+	public Integer getTotalObservationsLastYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Obs.class);
+	}
+
+	@Override
+	public Integer getTotalVisitsToday(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Visit.class);
+	}
+
+	@Override
+	public Integer getTotalVisitsThisWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Visit.class);
+	}
+
+	@Override
+	public Integer getTotalVisitsLastWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Visit.class);
+	}
+
+	@Override
+	public Integer getTotalVisitsThisMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Visit.class);
+	}
+
+	@Override
+	public Integer getTotalVisitsLastMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Visit.class);
+	}
+
+	@Override
+	public Integer getTotalVisitsThisYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Visit.class);
+	}
+
+	@Override
+	public Integer getTotalVisitsLastYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Visit.class);
+	}
+
+	@Override
+	public Integer getTotalPatientsToday(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Patient.class);
+	}
+
+	@Override
+	public Integer getTotalPatientsThisWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Patient.class);
+	}
+
+	@Override
+	public Integer getTotalPatientsLastWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Patient.class);
+	}
+
+	@Override
+	public Integer getTotalPatientsLastMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Patient.class);
+	}
+
+	@Override
+	public Integer getTotalPatientsThisMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Patient.class);
+	}
+
+	@Override
+	public Integer getTotalPatientsThisYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Patient.class);
+	}
+
+	@Override
+	public Integer getTotalPatientsLastYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Patient.class);
+	}
+
+	@Override
+	public Integer getTotalLocationsToday(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Location.class);
+	}
+
+	@Override
+	public Integer getTotalLocationsThisWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Location.class);
+	}
+
+	@Override
+	public Integer getTotalLocationsLastWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Location.class);
+	}
+
+	@Override
+	public Integer getTotalLocationsLastMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Location.class);
+	}
+
+	@Override
+	public Integer getTotalLocationsThisMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Location.class);
+	}
+
+	@Override
+	public Integer getTotalLocationsThisYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Location.class);
+	}
+
+	@Override
+	public Integer getTotalLocationsLastYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Location.class);
+	}
+
+	@Override
+	public Integer getTotalConceptsLastYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Concept.class);
+	}
+
+	@Override
+	public Integer getTotalConceptsToday(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Concept.class);
+	}
+
+	@Override
+	public Integer getTotalConceptsThisWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Concept.class);
+	}
+
+	@Override
+	public Integer getTotalConceptsLastWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Concept.class);
+	}
+
+	@Override
+	public Integer getTotalConceptsLastMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Concept.class);
+	}
+
+	@Override
+	public Integer getTotalConceptsThisMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Concept.class);
+	}
+
+	@Override
+	public Integer getTotalConceptsThisYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Concept.class);
+	}
+
+	@Override
+	public Integer getTotalFormsLastYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Form.class);
+	}
+
+	@Override
+	public Integer getTotalFormsToday(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Form.class);
+	}
+
+	@Override
+	public Integer getTotalFormsThisWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Form.class);
+	}
+
+	@Override
+	public Integer getTotalFormsLastWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Form.class);
+	}
+
+	@Override
+	public Integer getTotalFormsLastMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Form.class);
+	}
+
+	@Override
+	public Integer getTotalFormsThisMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Form.class);
+	}
+
+	@Override
+	public Integer getTotalFormsThisYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Form.class);
+	}
+
+	@Override
+	public Integer getTotalOrdersLastYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Order.class);
+	}
+
+	@Override
+	public Integer getTotalOrdersToday(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Order.class);
+	}
+
+	@Override
+	public Integer getTotalOrdersThisWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Order.class);
+	}
+
+	@Override
+	public Integer getTotalOrdersLastWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Order.class);
+	}
+
+	@Override
+	public Integer getTotalOrdersLastMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Order.class);
+	}
+
+	@Override
+	public Integer getTotalOrdersThisMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Order.class);
+	}
+
+	@Override
+	public Integer getTotalOrdersThisYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Order.class);
+	}
+
+	@Override
+	public Integer getTotalProvidersLastYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Provider.class);
+	}
+
+	@Override
+	public Integer getTotalProvidersToday(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Provider.class);
+	}
+
+	@Override
+	public Integer getTotalProvidersThisWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Provider.class);
+	}
+
+	@Override
+	public Integer getTotalProvidersLastWeek(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Provider.class);
+	}
+
+	@Override
+	public Integer getTotalProvidersLastMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Provider.class);
+	}
+
+	@Override
+	public Integer getTotalProvidersThisMonth(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Provider.class);
+	}
+
+	@Override
+	public Integer getTotalProvidersThisYear(Boolean includeRetired) {
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Provider.class);
+	}
+
+	private Integer fetchTotalOpenMRSObjectCountToday(Boolean includeRetired, Class clazz) {
+		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq("voided", includeRetired)).add(Restrictions
 						.or(Restrictions.ge("dateChanged", getToday()), Restrictions.ge("dateCreated", getToday())))
 				.list().size();
 	}
 
-	@Override
-	public Integer getTotalEncountersThisWeek(Boolean includeRetired) {
-		return getSessionFactory().getCurrentSession().createCriteria(Encounter.class)
+	private Integer fetchTotalOpenMRSObjectCountThisWeek(Boolean includeRetired, Class clazz) {
+		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq("voided", includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getThisWeekStartDate()),
 						Restrictions.ge("dateCreated", getThisWeekStartDate())))
@@ -232,31 +585,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				.list().size();
 	}
 
-	@Override
-	public Integer getTotalEncountersLastWeek(Boolean includeRetired) {
-		return getSessionFactory().getCurrentSession().createCriteria(Encounter.class)
-				.add(Restrictions.eq("voided", includeRetired))
-				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastWeekStartDate()),
-						Restrictions.ge("dateCreated", getLastWeekStartDate())))
-				.add(Restrictions.or(Restrictions.le("dateChanged", getLastWeekEndDate()),
-						Restrictions.le("dateCreated", getLastWeekEndDate())))
-				.list().size();
-	}
-
-	@Override
-	public Integer getTotalEncountersLastMonth(Boolean includeRetired) {
-		return getSessionFactory().getCurrentSession().createCriteria(Encounter.class)
-				.add(Restrictions.eq("voided", includeRetired))
-				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastMonthStartDate()),
-						Restrictions.ge("dateCreated", getLastMonthStartDate())))
-				.add(Restrictions.or(Restrictions.le("dateChanged", getLastMonthEndDate()),
-						Restrictions.le("dateCreated", getLastMonthEndDate())))
-				.list().size();
-	}
-
-	@Override
-	public Integer getTotalEncountersThisMonth(Boolean includeRetired) {
-		return getSessionFactory().getCurrentSession().createCriteria(Encounter.class)
+	private Integer fetchTotalOpenMRSObjectCountThisMonth(Boolean includeRetired, Class clazz) {
+		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq("voided", includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getThisMonthStartDate()),
 						Restrictions.ge("dateCreated", getThisMonthStartDate())))
@@ -265,9 +595,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				.list().size();
 	}
 
-	@Override
-	public Integer getTotalEncountersThisYear(Boolean includeRetired) {
-		return getSessionFactory().getCurrentSession().createCriteria(Encounter.class)
+	private Integer fetchTotalOpenMRSObjectCountThisYear(Boolean includeRetired, Class clazz) {
+		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq("voided", includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getThisYearStartDate()),
 						Restrictions.ge("dateCreated", getThisYearStartDate())))
@@ -276,162 +605,33 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				.list().size();
 	}
 
-	@Override
-	public Integer getTotalEncountersLastYear(Boolean includeRetired) {
-		return getSessionFactory().getCurrentSession().createCriteria(Encounter.class)
+	private Integer fetchTotalOpenMRSObjectCountLastWeek(Boolean includeRetired, Class clazz) {
+		return getSessionFactory().getCurrentSession().createCriteria(clazz)
+				.add(Restrictions.eq("voided", includeRetired))
+				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastWeekStartDate()),
+						Restrictions.ge("dateCreated", getLastWeekStartDate())))
+				.add(Restrictions.or(Restrictions.le("dateChanged", getLastWeekEndDate()),
+						Restrictions.le("dateCreated", getLastWeekEndDate())))
+				.list().size();
+	}
+
+	private Integer fetchTotalOpenMRSObjectCountLastMonth(Boolean includeRetired, Class clazz) {
+		return getSessionFactory().getCurrentSession().createCriteria(clazz)
+				.add(Restrictions.eq("voided", includeRetired))
+				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastMonthStartDate()),
+						Restrictions.ge("dateCreated", getLastMonthStartDate())))
+				.add(Restrictions.or(Restrictions.le("dateChanged", getLastMonthEndDate()),
+						Restrictions.le("dateCreated", getLastMonthEndDate())))
+				.list().size();
+	}
+
+	private Integer fetchTotalOpenMRSObjectCountLastYear(Boolean includeRetired, Class clazz) {
+		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq("voided", includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastYearStartDate()),
 						Restrictions.ge("dateCreated", getLastYearStartDate())))
 				.add(Restrictions.or(Restrictions.le("dateChanged", getLastYearEndDate()),
 						Restrictions.le("dateCreated", getLastYearEndDate())))
 				.list().size();
-	}
-
-	@Override
-	public Integer getTotalUsersToday(Boolean includeRetired) {
-		return getSessionFactory().getCurrentSession().createCriteria(User.class)
-				.add(Restrictions.eq("voided", includeRetired)).add(Restrictions
-						.or(Restrictions.ge("dateChanged", getToday()), Restrictions.ge("dateCreated", getToday())))
-				.list().size();
-	}
-
-	public Integer getTotalUsersThisWeek(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalUsersLastWeek(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalUsersLastMonth(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalUsersThisMonth(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalUsersThisYear(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalUsersLastYear(Boolean includeRetired) {
-		return null;
-	}
-
-	@Override
-	public Integer getTotalObservationsToday(Boolean includeRetired) {
-		return getSessionFactory().getCurrentSession().createCriteria(Obs.class)
-				.add(Restrictions.eq("voided", includeRetired)).add(Restrictions
-						.or(Restrictions.ge("dateChanged", getToday()), Restrictions.ge("dateCreated", getToday())))
-				.list().size();
-	}
-
-	public Integer getTotalObservationsThisWeek(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalObservationsLastWeek(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalObservationsLastMonth(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalObservationsThisMonth(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalObservationsThisYear(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalObservationsLastYear(Boolean includeRetired) {
-		return null;
-	}
-
-	@Override
-	public Integer getTotalVisitsToday(Boolean includeRetired) {
-		return getSessionFactory().getCurrentSession().createCriteria(Visit.class)
-				.add(Restrictions.eq("voided", includeRetired)).add(Restrictions
-						.or(Restrictions.ge("dateChanged", getToday()), Restrictions.ge("dateCreated", getToday())))
-				.list().size();
-	}
-
-	public Integer getTotalVisitsThisWeek(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalVisitsLastWeek(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalVisitsLastMonth(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalVisitsThisMonth(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalVisitsThisYear(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalVisitsLastYear(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalPatientsActiveToday(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalPatientsActiveThisWeek(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalPatientsActiveLastWeek(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalPatientsActiveLastMonth(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalPatientsActiveThisMonth(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalPatientsActiveThisYear(Boolean includeRetired) {
-		return null;
-	}
-
-	@Override
-	public Integer getTotalPatientsNewToday(Boolean includeRetired) {
-		return getSessionFactory().getCurrentSession().createCriteria(Patient.class)
-				.add(Restrictions.eq("voided", includeRetired)).add(Restrictions.ge("dateCreated", getToday())).list()
-				.size();
-	}
-
-	public Integer getTotalPatientsNewThisWeek(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalPatientsNewLastWeek(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalPatientsNewLastMonth(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalPatientsNewThisMonth(Boolean includeRetired) {
-		return null;
-	}
-
-	public Integer getTotalPatientsNewThisYear(Boolean includeRetired) {
-
-		return null;
 	}
 }

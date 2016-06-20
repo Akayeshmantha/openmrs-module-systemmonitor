@@ -148,7 +148,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 				Context.getService(SystemMonitorService.class).getTotalEncountersLastYear(false));
 		Assert.assertEquals(Integer.valueOf(2),
 				Context.getService(SystemMonitorService.class).getTotalEncountersThisMonth(false));
-		Assert.assertNull(savedEnc.getDateChanged());
+		Assert.assertNull(encounterService.getEncounterByUuid(savedEnc.getUuid()).getDateChanged());
 		int updatedThisYear = Context.getService(SystemMonitorService.class).getTotalEncountersThisYear(false);
 
 		// updating savedEnc to update last updated
