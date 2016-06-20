@@ -13,11 +13,14 @@
  */
 package org.openmrs.module.systemmonitor.api;
 
+import java.util.Date;
+
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * This service exposes module's core functionality. It is a Spring managed bean which is configured in moduleApplicationContext.xml.
+ * This service exposes module's core functionality. It is a Spring managed bean
+ * which is configured in moduleApplicationContext.xml.
  * <p>
  * It can be accessed only via Context:<br>
  * <code>
@@ -28,9 +31,57 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface SystemMonitorService extends OpenmrsService {
-     
+
 	/*
 	 * Add service methods here
 	 * 
 	 */
+
+	Date getThisWeekEndDate();
+
+	Date getThisWeekStartDate();
+
+	Date getToday();
+
+	Date getLastWeekStartDate();
+
+	Date getLastYearEndDate();
+
+	Date getLastYearStartDate();
+
+	Date getThisYearEndDate();
+
+	Date getThisYearStartDate();
+
+	Date getLastMonthEndDate();
+
+	Date getLastMonthStartDate();
+
+	Date getThisMonthEndDate();
+
+	Date getThisMonthStartDate();
+
+	Date getLastWeekEndDate();
+
+	Integer getTotalPatientsNewToday(Boolean includeRetired);
+
+	Integer getTotalVisitsToday(Boolean includeRetired);
+
+	Integer getTotalObservationsToday(Boolean includeRetired);
+
+	Integer getTotalUsersToday(Boolean includeRetired);
+
+	Integer getTotalEncountersToday(Boolean includeRetired);
+
+	Integer getTotalEncountersThisWeek(Boolean includeRetired);
+
+	Integer getTotalEncountersLastWeek(Boolean includeRetired);
+
+	Integer getTotalEncountersLastMonth(Boolean includeRetired);
+
+	Integer getTotalEncountersThisMonth(Boolean includeRetired);
+
+	Integer getTotalEncountersThisYear(Boolean includeRetired);
+
+	Integer getTotalEncountersLastYear(Boolean includeRetired);
 }

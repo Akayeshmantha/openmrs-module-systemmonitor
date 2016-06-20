@@ -3,35 +3,35 @@ package org.openmrs.module.systemmonitor;
 import java.util.Properties;
 
 public class SystemPropertiesIndicators {
-	private Properties properties = System.getProperties();
+	private static Properties properties = System.getProperties();
 
-	public String OSNAME = properties.getProperty("os.name");
+	public static String OSNAME = properties.getProperty("os.name");
 
-	public String OSARCH = properties.getProperty("os.arch");
+	public static String OSARCH = properties.getProperty("os.arch");
 
-	public String OSVERSION = properties.getProperty("os.version");
+	public static String OSVERSION = properties.getProperty("os.version");
 
-	public String JAVAVERSION = properties.getProperty("java.version");
+	public static String JAVAVERSION = properties.getProperty("java.version");
 
-	public String JAVAVENDOR = properties.getProperty("java.vendor");
+	public static String JAVAVENDOR = properties.getProperty("java.vendor");
 
-	public String JVMVERSION = properties.getProperty("java.vm.version");
+	public static String JVMVERSION = properties.getProperty("java.vm.version");
 
-	public String JVMVENDOR = properties.getProperty("java.vm.vendor");
+	public static String JVMVENDOR = properties.getProperty("java.vm.vendor");
 
-	public String JAVARUNTIMENAME = properties.getProperty("java.runtime.name");
+	public static String JAVARUNTIMENAME = properties.getProperty("java.runtime.name");
 
-	public String JAVARUNTIMEVERSION = properties.getProperty("java.runtime.version");
+	public static String JAVARUNTIMEVERSION = properties.getProperty("java.runtime.version");
 
-	public String USERNAME = properties.getProperty("user.name");
+	public static String USERNAME = properties.getProperty("user.name");
 
-	public String SYSTEMLANGUAGE = properties.getProperty("user.language");
+	public static String SYSTEMLANGUAGE = properties.getProperty("user.language");
 
-	public String SYSTEMTIMEZONE = properties.getProperty("user.timezone");
+	public static String SYSTEMTIMEZONE = properties.getProperty("user.timezone");
 
-	public String FILESYSTEMENCODING = properties.getProperty("sun.jnu.encoding");
+	public static String FILESYSTEMENCODING = properties.getProperty("sun.jnu.encoding");
 
-	public String USERDIRECTORY = properties.getProperty("user.dir");
+	public static String USERDIRECTORY = properties.getProperty("user.dir");
 
-	public String TEMPFOLDER = properties.getProperty("java.io.tmpdir");
+	public static String TEMPFOLDER = properties.getProperty("java.io.tmpdir");
 }

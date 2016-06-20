@@ -13,12 +13,62 @@
  */
 package org.openmrs.module.systemmonitor.api.db;
 
+import java.util.Date;
+
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 
 /**
  *  Database methods for {@link SystemMonitorService}.
  */
 public interface SystemMonitorDAO {
+
+	Date getThisWeekEndDate();
+
+	Date getThisWeekStartDate();
+
+	Date getToday();
+
+	Date getLastWeekStartDate();
+
+	Date getLastYearEndDate();
+
+	Date getLastYearStartDate();
+
+	Date getThisYearEndDate();
+
+	Date getThisYearStartDate();
+
+	Date getLastMonthEndDate();
+
+	Date getLastMonthStartDate();
+
+	Date getThisMonthEndDate();
+
+	Date getThisMonthStartDate();
+
+	Date getLastWeekEndDate();
+
+	Integer getTotalPatientsNewToday(Boolean includeRetired);
+
+	Integer getTotalVisitsToday(Boolean includeRetired);
+
+	Integer getTotalObservationsToday(Boolean includeRetired);
+
+	Integer getTotalUsersToday(Boolean includeRetired);
+
+	Integer getTotalEncountersToday(Boolean includeRetired);
+
+	Integer getTotalEncountersThisWeek(Boolean includeRetired);
+
+	Integer getTotalEncountersLastWeek(Boolean includeRetired);
+
+	Integer getTotalEncountersLastMonth(Boolean includeRetired);
+
+	Integer getTotalEncountersThisMonth(Boolean includeRetired);
+
+	Integer getTotalEncountersThisYear(Boolean includeRetired);
+
+	Integer getTotalEncountersLastYear(Boolean includeRetired);
 	
 	/*
 	 * Add DAO methods here

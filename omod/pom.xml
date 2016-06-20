@@ -40,12 +40,6 @@
 			<type>jar</type>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.openmrs.test</groupId>
-			<artifactId>openmrs-test</artifactId>
-			<type>jar</type>
-		</dependency>
-		
 		<!-- End OpenMRS core -->
 				
 	</dependencies>

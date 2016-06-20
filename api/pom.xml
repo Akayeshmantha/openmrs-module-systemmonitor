@@ -15,34 +15,57 @@
 
 	<dependencies>
 		<!-- Begin OpenMRS core -->
-		
+
 		<dependency>
 			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
 			<type>jar</type>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openmrs.web</groupId>
 			<artifactId>openmrs-web</artifactId>
 			<type>jar</type>
 		</dependency>
-				
+		<dependency>
+			<groupId>org.openmrs.api</groupId>
+			<artifactId>openmrs-api</artifactId>
+			<version>${openMRSVersion}</version>
+			<classifier>tests</classifier>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.openmrs.test</groupId>
 			<artifactId>openmrs-test</artifactId>
-			<type>jar</type>
+			<type>pom</type>
+			<scope>test</scope>
+			<version>${openMRSVersion}</version>
 		</dependency>
-				
-		<!-- End OpenMRS core -->
-		
 		<dependency>
-		    <groupId>com.github.dblock</groupId>
-		    <artifactId>oshi-core</artifactId>
-		    <version>2.6-SNAPSHOT</version>
-		    <scope>compile</scope>
+			<groupId>org.openmrs.test</groupId>
+			<artifactId>openmrs-test</artifactId>
+			<type>pom</type>
+			<scope>test</scope>
+			<version>${openMRSVersion}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		
+
+		<!-- End OpenMRS core -->
+
+		<dependency>
+			<groupId>com.github.dblock</groupId>
+			<artifactId>oshi-core</artifactId>
+			<version>2.6-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- Emulates curl command of command line interface may be -->
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
@@ -51,13 +74,13 @@
 		</dependency>
 		<!-- http://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
-		    <groupId>org.json</groupId>
-		    <artifactId>json</artifactId>
-		    <version>20160212</version>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20160212</version>
 		</dependency>
-		
+
 	</dependencies>
-	
+
 	<build>
 		<resources>
 			<resource>
