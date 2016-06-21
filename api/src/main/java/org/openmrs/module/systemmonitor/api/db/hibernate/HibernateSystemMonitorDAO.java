@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,7 +33,10 @@ import org.openmrs.Patient;
 import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.Visit;
+import org.openmrs.api.ConceptService;
+import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
 
 /**
@@ -44,6 +48,12 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	private SessionFactory sessionFactory;
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+	private PatientService patientServince = Context.getPatientService();
+
+	private ConceptService conceptService = Context.getConceptService();
+
+	private ConfigurableGlobalProperties configGP = new ConfigurableGlobalProperties();
 
 	/**
 	 * @param sessionFactory
@@ -58,6 +68,14 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	 */
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
+	}
+
+	private Concept getViralLoadsConcept() {
+		String viralLoadConcept = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.VIRALLOADCONCEPTID);
+		Integer viralLoadConceptId = viralLoadConcept != null ? Integer.parseInt(viralLoadConcept) : null;
+
+		return viralLoadConceptId != null ? conceptService.getConcept(viralLoadConceptId) : null;
 	}
 
 	@Override
@@ -254,6 +272,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	@Override
+	public Integer getTotalEncounters(Boolean includeRetired) {
+		return fetchTotalOpenMRSObject(includeRetired, Encounter.class);
+	}
+
+	@Override
 	public Integer getTotalUsersToday(Boolean includeRetired) {
 		return fetchTotalOpenMRSObjectCountToday(includeRetired, User.class);
 	}
@@ -289,6 +312,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	@Override
+	public Integer getTotalUsers(Boolean includeRetired) {
+		return fetchTotalOpenMRSObject(includeRetired, User.class);
+	}
+
+	@Override
 	public Integer getTotalObservationsToday(Boolean includeRetired) {
 		return fetchTotalOpenMRSObjectCountToday(includeRetired, Obs.class);
 	}
@@ -316,6 +344,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public Integer getTotalObservationsThisYear(Boolean includeRetired) {
 		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Obs.class);
+	}
+
+	@Override
+	public Integer getTotalObservations(Boolean includeRetired) {
+		return fetchTotalOpenMRSObject(includeRetired, Obs.class);
 	}
 
 	@Override
@@ -359,6 +392,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	@Override
+	public Integer getTotalVisits(Boolean includeRetired) {
+		return fetchTotalOpenMRSObject(includeRetired, Visit.class);
+	}
+
+	@Override
 	public Integer getTotalPatientsToday(Boolean includeRetired) {
 		return fetchTotalOpenMRSObjectCountToday(includeRetired, Patient.class);
 	}
@@ -394,6 +432,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	@Override
+	public Integer getTotalPatients(Boolean includeRetired) {
+		return fetchTotalOpenMRSObject(includeRetired, Patient.class);
+	}
+
+	@Override
 	public Integer getTotalLocationsToday(Boolean includeRetired) {
 		return fetchTotalOpenMRSObjectCountToday(includeRetired, Location.class);
 	}
@@ -421,6 +464,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public Integer getTotalLocationsThisYear(Boolean includeRetired) {
 		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Location.class);
+	}
+
+	@Override
+	public Integer getTotalLocations(Boolean includeRetired) {
+		return fetchTotalOpenMRSObject(includeRetired, Location.class);
 	}
 
 	@Override
@@ -456,6 +504,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public Integer getTotalConceptsThisMonth(Boolean includeRetired) {
 		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Concept.class);
+	}
+
+	@Override
+	public Integer getTotalConcepts(Boolean includeRetired) {
+		return fetchTotalOpenMRSObject(includeRetired, Concept.class);
 	}
 
 	@Override
@@ -499,6 +552,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	@Override
+	public Integer getTotalForms(Boolean includeRetired) {
+		return fetchTotalOpenMRSObject(includeRetired, Form.class);
+	}
+
+	@Override
 	public Integer getTotalOrdersLastYear(Boolean includeRetired) {
 		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Order.class);
 	}
@@ -526,6 +584,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public Integer getTotalOrdersThisMonth(Boolean includeRetired) {
 		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Order.class);
+	}
+
+	@Override
+	public Integer getTotalOrders(Boolean includeRetired) {
+		return fetchTotalOpenMRSObject(includeRetired, Order.class);
 	}
 
 	@Override
@@ -559,6 +622,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	@Override
+	public Integer getTotalProviders(Boolean includeRetired) {
+		return fetchTotalOpenMRSObject(includeRetired, Provider.class);
+	}
+
+	@Override
 	public Integer getTotalProvidersThisMonth(Boolean includeRetired) {
 		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Provider.class);
 	}
@@ -568,14 +636,16 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Provider.class);
 	}
 
-	private Integer fetchTotalOpenMRSObjectCountToday(Boolean includeRetired, Class clazz) {
+	private Integer fetchTotalOpenMRSObjectCountToday(Boolean includeRetired,
+			@SuppressWarnings("rawtypes") Class clazz) {
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq("voided", includeRetired)).add(Restrictions
 						.or(Restrictions.ge("dateChanged", getToday()), Restrictions.ge("dateCreated", getToday())))
 				.list().size();
 	}
 
-	private Integer fetchTotalOpenMRSObjectCountThisWeek(Boolean includeRetired, Class clazz) {
+	private Integer fetchTotalOpenMRSObjectCountThisWeek(Boolean includeRetired,
+			@SuppressWarnings("rawtypes") Class clazz) {
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq("voided", includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getThisWeekStartDate()),
@@ -585,7 +655,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				.list().size();
 	}
 
-	private Integer fetchTotalOpenMRSObjectCountThisMonth(Boolean includeRetired, Class clazz) {
+	private Integer fetchTotalOpenMRSObjectCountThisMonth(Boolean includeRetired,
+			@SuppressWarnings("rawtypes") Class clazz) {
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq("voided", includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getThisMonthStartDate()),
@@ -595,7 +666,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				.list().size();
 	}
 
-	private Integer fetchTotalOpenMRSObjectCountThisYear(Boolean includeRetired, Class clazz) {
+	private Integer fetchTotalOpenMRSObjectCountThisYear(Boolean includeRetired,
+			@SuppressWarnings("rawtypes") Class clazz) {
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq("voided", includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getThisYearStartDate()),
@@ -605,7 +677,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				.list().size();
 	}
 
-	private Integer fetchTotalOpenMRSObjectCountLastWeek(Boolean includeRetired, Class clazz) {
+	private Integer fetchTotalOpenMRSObjectCountLastWeek(Boolean includeRetired,
+			@SuppressWarnings("rawtypes") Class clazz) {
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq("voided", includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastWeekStartDate()),
@@ -615,7 +688,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				.list().size();
 	}
 
-	private Integer fetchTotalOpenMRSObjectCountLastMonth(Boolean includeRetired, Class clazz) {
+	private Integer fetchTotalOpenMRSObjectCountLastMonth(Boolean includeRetired,
+			@SuppressWarnings("rawtypes") Class clazz) {
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq("voided", includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastMonthStartDate()),
@@ -625,7 +699,13 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				.list().size();
 	}
 
-	private Integer fetchTotalOpenMRSObjectCountLastYear(Boolean includeRetired, Class clazz) {
+	private Integer fetchTotalOpenMRSObject(Boolean includeRetired, @SuppressWarnings("rawtypes") Class clazz) {
+		return getSessionFactory().getCurrentSession().createCriteria(clazz)
+				.add(Restrictions.eq("voided", includeRetired)).list().size();
+	}
+
+	private Integer fetchTotalOpenMRSObjectCountLastYear(Boolean includeRetired,
+			@SuppressWarnings("rawtypes") Class clazz) {
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq("voided", includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastYearStartDate()),
@@ -633,5 +713,95 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				.add(Restrictions.or(Restrictions.le("dateChanged", getLastYearEndDate()),
 						Restrictions.le("dateCreated", getLastYearEndDate())))
 				.list().size();
+	}
+
+	@Override
+	public Date getOneHalfYearBackDate() {
+		Calendar prevHalfYear = Calendar.getInstance();
+		prevHalfYear.add(Calendar.MONTH, -6);
+
+		return prevHalfYear.getTime();
+	}
+
+	@Override
+	public Date getOneYearBackDate() {
+		Calendar prevYear = Calendar.getInstance();
+		prevYear.add(Calendar.YEAR, -1);
+
+		return prevYear.getTime();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalEncounters() {
+		return getTotalEncounters(false);
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalObservations() {
+		return getTotalObservations(false);
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalUsers() {
+		return getTotalUsers(false);
+	}
+
+	@Override
+	public Integer[] getAllPatientIds() {
+		List<Patient> allPatients = patientServince.getAllPatients();
+		Integer[] allPatientIds = new Integer[allPatients.size()];
+
+		for (int i = 0; i < allPatients.size(); i++) {
+			Patient p = allPatients.get(i);
+
+			if (p != null && p.getPatientId() != null) {
+				allPatientIds[i] = p.getPatientId();
+			}
+		}
+
+		return allPatientIds;
+	}
+
+	@Override
+	public Integer getTotalViralLoadTestsEver() {
+		return getSessionFactory().getCurrentSession().createCriteria(Obs.class).add(Restrictions.eq("voided", false))
+				.add(Restrictions.eq("concept", getViralLoadsConcept()))
+				.add(Restrictions.in("person", getAllPatientIds())).list().size();
+	}
+
+	@Override
+	public Integer getTotalViralLoadTestsLastSixMonths() {
+		return getSessionFactory().getCurrentSession().createCriteria(Obs.class).add(Restrictions.eq("voided", false))
+				.add(Restrictions.eq("concept", getViralLoadsConcept()))
+				.add(Restrictions.in("person", getAllPatientIds()))
+				.add(Restrictions.ge("obsDatetime", getOneHalfYearBackDate())).list().size();
+	}
+
+	@Override
+	public Integer getTotalViralLoadTestsLastYear() {
+		return getSessionFactory().getCurrentSession().createCriteria(Obs.class).add(Restrictions.eq("voided", false))
+				.add(Restrictions.eq("concept", getViralLoadsConcept()))
+				.add(Restrictions.in("person", getAllPatientIds()))
+				.add(Restrictions.ge("obsDatetime", getOneYearBackDate())).list().size();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalVisits() {
+		return getSessionFactory().getCurrentSession().createCriteria(Encounter.class)
+				.add(Restrictions.in("encounterType", new Integer[] { 2, 4 })).list().size();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalActivePatients() {
+		String sql = "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id = 1811 and program_id = 2 and ord.concept_id in (select distinct concept_id from concept_set where concept_set = 1085);";
+
+		return getSessionFactory().getCurrentSession().createQuery(sql).list().size();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalNewPatients() {
+		String sql = "select count(*) from encounter where encounter_type in (1,3)";
+
+		return getSessionFactory().getCurrentSession().createQuery(sql).list().size();
 	}
 }

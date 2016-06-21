@@ -12,11 +12,14 @@ import org.openmrs.web.WebConstants;
 public class OpenMRSPropertiesIndicators {
 	public String OPENMRSWEBAPPNAME = WebConstants.WEBAPP_NAME;
 
-	public File MODULEREPOSITORY = ModuleUtil.getModuleRepository();
+	public static File MODULEREPOSITORY = ModuleUtil.getModuleRepository();
 
-	public File EMTDIRECTORY = OpenmrsUtil.getDirectoryInApplicationDataDirectory("EmrMonitoringTool");
+	public static File SYSTEMMONITORDIRECTORY = OpenmrsUtil.getDirectoryInApplicationDataDirectory("SystemMonitor");
 
-	public String OPENMRSDATADIRECTORYPATH = OpenmrsUtil.getApplicationDataDirectory();
+	public static File OPENMRSDATADIRECTORY = new File(OpenmrsUtil.getApplicationDataDirectory());
 
-	public Collection<Module> LOADEDMODULES = ModuleFactory.getLoadedModules();
+	public static File OPENMRSFINALMAPPINGFILE = new File(
+			OpenmrsUtil.getApplicationDataDirectory() + File.separator + "mapping-to-dhis.txt");
+
+	public static Collection<Module> LOADEDMODULES = ModuleFactory.getLoadedModules();
 }

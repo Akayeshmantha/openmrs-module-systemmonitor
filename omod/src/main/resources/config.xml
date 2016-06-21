@@ -6,31 +6,33 @@
 	<id>${project.parent.artifactId}</id>
 	<name>${project.parent.name}</name>
 	<version>${project.parent.version}</version>
-	<package>${project.parent.groupId}.${project.parent.artifactId}</package>
+	<package>${project.parent.groupId}.${project.parent.artifactId}
+	</package>
 	<author>k-joseph</author>
 	<description>
 		${project.parent.description}
 	</description>
-	<updateURL>https://modules.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf</updateURL>
+	<updateURL>https://modules.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf
+	</updateURL>
 	<require_version>${openMRSVersion}</require_version>
 	<!-- / Module Properties -->
 
-	
+
 	<!-- Module Activator -->
-	<activator>${project.parent.groupId}.${project.parent.artifactId}.SystemMonitorActivator</activator>
-	
-	
+	<activator>${project.parent.groupId}.${project.parent.artifactId}.SystemMonitorActivator
+	</activator>
+
+
 	<!-- Adds link to admin page -->
 	<extension>
 		<point>org.openmrs.admin.list</point>
-		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
+		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList
+		</class>
 	</extension>
-	
+
 	<!-- Maps hibernate file's, if present -->
 	<mappingFiles>
-				
 		SystemMonitor.hbm.xml
-				
 	</mappingFiles>
 
 	<!-- Internationalization -->
@@ -48,6 +50,41 @@
 		<file>messages_es.properties</file>
 	</messages>
 	<!-- /Internationalization -->
+
+	<globalProperty>
+		<property>systemmonitor.viralLoadConceptId</property>
+		<defaultValue>856</defaultValue>
+		<description>Supports configuring the Viral Load Concept</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>systemmonitor.ID</property>
+		<defaultValue>JEMBI</defaultValue>
+		<description>This ID identifies a site (in Rwanda it is called FOSID) and is mapped to
+			a DHIS2 organization Unit</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>systemmonitor.DHISURL</property>
+		<defaultValue>http://82.196.9.250:8080/api/dataValueSets
+		</defaultValue>
+		<description>DHIS2 Instance's /api/dataValueSets url/link
+		</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>systemmonitor.DHISUSERNAME</property>
+		<defaultValue>admin</defaultValue>
+		<description>DHIS2 Account Username, Organization account is preferred
+		</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>systemmonitor.DHISPASSWORD</property>
+		<defaultValue>district</defaultValue>
+		<description>DHIS2 Password, Organization account is preferred
+		</description>
+	</globalProperty>
 
 </module>
 

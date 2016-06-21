@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.Encounter;
 import org.openmrs.api.EncounterService;
@@ -174,5 +175,10 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 				+ Context.getService(SystemMonitorService.class).getTotalEncountersToday(false));
 
 		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+	}
+	
+	@Ignore
+	public void test_transferMappingsFileToDataDirectory() {
+		Context.getService(SystemMonitorService.class).transferMappingsFileToDataDirectory();
 	}
 }

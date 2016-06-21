@@ -13,12 +13,15 @@
  */
 package org.openmrs.module.systemmonitor.api.impl;
 
-import org.openmrs.api.impl.BaseOpenmrsService;
-
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.systemmonitor.OpenMRSPropertiesIndicators;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
 
@@ -459,5 +462,126 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	@Override
 	public Integer getTotalOrdersThisYear(Boolean includeRetired) {
 		return dao.getTotalOrdersThisYear(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalEncounters(Boolean includeRetired) {
+		return dao.getTotalEncounters(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalUsers(Boolean includeRetired) {
+		return dao.getTotalUsers(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalObservations(Boolean includeRetired) {
+		return dao.getTotalObservations(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalVisits(Boolean includeRetired) {
+		return dao.getTotalVisits(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalPatients(Boolean includeRetired) {
+		return dao.getTotalPatients(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalLocations(Boolean includeRetired) {
+		return dao.getTotalLocations(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalConcepts(Boolean includeRetired) {
+		return dao.getTotalConcepts(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalForms(Boolean includeRetired) {
+		return dao.getTotalForms(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalOrders(Boolean includeRetired) {
+		return dao.getTotalOrders(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalProviders(Boolean includeRetired) {
+		return dao.getTotalProviders(includeRetired);
+	}
+
+	@Override
+	public Integer getTotalViralLoadTestsEver() {
+		return dao.getTotalViralLoadTestsEver();
+	}
+
+	@Override
+	public Integer getTotalViralLoadTestsLastSixMonths() {
+		return dao.getTotalViralLoadTestsLastSixMonths();
+	}
+
+	@Override
+	public Integer getTotalViralLoadTestsLastYear() {
+		return dao.getTotalViralLoadTestsLastYear();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalVisits() {
+		return dao.rwandaPIHEMTGetTotalVisits();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalActivePatients() {
+		return dao.rwandaPIHEMTGetTotalActivePatients();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalNewPatients() {
+		return dao.rwandaPIHEMTGetTotalNewPatients();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalEncounters() {
+		return dao.rwandaPIHEMTGetTotalEncounters();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalObservations() {
+		return dao.rwandaPIHEMTGetTotalObservations();
+	}
+
+	@Override
+	public Date getOneYearBackDate() {
+		return dao.getOneYearBackDate();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalUsers() {
+		return dao.rwandaPIHEMTGetTotalUsers();
+	}
+
+	@Override
+	public Integer[] getAllPatientIds() {
+		return dao.getAllPatientIds();
+	}
+
+	@Override
+	public Date getOneHalfYearBackDate() {
+		return dao.getOneHalfYearBackDate();
+	}
+
+	@Override
+	public void transferMappingsFileToDataDirectory() {
+		File mappingsFile = new File(getClass().getClassLoader().getResource("mapping-to-dhis.txt").getFile());
+
+		try {
+			FileUtils.copyFile(mappingsFile, OpenMRSPropertiesIndicators.OPENMRSFINALMAPPINGFILE);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

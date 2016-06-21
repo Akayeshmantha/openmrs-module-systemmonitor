@@ -187,8 +187,48 @@ public interface SystemMonitorDAO {
 	Integer getTotalProvidersThisYear(Boolean includeRetired);
 
 	Integer getTotalOrdersThisYear(Boolean includeRetired);
-	
-	/*
-	 * Add DAO methods here
-	 */
+
+	Integer getTotalEncounters(Boolean includeRetired);
+
+	Integer getTotalUsers(Boolean includeRetired);
+
+	Integer getTotalObservations(Boolean includeRetired);
+
+	Integer getTotalVisits(Boolean includeRetired);
+
+	Integer getTotalPatients(Boolean includeRetired);
+
+	Integer getTotalLocations(Boolean includeRetired);
+
+	Integer getTotalConcepts(Boolean includeRetired);
+
+	Integer getTotalForms(Boolean includeRetired);
+
+	Integer getTotalOrders(Boolean includeRetired);
+
+	Integer getTotalProviders(Boolean includeRetired);
+
+	Integer getTotalViralLoadTestsEver();
+
+	Integer getTotalViralLoadTestsLastSixMonths();
+
+	Integer getTotalViralLoadTestsLastYear();
+
+	Integer rwandaPIHEMTGetTotalVisits();
+
+	Integer rwandaPIHEMTGetTotalActivePatients();
+
+	Integer rwandaPIHEMTGetTotalNewPatients();
+
+	Integer rwandaPIHEMTGetTotalEncounters();
+
+	Integer rwandaPIHEMTGetTotalObservations();
+
+	Date getOneYearBackDate();
+
+	Integer rwandaPIHEMTGetTotalUsers();
+
+	Integer[] getAllPatientIds();
+
+	Date getOneHalfYearBackDate();
 }
