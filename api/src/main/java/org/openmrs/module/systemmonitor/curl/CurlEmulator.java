@@ -25,7 +25,7 @@ public class CurlEmulator {
 	 * 
 	 * @return json response from the url
 	 */
-	public JSONObject get(String urlString) {
+	public static JSONObject get(String urlString) {
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(urlString);
@@ -55,7 +55,7 @@ public class CurlEmulator {
 	 * 
 	 * @return serverReponse, text response message from the server
 	 */
-	public String post(String urlString, JSONObject data, String username, String password) {
+	public static String post(String urlString, JSONObject data, String username, String password) {
 		String serverResponse = null;
 
 		try {

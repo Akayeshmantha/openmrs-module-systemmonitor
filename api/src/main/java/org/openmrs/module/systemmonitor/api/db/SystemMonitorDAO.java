@@ -15,6 +15,7 @@ package org.openmrs.module.systemmonitor.api.db;
 
 import java.util.Date;
 
+import org.openmrs.Person;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 
 /**
@@ -228,7 +229,7 @@ public interface SystemMonitorDAO {
 
 	Integer rwandaPIHEMTGetTotalUsers();
 
-	Integer[] getAllPatientIds();
+	Person[] getAllPersonsWhoArePatients();
 
 	Date getOneHalfYearBackDate();
 }

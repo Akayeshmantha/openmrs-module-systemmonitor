@@ -2,7 +2,6 @@ package org.openmrs.module.systemmonitor.scheduler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.scheduler.tasks.AbstractTask;
 
 /**
  * Sample class of how a scheduled task may look like, this executes nothing for now
@@ -10,13 +9,13 @@ import org.openmrs.scheduler.tasks.AbstractTask;
  * @author k-joseph
  *
  */
-public class SystemMonitoringTask extends AbstractTask {
+public class SystemMonitoringTask /*extends AbstractTask*/ {
 	private static final Log log = LogFactory.getLog(SystemMonitoringTask.class);
 
 	/**
 	 * @see org.openmrs.scheduler.tasks.AbstractTask#execute()
 	 */
-	@Override
+	/*@Override
 	public void execute() {
 		if (!isExecuting) {
 			if (log.isDebugEnabled()) {
@@ -33,5 +32,5 @@ public class SystemMonitoringTask extends AbstractTask {
 				stopExecuting();
 			}
 		}
-	}
+	}*/
 }

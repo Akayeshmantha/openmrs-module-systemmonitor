@@ -86,10 +86,10 @@ public class TestOSHILibrary {
 
 			String ipInfoUrl = "http://ipinfo.io/" + InetAddress.getLocalHost().getHostAddress();
 			String googleIpInfoUrl = "http://ipinfo.io/8.8.8.8";
-			CurlEmulator curlEmulator = new CurlEmulator();
 
-			System.out.println("ipinfo.io's response about Google.com: " + curlEmulator.get(googleIpInfoUrl).toString());
-			System.out.println("ipinfo.io's response for This PC: " + curlEmulator.get(ipInfoUrl).toString());
+			System.out
+					.println("ipinfo.io's response about Google.com: " + CurlEmulator.get(googleIpInfoUrl).toString());
+			System.out.println("ipinfo.io's response for This PC: " + CurlEmulator.get(ipInfoUrl).toString());
 
 			System.out.println("NETWORK MTU: " + net.getMTU()
 					+ "\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");

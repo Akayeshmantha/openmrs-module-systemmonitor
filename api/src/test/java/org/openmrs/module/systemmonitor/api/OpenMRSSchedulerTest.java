@@ -1,15 +1,8 @@
 package org.openmrs.module.systemmonitor.api;
 
-import java.util.Calendar;
-import java.util.UUID;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Ignore;
-import org.openmrs.api.context.Context;
-import org.openmrs.scheduler.SchedulerException;
-import org.openmrs.scheduler.Task;
-import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 @Ignore
@@ -24,10 +17,10 @@ public class OpenMRSSchedulerTest extends BaseModuleContextSensitiveTest {
 	 */
 	public void test_openmrsScheduler() {
 		String name = "";
-		Class<? extends Task> clazz = null;
+		//Class<? extends Task> clazz = null;
 		Long interval = null;
 		String description = "";
-
+/*
 		try {
 			Context.addProxyPrivilege("Manage Scheduler");
 
@@ -51,6 +44,6 @@ public class OpenMRSSchedulerTest extends BaseModuleContextSensitiveTest {
 			log.warn("Unable to register task '" + name + "' with scheduler", ex);
 		} finally {
 			Context.removeProxyPrivilege("Manage Scheduler");
-		}
+		}*/
 	}
 }

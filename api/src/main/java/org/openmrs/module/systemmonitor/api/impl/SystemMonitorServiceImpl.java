@@ -20,8 +20,13 @@ import java.util.Date;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONObject;
+import org.openmrs.Person;
+import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.systemmonitor.OpenMRSPropertiesIndicators;
+import org.openmrs.module.Module;
+import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
+import org.openmrs.module.systemmonitor.SystemMonitorConstants;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
 
@@ -565,8 +570,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	@Override
-	public Integer[] getAllPatientIds() {
-		return dao.getAllPatientIds();
+	public Person[] getAllPersonsWhoArePatients() {
+		return dao.getAllPersonsWhoArePatients();
 	}
 
 	@Override
@@ -576,12 +581,52 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 
 	@Override
 	public void transferMappingsFileToDataDirectory() {
-		File mappingsFile = new File(getClass().getClassLoader().getResource("mapping-to-dhis.txt").getFile());
+		if (!SystemMonitorConstants.SYSTEMMONITOR_DIRECTORY.exists()) {
+			SystemMonitorConstants.SYSTEMMONITOR_DIRECTORY.mkdirs();
+		}
+
+		File mappingsFile = new File(getClass().getClassLoader()
+				.getResource(SystemMonitorConstants.SYSTEMMONITOR_MAPPING_FILENAME).getFile());
 
 		try {
-			FileUtils.copyFile(mappingsFile, OpenMRSPropertiesIndicators.OPENMRSFINALMAPPINGFILE);
+			FileUtils.copyFile(mappingsFile, SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String getCurrentConfiguredDHISOrgUnit() {
+		return Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.SITE_ID);
+	}
+
+	@Override
+	public String getCurrentConfiguredDHISUsername() {
+		return Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
+	}
+
+	@Override
+	public String getCurrentConfiguredDHISPassword() {
+		return Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.DHIS_PASSWORD);
+	}
+
+	@Override
+	public JSONObject getInstalledModules() {
+		String installedModules = "{\"modules\":[";
+		int size = SystemMonitorConstants.LOADED_MODULES.size();
+
+		for (Module module : SystemMonitorConstants.LOADED_MODULES) {
+			if (module != null) {
+				installedModules += "{\"id\": \"" + module.getModuleId() + "\", \"name\": \"" + module.getName()
+						+ "\", \"author\": \"" + module.getAuthor() + "\"}";
+
+				if (--size != 0) {// not Last Item
+					installedModules += ", ";
+				}
+			}
+		}
+		installedModules += "]}";
+
+		return new JSONObject(installedModules);
 	}
 }

@@ -15,6 +15,8 @@ package org.openmrs.module.systemmonitor.api;
 
 import java.util.Date;
 
+import org.json.JSONObject;
+import org.openmrs.Person;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,11 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface SystemMonitorService extends OpenmrsService {
-
-	/*
-	 * Add service methods here
-	 * 
-	 */
 
 	Date getThisWeekEndDate();
 
@@ -222,7 +219,7 @@ public interface SystemMonitorService extends OpenmrsService {
 	Integer getTotalOrders(Boolean includeRetired);
 
 	Integer getTotalProviders(Boolean includeRetired);
-	
+
 	Integer getTotalViralLoadTestsEver();
 
 	Integer getTotalViralLoadTestsLastSixMonths();
@@ -243,9 +240,17 @@ public interface SystemMonitorService extends OpenmrsService {
 
 	Integer rwandaPIHEMTGetTotalUsers();
 
-	Integer[] getAllPatientIds();
+	Person[] getAllPersonsWhoArePatients();
 
 	Date getOneHalfYearBackDate();
 
 	void transferMappingsFileToDataDirectory();
+
+	String getCurrentConfiguredDHISOrgUnit();
+
+	String getCurrentConfiguredDHISUsername();
+
+	String getCurrentConfiguredDHISPassword();
+
+	JSONObject getInstalledModules();
 }

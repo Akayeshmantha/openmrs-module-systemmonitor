@@ -58,7 +58,7 @@
 	</globalProperty>
 
 	<globalProperty>
-		<property>systemmonitor.ID</property>
+		<property>systemmonitor.SITEID</property>
 		<defaultValue>JEMBI</defaultValue>
 		<description>This ID identifies a site (in Rwanda it is called FOSID) and is mapped to
 			a DHIS2 organization Unit</description>

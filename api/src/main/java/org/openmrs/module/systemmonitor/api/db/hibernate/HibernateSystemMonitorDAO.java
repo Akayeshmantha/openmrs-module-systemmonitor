@@ -30,6 +30,7 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.openmrs.Patient;
+import org.openmrs.Person;
 import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.Visit;
@@ -49,11 +50,9 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-	private PatientService patientServince = Context.getPatientService();
+	private PatientService patientService = Context.getPatientService();
 
 	private ConceptService conceptService = Context.getConceptService();
-
-	private ConfigurableGlobalProperties configGP = new ConfigurableGlobalProperties();
 
 	/**
 	 * @param sessionFactory
@@ -72,7 +71,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	private Concept getViralLoadsConcept() {
 		String viralLoadConcept = Context.getAdministrationService()
-				.getGlobalProperty(ConfigurableGlobalProperties.VIRALLOADCONCEPTID);
+				.getGlobalProperty(ConfigurableGlobalProperties.VIRALLOAD_CONCEPTID);
 		Integer viralLoadConceptId = viralLoadConcept != null ? Integer.parseInt(viralLoadConcept) : null;
 
 		return viralLoadConceptId != null ? conceptService.getConcept(viralLoadConceptId) : null;
@@ -638,16 +637,20 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	private Integer fetchTotalOpenMRSObjectCountToday(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
+		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq("voided", includeRetired)).add(Restrictions
+				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired)).add(Restrictions
 						.or(Restrictions.ge("dateChanged", getToday()), Restrictions.ge("dateCreated", getToday())))
 				.list().size();
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountThisWeek(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
+		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq("voided", includeRetired))
+				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getThisWeekStartDate()),
 						Restrictions.ge("dateCreated", getThisWeekStartDate())))
 				.add(Restrictions.or(Restrictions.le("dateChanged", getThisWeekEndDate()),
@@ -657,8 +660,10 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	private Integer fetchTotalOpenMRSObjectCountThisMonth(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
+		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq("voided", includeRetired))
+				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getThisMonthStartDate()),
 						Restrictions.ge("dateCreated", getThisMonthStartDate())))
 				.add(Restrictions.or(Restrictions.le("dateChanged", getThisMonthEndDate()),
@@ -666,10 +671,23 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				.list().size();
 	}
 
+	private String isPropertyCalledRetiredOrVoided(Class clazz) {
+		String voidedOrRetiredParameterName = "voided";
+
+		// metadata voided is named retired instead
+		if (clazz.equals(Provider.class) || clazz.equals(User.class) || clazz.equals(Location.class)
+				|| clazz.equals(Form.class)) {
+			voidedOrRetiredParameterName = "retired";
+		}
+		return voidedOrRetiredParameterName;
+	}
+
 	private Integer fetchTotalOpenMRSObjectCountThisYear(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
+		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq("voided", includeRetired))
+				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getThisYearStartDate()),
 						Restrictions.ge("dateCreated", getThisYearStartDate())))
 				.add(Restrictions.or(Restrictions.le("dateChanged", getThisYearEndDate()),
@@ -679,8 +697,10 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	private Integer fetchTotalOpenMRSObjectCountLastWeek(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
+		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq("voided", includeRetired))
+				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastWeekStartDate()),
 						Restrictions.ge("dateCreated", getLastWeekStartDate())))
 				.add(Restrictions.or(Restrictions.le("dateChanged", getLastWeekEndDate()),
@@ -690,8 +710,10 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	private Integer fetchTotalOpenMRSObjectCountLastMonth(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
+		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq("voided", includeRetired))
+				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastMonthStartDate()),
 						Restrictions.ge("dateCreated", getLastMonthStartDate())))
 				.add(Restrictions.or(Restrictions.le("dateChanged", getLastMonthEndDate()),
@@ -700,14 +722,18 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	private Integer fetchTotalOpenMRSObject(Boolean includeRetired, @SuppressWarnings("rawtypes") Class clazz) {
+		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq("voided", includeRetired)).list().size();
+				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired)).list().size();
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountLastYear(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
+		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq("voided", includeRetired))
+				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
 				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastYearStartDate()),
 						Restrictions.ge("dateCreated", getLastYearStartDate())))
 				.add(Restrictions.or(Restrictions.le("dateChanged", getLastYearEndDate()),
@@ -747,33 +773,33 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	@Override
-	public Integer[] getAllPatientIds() {
-		List<Patient> allPatients = patientServince.getAllPatients();
-		Integer[] allPatientIds = new Integer[allPatients.size()];
+	public Person[] getAllPersonsWhoArePatients() {
+		List<Patient> allPatients = patientService.getAllPatients();
+		List<Person> allPersons = getSessionFactory().getCurrentSession().createCriteria(Person.class).list();
+		Person[] persons = new Person[] {};
 
-		for (int i = 0; i < allPatients.size(); i++) {
-			Patient p = allPatients.get(i);
-
-			if (p != null && p.getPatientId() != null) {
-				allPatientIds[i] = p.getPatientId();
+		for (int i = 0; i < allPersons.size(); i++) {
+			if (allPersons.get(i) != null && i < allPatients.size() && allPatients.get(i) != null
+					&& allPatients.get(i).getPersonId().equals(allPersons.get(i).getPersonId())) {
+				persons[i] = allPersons.get(i);
 			}
 		}
 
-		return allPatientIds;
+		return persons;
 	}
 
 	@Override
 	public Integer getTotalViralLoadTestsEver() {
 		return getSessionFactory().getCurrentSession().createCriteria(Obs.class).add(Restrictions.eq("voided", false))
 				.add(Restrictions.eq("concept", getViralLoadsConcept()))
-				.add(Restrictions.in("person", getAllPatientIds())).list().size();
+				.add(Restrictions.in("person", getAllPersonsWhoArePatients())).list().size();
 	}
 
 	@Override
 	public Integer getTotalViralLoadTestsLastSixMonths() {
 		return getSessionFactory().getCurrentSession().createCriteria(Obs.class).add(Restrictions.eq("voided", false))
 				.add(Restrictions.eq("concept", getViralLoadsConcept()))
-				.add(Restrictions.in("person", getAllPatientIds()))
+				.add(Restrictions.in("person", patientService.getAllPatients()))
 				.add(Restrictions.ge("obsDatetime", getOneHalfYearBackDate())).list().size();
 	}
 
@@ -781,27 +807,41 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	public Integer getTotalViralLoadTestsLastYear() {
 		return getSessionFactory().getCurrentSession().createCriteria(Obs.class).add(Restrictions.eq("voided", false))
 				.add(Restrictions.eq("concept", getViralLoadsConcept()))
-				.add(Restrictions.in("person", getAllPatientIds()))
+				.add(Restrictions.in("person", patientService.getAllPatients()))
 				.add(Restrictions.ge("obsDatetime", getOneYearBackDate())).list().size();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalVisits() {
-		return getSessionFactory().getCurrentSession().createCriteria(Encounter.class)
-				.add(Restrictions.in("encounterType", new Integer[] { 2, 4 })).list().size();
+		return null;/*
+					 * getSessionFactory().getCurrentSession().createCriteria(
+					 * Encounter.class) .add(Restrictions.in("encounterType",
+					 * new Integer[] { 2, 4 })).list().size();
+					 */
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalActivePatients() {
-		String sql = "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id = 1811 and program_id = 2 and ord.concept_id in (select distinct concept_id from concept_set where concept_set = 1085);";
-
-		return getSessionFactory().getCurrentSession().createQuery(sql).list().size();
+		/*
+		 * String sql =
+		 * "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id = 1811 and program_id = 2 and ord.concept_id in (select distinct concept_id from concept_set where concept_set = 1085);"
+		 * ;
+		 * 
+		 * return
+		 * getSessionFactory().getCurrentSession().createQuery(sql).list().size(
+		 * );
+		 */return null;
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalNewPatients() {
-		String sql = "select count(*) from encounter where encounter_type in (1,3)";
-
-		return getSessionFactory().getCurrentSession().createQuery(sql).list().size();
+		/*
+		 * String sql =
+		 * "select count(*) from encounter where encounter_type in (1,3)";
+		 * 
+		 * return
+		 * getSessionFactory().getCurrentSession().createQuery(sql).list().size(
+		 * );
+		 */return null;
 	}
 }
