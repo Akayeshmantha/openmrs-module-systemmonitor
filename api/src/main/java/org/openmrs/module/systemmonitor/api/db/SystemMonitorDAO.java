@@ -232,4 +232,6 @@ public interface SystemMonitorDAO {
 	Person[] getAllPersonsWhoArePatients();
 
 	Date getOneHalfYearBackDate();
+
+	Integer unitTestingTheseMetrics();
 }

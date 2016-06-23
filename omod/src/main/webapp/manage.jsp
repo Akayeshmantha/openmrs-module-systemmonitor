@@ -3,6 +3,6 @@
 
 <%@ include file="template/localHeader.jsp"%>
 
-<p>Hello ${user.systemId}!</p>
+<p>SystemMonitor Data: ${data}</p>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>

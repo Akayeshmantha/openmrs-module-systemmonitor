@@ -17,6 +17,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -27,6 +28,8 @@ import org.openmrs.api.LocationService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.ModuleConstants;
+import org.openmrs.module.ModuleUtil;
 import org.openmrs.module.systemmonitor.distributions.RwandaSPHStudyEMT;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
@@ -35,6 +38,7 @@ import junit.framework.Assert;
 /**
  * Tests {@link ${SystemMonitorService}}.
  */
+
 public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 
 	EncounterService encounterService;
@@ -44,6 +48,16 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 	Calendar today;
 	private SystemMonitorService systemMonitorService;
 
+	@Override
+	public Properties getRuntimeProperties() {
+		Properties props = super.getRuntimeProperties();
+
+		props.setProperty(ModuleConstants.RUNTIMEPROPERTY_MODULE_LIST_TO_LOAD,
+				"org/openmrs/module/include/logic-0.2.omod org/openmrs/module/include/dssmodule-1.44.omod systemmonitor-1.0-SNAPSHOT.omod");
+
+		return props;
+	}
+
 	@Before
 	public void init() {
 		encounterService = Context.getEncounterService();
@@ -52,6 +66,8 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 		locationService = Context.getLocationService();
 		today = Calendar.getInstance(Context.getLocale());
 		systemMonitorService = Context.getService(SystemMonitorService.class);
+
+		ModuleUtil.startup(getRuntimeProperties());
 	}
 
 	@Test
@@ -158,19 +174,39 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 	}
 
 	@Test
-	public void test_installedModulesGenerator() {
-		System.out.println(systemMonitorService.getInstalledModules().toString());
-	}
-
-	@Test
-	public void test_generatingDHISJson() {
+	public void test_generatingDHISJsonAndInstallationOfSystemMonitorModule() {
 		RwandaSPHStudyEMT emt = new RwandaSPHStudyEMT();
-		
+
 		systemMonitorService.transferMappingsFileToDataDirectory();
-		
+
 		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 		System.out.println("Installed Modules: " + systemMonitorService.getInstalledModules().toString());
+		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 		System.out.println("DHIS Generated ValueSet :\n" + emt.generatedDHISDataValueSetJSONString().toString());
 		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+	}
+	
+	@Test
+	public void test_hibernateCriteriaRestrictions() {
+		System.out.println("Total Count: " + systemMonitorService.unitTestingTheseMetrics());
+
+		Integer encounterTotal = systemMonitorService.rwandaPIHEMTGetTotalEncounters();
+
+		Integer obsTotal = systemMonitorService.rwandaPIHEMTGetTotalObservations();
+
+		Integer totalUsers = systemMonitorService.rwandaPIHEMTGetTotalUsers();
+
+		Integer totalPatientActive = systemMonitorService.rwandaPIHEMTGetTotalActivePatients();
+
+		Integer totalPatientNew = systemMonitorService.rwandaPIHEMTGetTotalNewPatients();
+
+		Integer totalVisits = systemMonitorService.rwandaPIHEMTGetTotalVisits();
+		
+		Integer viralLoadTestResultsEver = systemMonitorService.getTotalViralLoadTestsEver();
+
+		Integer viralLoadTestResultsLastSixMonths = systemMonitorService.getTotalViralLoadTestsLastSixMonths();
+
+		Integer viralLoadTestResultsLastYear = systemMonitorService.getTotalViralLoadTestsLastYear();
+
 	}
 }

@@ -58,6 +58,18 @@
 	</globalProperty>
 
 	<globalProperty>
+		<property>systemmonitor.reasonForExistingCare</property>
+		<defaultValue>1811</defaultValue>
+		<description>Supports configuring the REASON FOR EXITING CARE Concept</description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>systemmonitor.hivProgramID</property>
+		<defaultValue>2</defaultValue>
+		<description>Supports configuring the HIV Program by ID</description>
+	</globalProperty>
+	
+	<globalProperty>
 		<property>systemmonitor.SITEID</property>
 		<defaultValue>JEMBI</defaultValue>
 		<description>This ID identifies a site (in Rwanda it is called FOSID) and is mapped to

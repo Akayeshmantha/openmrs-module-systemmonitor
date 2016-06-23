@@ -15,7 +15,7 @@ package org.openmrs.module.systemmonitor.api;
 
 import java.util.Date;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 import org.openmrs.Person;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
@@ -252,5 +252,7 @@ public interface SystemMonitorService extends OpenmrsService {
 
 	String getCurrentConfiguredDHISPassword();
 
-	JSONObject getInstalledModules();
+	JSONArray getInstalledModules();
+	
+	Integer unitTestingTheseMetrics();
 }

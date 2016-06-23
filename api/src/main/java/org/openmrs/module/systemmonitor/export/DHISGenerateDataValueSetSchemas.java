@@ -8,30 +8,161 @@ import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.systemmonitor.SystemMonitorConstants;
+import org.openmrs.module.systemmonitor.api.SystemMonitorService;
+import org.openmrs.module.systemmonitor.curl.CurlEmulator;
+import org.openmrs.module.systemmonitor.indicators.OSAndHardwareIndicators;
+import org.openmrs.module.systemmonitor.indicators.SystemPropertiesIndicators;
 import org.openmrs.module.systemmonitor.mapping.DHISDataElementMapping;
+import org.openmrs.web.WebConstants;
 
 public class DHISGenerateDataValueSetSchemas {
 
-	public static JSONObject generateRwandaSPHEMTDHISDataValueSets(String systemId, String dhisOrganizationUnitUid,
-			String clinicDays, String clinicHours, Integer encounterTotal, Integer obsTotal, Integer totalUsers,
-			String openmrsAPPName, Integer totalPatientActive, Integer totalPatientNew, Integer totalVisits,
-			Integer startupCounts, Long thisWeekUptime, Integer previousWeekUptime, Integer previousMonthUptime,
-			Long freeMemory, Long usedMemory, Long totalMemory, Integer openmrsUptimePercentage,
-			Integer viralLoadTestResultsEver, Integer viralLoadTestResultsLastSixMonths,
-			Integer viralLoadTestResultsLastYear, String operatingSystem, String operatingSystemArch,
-			String operatingSystemVersion, String javaVersion, String javaVendor, String jvmVersion, String jvmVendor,
-			String javaRuntimeName, String javaRuntimeVersion, String userName, String systemLanguage,
-			String systemTimezone, String userDirectory, String fileSystemEncoding, String systemDateTime,
-			String openmrsVersion, JSONObject installedModules, String tempDirectory, JSONObject serverRealLocation) {
+	/**
+	 * @TODO re-write this from a string-json parse approach to json itself
+	 * 
+	 * @param systemId
+	 * @param dhisOrganizationUnitUid
+	 * @param clinicDays
+	 * @param clinicHours
+	 * @param encounterTotal
+	 * @param obsTotal
+	 * @param totalUsers
+	 * @param openmrsAPPName
+	 * @param totalPatientActive
+	 * @param totalPatientNew
+	 * @param totalVisits
+	 * @param startupCounts
+	 * @param thisWeekUptime
+	 * @param previousWeekUptime
+	 * @param previousMonthUptime
+	 * @param freeMemory
+	 * @param usedMemory
+	 * @param totalMemory
+	 * @param openmrsUptimePercentage
+	 * @param viralLoadTestResultsEver
+	 * @param viralLoadTestResultsLastSixMonths
+	 * @param viralLoadTestResultsLastYear
+	 * @param operatingSystem
+	 * @param operatingSystemArch
+	 * @param operatingSystemVersion
+	 * @param javaVersion
+	 * @param javaVendor
+	 * @param jvmVersion
+	 * @param jvmVendor
+	 * @param javaRuntimeName
+	 * @param javaRuntimeVersion
+	 * @param userName
+	 * @param systemLanguage
+	 * @param systemTimezone
+	 * @param userDirectory
+	 * @param fileSystemEncoding
+	 * @param systemDateTime
+	 * @param openmrsVersion
+	 * @param installedModules
+	 * @param tempDirectory
+	 * @param serverRealLocation
+	 * @return
+	 */
+	public static JSONObject generateRwandaSPHEMTDHISDataValueSets() {
 		Calendar cal = Calendar.getInstance();
 		Date today = new Date();
 		SimpleDateFormat dFormat = new SimpleDateFormat("yyyyMMdd");
 		File mappingsFile = SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE;
 		JSONObject jsonObj = new JSONObject();
 		JSONArray jsonDataValueSets = new JSONArray();
+		SystemMonitorService systemMonitorService = Context.getService(SystemMonitorService.class);
 
-		if(StringUtils.isBlank(dhisOrganizationUnitUid)) {
+		String systemId = OSAndHardwareIndicators.getHostName();
+
+		String dhisOrganizationUnitUid = systemMonitorService.getCurrentConfiguredDHISOrgUnit();
+
+		String clinicDays = null;
+
+		String clinicHours = null;
+
+		String openmrsAPPName = WebConstants.WEBAPP_NAME;
+
+		Integer startupCounts = null;
+
+		/*
+		 * TODO evaluate this for a week and respectively
+		 */
+		Long thisWeekUptime = OSAndHardwareIndicators.PROCESSOR_SYSTEM_UPTIME;
+
+		Integer previousWeekUptime = null;
+
+		Integer previousMonthUptime = null;
+
+		Long freeMemory = OSAndHardwareIndicators.MEMORY_AVAILABLE;
+
+		Long usedMemory = OSAndHardwareIndicators.MEMORY_USED;
+
+		Long totalMemory = OSAndHardwareIndicators.MEMORY_TOTAL;
+
+		Integer openmrsUptimePercentage = null;
+
+		String operatingSystem = SystemPropertiesIndicators.OS_NAME + ", Family: " + OSAndHardwareIndicators.OS_FAMILY
+				+ ", Manufacturer: " + OSAndHardwareIndicators.OS_MANUFACTURER + ", Version Name: "
+				+ OSAndHardwareIndicators.OS_VERSION_NAME + ", Version Number: "
+				+ OSAndHardwareIndicators.OS_VERSION_NUMBER + ", Build Number: "
+				+ OSAndHardwareIndicators.OS_VERSION_BUILDNUMBER;
+
+		String operatingSystemArch = SystemPropertiesIndicators.OS_ARCH;
+
+		String operatingSystemVersion = SystemPropertiesIndicators.OS_VERSION;
+
+		String javaVersion = SystemPropertiesIndicators.JAVA_VERSION;
+
+		String javaVendor = SystemPropertiesIndicators.JAVA_VENDOR;
+
+		String jvmVersion = SystemPropertiesIndicators.JVM_VERSION;
+
+		String jvmVendor = SystemPropertiesIndicators.JVM_VENDOR;
+
+		String javaRuntimeName = SystemPropertiesIndicators.JAVA_RUNTIMENAME;
+
+		String javaRuntimeVersion = SystemPropertiesIndicators.JAVA_RUNTIMEVERSION;
+
+		String userName = SystemPropertiesIndicators.USERNAME;
+
+		String systemLanguage = SystemPropertiesIndicators.SYSTEM_LANGUAGE;
+
+		String systemTimezone = SystemPropertiesIndicators.SYSTEM_TIMEZONE;
+
+		String userDirectory = SystemPropertiesIndicators.USER_DIRECTORY;
+
+		String fileSystemEncoding = SystemPropertiesIndicators.FILESYSTEM_ENCODING;
+
+		String systemDateTime = Calendar.getInstance(Context.getLocale()).getTime().toString();
+
+		String openmrsVersion = SystemMonitorConstants.OPENMRS_VERSION;
+
+		String tempDirectory = SystemPropertiesIndicators.TEMP_FOLDER;
+
+		JSONObject serverRealLocation = CurlEmulator
+				.get(SystemMonitorConstants.IP_INFO_URL + OSAndHardwareIndicators.getIpAddress());
+
+		Integer encounterTotal = systemMonitorService.rwandaPIHEMTGetTotalEncounters();
+
+		Integer obsTotal = systemMonitorService.rwandaPIHEMTGetTotalObservations();
+
+		Integer totalUsers = systemMonitorService.rwandaPIHEMTGetTotalUsers();
+
+		Integer totalPatientActive = systemMonitorService.rwandaPIHEMTGetTotalActivePatients();
+
+		Integer totalPatientNew = systemMonitorService.rwandaPIHEMTGetTotalNewPatients();
+
+		Integer totalVisits = systemMonitorService.rwandaPIHEMTGetTotalVisits();
+		
+		Integer viralLoadTestResultsEver = systemMonitorService.getTotalViralLoadTestsEver();
+
+		Integer viralLoadTestResultsLastSixMonths = systemMonitorService.getTotalViralLoadTestsLastSixMonths();
+
+		Integer viralLoadTestResultsLastYear = systemMonitorService.getTotalViralLoadTestsLastYear();
+
+		if (StringUtils.isBlank(dhisOrganizationUnitUid)) {
 			dhisOrganizationUnitUid = "";
 		}
 		// TODO restructure or refactor this file as;
@@ -196,12 +327,14 @@ public class DHISGenerateDataValueSetSchemas {
 			JSONObject systemRealLocationDataElementJSON = new JSONObject();
 			JSONObject installedModulesDataElementJSON = new JSONObject();
 
-			systemRealLocationDataElementJSON.put("dataElement", DHISDataElementMapping.getDHISMappedObject("DATA-ELEMENT_systemRealLocation"));
+			systemRealLocationDataElementJSON.put("dataElement",
+					DHISDataElementMapping.getDHISMappedObject("DATA-ELEMENT_systemRealLocation"));
 			systemRealLocationDataElementJSON.put("period", dFormat.format(today));
 			systemRealLocationDataElementJSON.put("value", serverRealLocation);
-			installedModulesDataElementJSON.put("dataElement", DHISDataElementMapping.getDHISMappedObject("DATA-ELEMENT_systemInfo_installedModules"));
+			installedModulesDataElementJSON.put("dataElement",
+					DHISDataElementMapping.getDHISMappedObject("DATA-ELEMENT_systemInfo_installedModules"));
 			installedModulesDataElementJSON.put("period", dFormat.format(today));
-			installedModulesDataElementJSON.put("value", installedModules);
+			installedModulesDataElementJSON.put("value", systemMonitorService.getInstalledModules());
 			jsonDataValueSets.put(new JSONObject(systemIdDataElement));
 			jsonDataValueSets.put(new JSONObject(openMRSAppNameDataElement));
 			jsonDataValueSets.put(new JSONObject(primaryClinicDaysDataElement));

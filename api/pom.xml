@@ -92,7 +92,17 @@
 		<testResources>
 			<testResource>
 				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**.omod</exclude>
+				</excludes>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**.omod</include>
+				</includes>
 			</testResource>
 		</testResources>
 	</build>

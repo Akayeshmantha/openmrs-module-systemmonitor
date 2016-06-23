@@ -13,29 +13,38 @@
  */
 package org.openmrs.module.systemmonitor.api.db.hibernate;
 
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.engine.SessionFactoryImplementor;
+import org.hibernate.impl.CriteriaImpl;
+import org.hibernate.impl.SessionImpl;
+import org.hibernate.loader.OuterJoinLoader;
+import org.hibernate.loader.criteria.CriteriaLoader;
+import org.hibernate.persister.entity.OuterJoinLoadable;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
 import org.openmrs.Form;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.openmrs.Patient;
+import org.openmrs.PatientProgram;
 import org.openmrs.Person;
 import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.Visit;
-import org.openmrs.api.ConceptService;
-import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
@@ -49,10 +58,6 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	private SessionFactory sessionFactory;
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-	private PatientService patientService = Context.getPatientService();
-
-	private ConceptService conceptService = Context.getConceptService();
 
 	/**
 	 * @param sessionFactory
@@ -74,7 +79,15 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				.getGlobalProperty(ConfigurableGlobalProperties.VIRALLOAD_CONCEPTID);
 		Integer viralLoadConceptId = viralLoadConcept != null ? Integer.parseInt(viralLoadConcept) : null;
 
-		return viralLoadConceptId != null ? conceptService.getConcept(viralLoadConceptId) : null;
+		return viralLoadConceptId != null ? Context.getConceptService().getConcept(viralLoadConceptId) : null;
+	}
+
+	private Concept getReasonForExitingCareConcept() {
+		String exitCareConcept = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.CAREEXITREASON_CONCEPTID);
+		Integer exitCareConceptId = exitCareConcept != null ? Integer.parseInt(exitCareConcept) : null;
+
+		return exitCareConceptId != null ? Context.getConceptService().getConcept(exitCareConceptId) : null;
 	}
 
 	@Override
@@ -635,9 +648,37 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Provider.class);
 	}
 
+	private String getObjectTableNameFromClass(Class clazz) {
+		String tableName = "";
+
+		if (clazz.equals(Provider.class)) {
+			tableName = "provider";
+		} else if (clazz.equals(User.class)) {
+			tableName = "users";
+		} else if (clazz.equals(Location.class)) {
+			tableName = "location";
+		} else if (clazz.equals(Concept.class)) {
+			tableName = "concept";
+		} else if (clazz.equals(Form.class)) {
+			tableName = "form";
+		} else if (clazz.equals(Patient.class)) {
+			tableName = "patient";
+		} else if (clazz.equals(Order.class)) {
+			tableName = "orders";
+		} else if (clazz.equals(Visit.class)) {
+			tableName = "visit";
+		} else if (clazz.equals(Obs.class)) {
+			tableName = "obs";
+		} else if (clazz.equals(Encounter.class)) {
+			tableName = "encounter";
+		}
+		return tableName;
+	}
+
 	private Integer fetchTotalOpenMRSObjectCountToday(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+		String sql = "";
 
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired)).add(Restrictions
@@ -651,10 +692,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
-				.add(Restrictions.or(Restrictions.ge("dateChanged", getThisWeekStartDate()),
-						Restrictions.ge("dateCreated", getThisWeekStartDate())))
-				.add(Restrictions.or(Restrictions.le("dateChanged", getThisWeekEndDate()),
-						Restrictions.le("dateCreated", getThisWeekEndDate())))
+				.add(Restrictions.or(Restrictions.between("dateChanged", getThisWeekStartDate(), getThisWeekEndDate()),
+						Restrictions.between("dateCreated", getThisWeekStartDate(), getThisWeekEndDate())))
 				.list().size();
 	}
 
@@ -664,19 +703,18 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
-				.add(Restrictions.or(Restrictions.ge("dateChanged", getThisMonthStartDate()),
-						Restrictions.ge("dateCreated", getThisMonthStartDate())))
-				.add(Restrictions.or(Restrictions.le("dateChanged", getThisMonthEndDate()),
-						Restrictions.le("dateCreated", getThisMonthEndDate())))
+				.add(Restrictions.or(
+						Restrictions.between("dateChanged", getThisMonthStartDate(), getThisMonthEndDate()),
+						Restrictions.between("dateCreated", getThisMonthStartDate(), getThisMonthEndDate())))
 				.list().size();
 	}
 
-	private String isPropertyCalledRetiredOrVoided(Class clazz) {
+	private String isPropertyCalledRetiredOrVoided(@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = "voided";
 
 		// metadata voided is named retired instead
 		if (clazz.equals(Provider.class) || clazz.equals(User.class) || clazz.equals(Location.class)
-				|| clazz.equals(Form.class)) {
+				|| clazz.equals(Form.class) || clazz.equals(Concept.class)) {
 			voidedOrRetiredParameterName = "retired";
 		}
 		return voidedOrRetiredParameterName;
@@ -688,10 +726,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
-				.add(Restrictions.or(Restrictions.ge("dateChanged", getThisYearStartDate()),
-						Restrictions.ge("dateCreated", getThisYearStartDate())))
-				.add(Restrictions.or(Restrictions.le("dateChanged", getThisYearEndDate()),
-						Restrictions.le("dateCreated", getThisYearEndDate())))
+				.add(Restrictions.or(Restrictions.between("dateChanged", getThisYearStartDate(), getThisYearEndDate()),
+						Restrictions.between("dateCreated", getThisYearStartDate(), getThisYearEndDate())))
 				.list().size();
 	}
 
@@ -701,10 +737,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
-				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastWeekStartDate()),
-						Restrictions.ge("dateCreated", getLastWeekStartDate())))
-				.add(Restrictions.or(Restrictions.le("dateChanged", getLastWeekEndDate()),
-						Restrictions.le("dateCreated", getLastWeekEndDate())))
+				.add(Restrictions.or(Restrictions.between("dateChanged", getLastWeekStartDate(), getLastWeekEndDate()),
+						Restrictions.between("dateCreated", getLastWeekStartDate(), getLastWeekEndDate())))
 				.list().size();
 	}
 
@@ -714,10 +748,9 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
-				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastMonthStartDate()),
-						Restrictions.ge("dateCreated", getLastMonthStartDate())))
-				.add(Restrictions.or(Restrictions.le("dateChanged", getLastMonthEndDate()),
-						Restrictions.le("dateCreated", getLastMonthEndDate())))
+				.add(Restrictions.or(
+						Restrictions.between("dateChanged", getLastMonthStartDate(), getLastMonthEndDate()),
+						Restrictions.between("dateCreated", getLastMonthStartDate(), getLastMonthEndDate())))
 				.list().size();
 	}
 
@@ -734,10 +767,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 		return getSessionFactory().getCurrentSession().createCriteria(clazz)
 				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
-				.add(Restrictions.or(Restrictions.ge("dateChanged", getLastYearStartDate()),
-						Restrictions.ge("dateCreated", getLastYearStartDate())))
-				.add(Restrictions.or(Restrictions.le("dateChanged", getLastYearEndDate()),
-						Restrictions.le("dateCreated", getLastYearEndDate())))
+				.add(Restrictions.or(Restrictions.between("dateChanged", getLastYearStartDate(), getLastYearEndDate()),
+						Restrictions.between("dateCreated", getLastYearStartDate(), getLastYearEndDate())))
 				.list().size();
 	}
 
@@ -773,33 +804,184 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Person[] getAllPersonsWhoArePatients() {
-		List<Patient> allPatients = patientService.getAllPatients();
+		List<Patient> allPatients = Context.getPatientService().getAllPatients();
 		List<Person> allPersons = getSessionFactory().getCurrentSession().createCriteria(Person.class).list();
-		Person[] persons = new Person[] {};
+		List<Person> persons = new ArrayList<Person>();
 
 		for (int i = 0; i < allPersons.size(); i++) {
-			if (allPersons.get(i) != null && i < allPatients.size() && allPatients.get(i) != null
-					&& allPatients.get(i).getPersonId().equals(allPersons.get(i).getPersonId())) {
-				persons[i] = allPersons.get(i);
+			Person person = allPersons.get(i);
+
+			for (int j = 0; j < allPatients.size(); j++) {
+				Patient patient = allPatients.get(j);
+
+				if (person != null && patient != null && person.getPersonId().equals(patient.getPatientId())) {
+					persons.add(patient);
+				}
 			}
 		}
 
-		return persons;
+		return persons.toArray(new Person[persons.size()]);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Patient[] getAllPatientEnrolledIntoPrograms() {
+		List<Patient> patientsInPrograms = new ArrayList<Patient>();
+		List<PatientProgram> patientPrograms = getSessionFactory().getCurrentSession()
+				.createCriteria(PatientProgram.class).list();
+
+		for (int i = 0; i < patientPrograms.size(); i++) {
+			patientsInPrograms.add(patientPrograms.get(i).getPatient());
+		}
+		return patientsInPrograms.toArray(new Patient[patientsInPrograms.size()]);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Person[] getAllPersonsEnrolledIntoPrograms() {
+		List<Person> personsInPrograms = new ArrayList<Person>();
+		List<PatientProgram> patientPrograms = getSessionFactory().getCurrentSession()
+				.createCriteria(PatientProgram.class).list();
+
+		for (int i = 0; i < patientPrograms.size(); i++) {
+			personsInPrograms
+					.add(Context.getPersonService().getPerson(patientPrograms.get(i).getPatient().getPersonId()));
+		}
+		return personsInPrograms.toArray(new Patient[personsInPrograms.size()]);
+	}
+
+	private Person[] getAllPersonsWithOrders() {
+		List<Person> allPersonsWithOrders = new ArrayList<Person>();
+		List<Order> allOrders = getSessionFactory().getCurrentSession().createCriteria(Order.class).list();
+		List<Provider> allProviders = Context.getProviderService().getAllProviders();
+		List<User> allUsers = getSessionFactory().getCurrentSession().createCriteria(User.class).list();
+
+		for (int i = 0; i < allOrders.size(); i++) {
+			Order o = allOrders.get(i);
+
+			if (o != null && o.getOrderer() instanceof User) {
+				for (int j = 0; j < allUsers.size(); j++) {
+					User u = allUsers.get(j);
+
+					if (u != null && o.getOrderId().equals(u.getUserId())) {
+						Person person = Context.getPersonService().getPerson(u.getUserId());
+
+						if (person != null)
+							allPersonsWithOrders.add(person);
+					}
+				}
+			} else if (o != null && o.getOrderer().getClass().equals(Provider.class)) {
+				for (int j = 0; j < allProviders.size(); j++) {
+					Provider p = allProviders.get(j);
+
+					if (p != null && o.getOrderId().equals(p.getProviderId())) {
+						Person person = Context.getPersonService().getPerson(p.getProviderId());
+
+						if (person != null)
+							allPersonsWithOrders.add(person);
+					}
+				}
+			}
+		}
+
+		return allPersonsWithOrders.toArray(new Person[allPersonsWithOrders.size()]);
+	}
+
+	@SuppressWarnings({ "unchecked", "unused" })
+	private Object[] getAllOrderers() {
+		List<Provider> allProviders = Context.getProviderService().getAllProviders();
+		List<Order> allOrders = getSessionFactory().getCurrentSession().createCriteria(Order.class).list();
+		List<User> allUsers = getSessionFactory().getCurrentSession().createCriteria(User.class).list();
+		List<Object> orderers = new ArrayList<Object>();
+
+		for (int i = 0; i < allOrders.size(); i++) {
+			Order o = allOrders.get(i);
+
+			if (o != null && o.getOrderer() instanceof User) {
+				for (int j = 0; j < allUsers.size(); j++) {
+					User u = allUsers.get(j);
+
+					if (u != null && o.getOrderId().equals(u.getUserId())) {
+						orderers.add(u);
+					}
+				}
+			} else if (o != null && o.getOrderer().getClass().equals(Provider.class)) {
+				for (int j = 0; j < allProviders.size(); j++) {
+					Provider p = allProviders.get(j);
+
+					if (p != null && o.getOrderId().equals(p.getProviderId())) {
+						orderers.add(p);
+					}
+				}
+			}
+		}
+		return orderers.toArray(new Object[orderers.size()]);
 	}
 
 	@Override
 	public Integer getTotalViralLoadTestsEver() {
-		return getSessionFactory().getCurrentSession().createCriteria(Obs.class).add(Restrictions.eq("voided", false))
-				.add(Restrictions.eq("concept", getViralLoadsConcept()))
-				.add(Restrictions.in("person", getAllPersonsWhoArePatients())).list().size();
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Obs.class)
+				.add(Restrictions.eq("voided", false)).add(Restrictions.eq("concept", getViralLoadsConcept()))
+				.add(Restrictions.in("person", getAllPersonsWhoArePatients()));
+
+		System.out.println("SQL:::::::::::::: " + toSql(criteria) + " ::::::::::::::LQS");
+
+		return criteria.list().size();
+	}
+
+	@Override
+	public Integer unitTestingTheseMetrics() {
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Obs.class)
+				.add(Restrictions.eq("voided", false))
+				.add(Restrictions.eq("concept", Context.getConceptService().getConcept(5089)))
+				.add(Restrictions.in("person", getAllPersonsWhoArePatients()));
+
+		System.out.println("Total Encounters, Visits, Patients, Obs, Forms, Orders, Providers, Concepts: "
+				+ rwandaPIHEMTGetTotalEncounters() + ", " + getTotalObservations(false) + ", " + getTotalVisits(false)
+				+ ", " + getTotalVisits(false) + ", " + getTotalForms(false) + ", " + getTotalOrders(false) + ", "
+				+ getTotalProviders(false) + ", " + getTotalConcepts(false));
+		System.out.println("Matched persons length: " + getAllPersonsWhoArePatients().length);
+
+		System.out.println("rwandaPIHEMTGetTotalActivePatients: " + rwandaPIHEMTGetTotalActivePatients());
+
+		System.out.println("SQL:::::::::::::: " + toSql(criteria) + " ::::::::::::::LQS");
+
+		System.out.println("rwandaPIHEMTGetTotalActivePatients: " + rwandaPIHEMTGetTotalActivePatients());
+		System.out.println("getAllPersonsEnrolledIntoPrograms: " + getAllPersonsEnrolledIntoPrograms().length);
+		System.out.println("getAllPersonsWithOrders: " + getAllPersonsWithOrders().length);
+		System.out.println("mergeGetAllPersonsEnrolledIntoProgramsAndGetAllPersonsWithOrders: "
+				+ mergeGetAllPersonsEnrolledIntoProgramsAndGetAllPersonsWithOrders().length);
+
+		for (Object o : criteria.list()) {
+			Obs obs = (Obs) o;
+			System.out.println("Concept: " + obs.getConcept().getConceptId());
+			System.out.println("Person: " + obs.getPerson().getPersonId());
+		}
+
+		return criteria.list().size();
+	}
+
+	private String toSql(Criteria criteria) {
+		try {
+			CriteriaImpl c = (CriteriaImpl) criteria;
+			SessionImpl s = (SessionImpl) c.getSession();
+			SessionFactoryImplementor factory = (SessionFactoryImplementor) s.getSessionFactory();
+			String[] implementors = factory.getImplementors(c.getEntityOrClassName());
+			CriteriaLoader loader = new CriteriaLoader((OuterJoinLoadable) factory.getEntityPersister(implementors[0]),
+					factory, c, implementors[0], s.getLoadQueryInfluencers());
+			Field f = OuterJoinLoader.class.getDeclaredField("sql");
+			f.setAccessible(true);
+			return (String) f.get(loader);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public Integer getTotalViralLoadTestsLastSixMonths() {
 		return getSessionFactory().getCurrentSession().createCriteria(Obs.class).add(Restrictions.eq("voided", false))
 				.add(Restrictions.eq("concept", getViralLoadsConcept()))
-				.add(Restrictions.in("person", patientService.getAllPatients()))
+				.add(Restrictions.in("person", getAllPersonsWhoArePatients()))
 				.add(Restrictions.ge("obsDatetime", getOneHalfYearBackDate())).list().size();
 	}
 
@@ -807,30 +989,66 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	public Integer getTotalViralLoadTestsLastYear() {
 		return getSessionFactory().getCurrentSession().createCriteria(Obs.class).add(Restrictions.eq("voided", false))
 				.add(Restrictions.eq("concept", getViralLoadsConcept()))
-				.add(Restrictions.in("person", patientService.getAllPatients()))
+				.add(Restrictions.in("person", getAllPersonsWhoArePatients()))
 				.add(Restrictions.ge("obsDatetime", getOneYearBackDate())).list().size();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalVisits() {
-		return null;/*
-					 * getSessionFactory().getCurrentSession().createCriteria(
-					 * Encounter.class) .add(Restrictions.in("encounterType",
-					 * new Integer[] { 2, 4 })).list().size();
-					 */
+		return getSessionFactory().getCurrentSession()
+				.createCriteria(
+						Encounter.class)
+				.add(Restrictions.in("encounterType",
+						new EncounterType[] { Context.getEncounterService().getEncounterType(2),
+								Context.getEncounterService().getEncounterType(4) }))
+				.list().size();
+
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalActivePatients() {
+		// TODO person merge should be intersect instead
 		/*
-		 * String sql =
-		 * "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id = 1811 and program_id = 2 and ord.concept_id in (select distinct concept_id from concept_set where concept_set = 1085);"
-		 * ;
-		 * 
 		 * return
-		 * getSessionFactory().getCurrentSession().createQuery(sql).list().size(
-		 * );
+		 * getSessionFactory().getCurrentSession().createCriteria(Obs.class)
+		 * .add(Restrictions.eq("concept", getReasonForExitingCareConcept()))
+		 * .add(Restrictions.in("person",
+		 * mergeGetAllPersonsEnrolledIntoProgramsAndGetAllPersonsWithOrders()))
+		 * .list().size()
 		 */return null;
+	}
+
+	private Person[] mergeGetAllPersonsEnrolledIntoProgramsAndGetAllPersonsWithOrders() {
+		List<Person> persons = new ArrayList<Person>();
+
+		for (int i = 0; i < getAllPersonsEnrolledIntoPrograms().length; i++) {
+			Person p1 = getAllPersonsEnrolledIntoPrograms()[i];
+
+			if (p1 != null)
+				persons.add(p1);
+		}
+		for (int j = 0; j < getAllPersonsWithOrders().length; j++) {
+			Person p2 = getAllPersonsWithOrders()[j];
+
+			if (p2 != null && !personListContains(persons, p2)) {
+				persons.add(p2);
+			}
+		}
+
+		return persons.toArray(new Person[persons.size()]);
+	}
+
+	private boolean personListContains(List<Person> list, Person person) {
+		boolean contains = false;
+
+		for (Person p : list) {
+			if (p.getPersonId().equals(person.getPersonId())) {
+				contains = true;
+				break;
+			}
+		}
+
+		return contains;
 	}
 
 	@Override

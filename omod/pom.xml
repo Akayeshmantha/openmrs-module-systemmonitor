@@ -44,6 +44,7 @@
 				
 	</dependencies>
 
+	
 	<build>
 		<finalName>${project.parent.artifactId}-${project.parent.version}</finalName>
 		<resources>
@@ -169,6 +170,7 @@
 				</executions>
 			</plugin>
 		</plugins>
+
 	</build>
 
 </project>

@@ -20,6 +20,7 @@ import java.util.Date;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
@@ -611,22 +612,27 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	@Override
-	public JSONObject getInstalledModules() {
-		String installedModules = "{\"modules\":[";
-		int size = SystemMonitorConstants.LOADED_MODULES.size();
+	public JSONArray getInstalledModules() {
+		JSONArray modulesArray = new JSONArray();
 
 		for (Module module : SystemMonitorConstants.LOADED_MODULES) {
 			if (module != null) {
-				installedModules += "{\"id\": \"" + module.getModuleId() + "\", \"name\": \"" + module.getName()
-						+ "\", \"author\": \"" + module.getAuthor() + "\"}";
+				JSONObject moduleJSON = new JSONObject();
 
-				if (--size != 0) {// not Last Item
-					installedModules += ", ";
-				}
+				moduleJSON.put("id", module.getModuleId());
+				moduleJSON.put("name", module.getName());
+				moduleJSON.put("author", module.getAuthor());
+				moduleJSON.put("description", module.getDescription());
+
+				modulesArray.put(moduleJSON);
 			}
 		}
-		installedModules += "]}";
+		
+		return modulesArray;
+	}
 
-		return new JSONObject(installedModules);
+	@Override
+	public Integer unitTestingTheseMetrics() {
+		return dao.unitTestingTheseMetrics();
 	}
 }
