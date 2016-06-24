@@ -14,12 +14,12 @@
 package org.openmrs.module.systemmonitor.api.db.hibernate;
 
 import java.lang.reflect.Field;
-import java.text.ParseException;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,7 +34,6 @@ import org.hibernate.loader.criteria.CriteriaLoader;
 import org.hibernate.persister.entity.OuterJoinLoadable;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
-import org.openmrs.EncounterType;
 import org.openmrs.Form;
 import org.openmrs.Location;
 import org.openmrs.Obs;
@@ -57,7 +56,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	private SessionFactory sessionFactory;
 
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	/**
 	 * @param sessionFactory
@@ -82,6 +81,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return viralLoadConceptId != null ? Context.getConceptService().getConcept(viralLoadConceptId) : null;
 	}
 
+	@SuppressWarnings("unused")
 	private Concept getReasonForExitingCareConcept() {
 		String exitCareConcept = Context.getAdministrationService()
 				.getGlobalProperty(ConfigurableGlobalProperties.CAREEXITREASON_CONCEPTID);
@@ -91,26 +91,22 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	@Override
-	public Date getToday() {
+	public String getToday() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 
 		resetDateTimes(calendar);
-		try {
-			return sdf.parse(sdf.format(calendar.getTime()));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return null;
+
+		return sdf.format(calendar.getTime());
 	}
 
 	@Override
-	public Date getThisWeekStartDate() {
+	public String getThisWeekStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 
 		resetDateTimes(calendar);
 		// get start of this week in milliseconds
 		calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
-		return calendar.getTime();
+		return sdf.format(calendar.getTime());
 	}
 
 	private void resetDateTimes(Calendar calendar) {
@@ -122,7 +118,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	@Override
-	public Date getThisWeekEndDate() {
+	public String getThisWeekEndDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 		resetDateTimes(calendar);
 		Calendar first = (Calendar) calendar.clone();
@@ -131,11 +127,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		Calendar last = (Calendar) first.clone();
 		last.add(Calendar.DAY_OF_YEAR, 6);
 
-		return last.getTime();
+		return sdf.format(last.getTime());
 	}
 
 	@Override
-	public Date getLastWeekStartDate() {
+	public String getLastWeekStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 		resetDateTimes(calendar);
 		calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) - 1);
@@ -147,11 +143,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 		// get start of this week in milliseconds
 		calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
-		return calendar.getTime();
+		return sdf.format(calendar.getTime());
 	}
 
 	@Override
-	public Date getLastWeekEndDate() {
+	public String getLastWeekEndDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 		resetDateTimes(calendar);
 		Calendar first = (Calendar) calendar.clone();
@@ -161,83 +157,99 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		Calendar last = (Calendar) first.clone();
 		last.add(Calendar.DAY_OF_YEAR, 6);
 
-		return last.getTime();
+		return sdf.format(last.getTime());
 	}
 
 	@Override
-	public Date getThisMonthStartDate() {
+	public String getThisMonthStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 		resetDateTimes(calendar);
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 
-		return calendar.getTime();
+		return sdf.format(calendar.getTime());
 	}
 
 	@Override
-	public Date getThisMonthEndDate() {
+	public String getThisMonthEndDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 		resetDateTimes(calendar);
 		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-		return calendar.getTime();
+		return sdf.format(calendar.getTime());
 	}
 
 	@Override
-	public Date getLastMonthStartDate() {
+	public String getLastMonthStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 		resetDateTimes(calendar);
 		calendar.add(Calendar.MONTH, -1);
 		// set DATE to 1, so first date of previous month
 		calendar.set(Calendar.DATE, 1);
-		return calendar.getTime();
+		return sdf.format(calendar.getTime());
 	}
 
 	@Override
-	public Date getLastMonthEndDate() {
+	public String getLastMonthEndDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 		resetDateTimes(calendar);
 		calendar.add(Calendar.MONTH, -1);
 		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-		return calendar.getTime();
+		return sdf.format(calendar.getTime());
 	}
 
 	@Override
-	public Date getThisYearStartDate() {
+	public String getThisYearStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 		resetDateTimes(calendar);
 		calendar.set(Calendar.DAY_OF_YEAR, 1);
 
-		return calendar.getTime();
+		return sdf.format(calendar.getTime());
 	}
 
 	@Override
-	public Date getThisYearEndDate() {
+	public String getThisYearEndDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 		resetDateTimes(calendar);
 		calendar.set(Calendar.DAY_OF_YEAR, isLeapYear(calendar.get(Calendar.YEAR)) ? 366 : 365);
 
-		return calendar.getTime();
+		return sdf.format(calendar.getTime());
 	}
 
 	@Override
-	public Date getLastYearStartDate() {
+	public String getLastYearStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 		resetDateTimes(calendar);
 		calendar.add(Calendar.YEAR, -1);
 		calendar.set(Calendar.DAY_OF_YEAR, 1);
 
-		return calendar.getTime();
+		return sdf.format(calendar.getTime());
 	}
 
 	@Override
-	public Date getLastYearEndDate() {
+	public String getLastYearEndDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 		resetDateTimes(calendar);
 		calendar.add(Calendar.YEAR, -1);
 		calendar.set(Calendar.DAY_OF_YEAR, isLeapYear(calendar.get(Calendar.YEAR)) ? 366 : 365);
 
-		return calendar.getTime();
+		return sdf.format(calendar.getTime());
+	}
+
+	@Override
+	public String getOneHalfYearBackDate() {
+		Calendar prevHalfYear = Calendar.getInstance();
+		prevHalfYear.add(Calendar.MONTH, -6);
+
+		return sdf.format(prevHalfYear.getTime());
+	}
+
+	@Override
+	public String getOneYearBackDate() {
+		Calendar prevYear = Calendar.getInstance();
+		prevYear.add(Calendar.YEAR, -1);
+
+		return sdf.format(prevYear.getTime());
 	}
 
 	private boolean isLeapYear(int year) {
@@ -648,7 +660,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Provider.class);
 	}
 
-	private String getObjectTableNameFromClass(Class clazz) {
+	private String getObjectTableNameFromClass(@SuppressWarnings("rawtypes") Class clazz) {
 		String tableName = "";
 
 		if (clazz.equals(Provider.class)) {
@@ -678,35 +690,39 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	private Integer fetchTotalOpenMRSObjectCountToday(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
-		String sql = "";
+		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and (date_changed >= '" + getToday()
+				+ "' or date_created >= '" + getToday() + "')";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
 
-		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired)).add(Restrictions
-						.or(Restrictions.ge("dateChanged", getToday()), Restrictions.ge("dateCreated", getToday())))
-				.list().size();
+		return count;
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountThisWeek(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
+				+ getThisWeekStartDate() + "' and '" + getThisWeekEndDate() + "') or (date_created between '"
+				+ getThisWeekStartDate() + "' and '" + getThisWeekEndDate() + "'))";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
 
-		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
-				.add(Restrictions.or(Restrictions.between("dateChanged", getThisWeekStartDate(), getThisWeekEndDate()),
-						Restrictions.between("dateCreated", getThisWeekStartDate(), getThisWeekEndDate())))
-				.list().size();
+		return count;
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountThisMonth(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
+				+ getThisMonthStartDate() + "' and '" + getThisMonthEndDate() + "') or (date_created between '"
+				+ getThisMonthStartDate() + "' and '" + getThisMonthEndDate() + "'))";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
 
-		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
-				.add(Restrictions.or(
-						Restrictions.between("dateChanged", getThisMonthStartDate(), getThisMonthEndDate()),
-						Restrictions.between("dateCreated", getThisMonthStartDate(), getThisMonthEndDate())))
-				.list().size();
+		return count;
 	}
 
 	private String isPropertyCalledRetiredOrVoided(@SuppressWarnings("rawtypes") Class clazz) {
@@ -723,35 +739,40 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	private Integer fetchTotalOpenMRSObjectCountThisYear(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
+				+ getThisYearStartDate() + "' and '" + getThisYearEndDate() + "') or (date_created between '"
+				+ getThisYearStartDate() + "' and '" + getThisYearEndDate() + "'))";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
 
-		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
-				.add(Restrictions.or(Restrictions.between("dateChanged", getThisYearStartDate(), getThisYearEndDate()),
-						Restrictions.between("dateCreated", getThisYearStartDate(), getThisYearEndDate())))
-				.list().size();
+		return count;
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountLastWeek(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
+				+ getLastWeekStartDate() + "' and '" + getLastWeekEndDate() + "') or (date_created between '"
+				+ getLastWeekStartDate() + "' and '" + getLastWeekEndDate() + "'))";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
 
-		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
-				.add(Restrictions.or(Restrictions.between("dateChanged", getLastWeekStartDate(), getLastWeekEndDate()),
-						Restrictions.between("dateCreated", getLastWeekStartDate(), getLastWeekEndDate())))
-				.list().size();
+		return count;
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountLastMonth(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
+				+ getLastMonthStartDate() + "' and '" + getLastMonthEndDate() + "') or (date_created between '"
+				+ getLastMonthStartDate() + "' and '" + getLastMonthEndDate() + "'))";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
 
-		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
-				.add(Restrictions.or(
-						Restrictions.between("dateChanged", getLastMonthStartDate(), getLastMonthEndDate()),
-						Restrictions.between("dateCreated", getLastMonthStartDate(), getLastMonthEndDate())))
-				.list().size();
+		return count;
 	}
 
 	private Integer fetchTotalOpenMRSObject(Boolean includeRetired, @SuppressWarnings("rawtypes") Class clazz) {
@@ -764,28 +785,14 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	private Integer fetchTotalOpenMRSObjectCountLastYear(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
+				+ getLastYearStartDate() + "' and '" + getLastYearEndDate() + "') or (date_created between '"
+				+ getLastYearStartDate() + "' and '" + getLastYearEndDate() + "'))";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
 
-		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired))
-				.add(Restrictions.or(Restrictions.between("dateChanged", getLastYearStartDate(), getLastYearEndDate()),
-						Restrictions.between("dateCreated", getLastYearStartDate(), getLastYearEndDate())))
-				.list().size();
-	}
-
-	@Override
-	public Date getOneHalfYearBackDate() {
-		Calendar prevHalfYear = Calendar.getInstance();
-		prevHalfYear.add(Calendar.MONTH, -6);
-
-		return prevHalfYear.getTime();
-	}
-
-	@Override
-	public Date getOneYearBackDate() {
-		Calendar prevYear = Calendar.getInstance();
-		prevYear.add(Calendar.YEAR, -1);
-
-		return prevYear.getTime();
+		return count;
 	}
 
 	@Override
@@ -825,7 +832,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return persons.toArray(new Person[persons.size()]);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	private Patient[] getAllPatientEnrolledIntoPrograms() {
 		List<Patient> patientsInPrograms = new ArrayList<Patient>();
 		List<PatientProgram> patientPrograms = getSessionFactory().getCurrentSession()
@@ -850,6 +857,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return personsInPrograms.toArray(new Patient[personsInPrograms.size()]);
 	}
 
+	@SuppressWarnings("unchecked")
 	private Person[] getAllPersonsWithOrders() {
 		List<Person> allPersonsWithOrders = new ArrayList<Person>();
 		List<Order> allOrders = getSessionFactory().getCurrentSession().createCriteria(Order.class).list();
@@ -920,13 +928,17 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer getTotalViralLoadTestsEver() {
-		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Obs.class)
-				.add(Restrictions.eq("voided", false)).add(Restrictions.eq("concept", getViralLoadsConcept()))
-				.add(Restrictions.in("person", getAllPersonsWhoArePatients()));
+		String sql;
+		Integer count = 0;
 
-		System.out.println("SQL:::::::::::::: " + toSql(criteria) + " ::::::::::::::LQS");
-
-		return criteria.list().size();
+		if (getViralLoadsConcept() != null) {
+			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
+					+ " where voided=false and concept_id = " + getViralLoadsConcept().getConceptId()
+					+ " and person in(select distinct patient_id from patient)";
+			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+					.intValue();
+		}
+		return count;
 	}
 
 	@Override
@@ -979,43 +991,50 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer getTotalViralLoadTestsLastSixMonths() {
-		return getSessionFactory().getCurrentSession().createCriteria(Obs.class).add(Restrictions.eq("voided", false))
-				.add(Restrictions.eq("concept", getViralLoadsConcept()))
-				.add(Restrictions.in("person", getAllPersonsWhoArePatients()))
-				.add(Restrictions.ge("obsDatetime", getOneHalfYearBackDate())).list().size();
+		String sql;
+		Integer count = 0;
+
+		if (getViralLoadsConcept() != null) {
+			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
+					+ " where voided=false and concept_id = " + getViralLoadsConcept().getConceptId()
+					+ " and person in(select distinct patient_id from patient) and obs_datetime > DATE_SUB(now(), INTERVAL 6 MONTH)";
+			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+					.intValue();
+		}
+		return count;
 	}
 
 	@Override
 	public Integer getTotalViralLoadTestsLastYear() {
-		return getSessionFactory().getCurrentSession().createCriteria(Obs.class).add(Restrictions.eq("voided", false))
-				.add(Restrictions.eq("concept", getViralLoadsConcept()))
-				.add(Restrictions.in("person", getAllPersonsWhoArePatients()))
-				.add(Restrictions.ge("obsDatetime", getOneYearBackDate())).list().size();
+		String sql;
+		Integer count = 0;
+
+		if (getViralLoadsConcept() != null) {
+			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
+					+ " where voided=false and concept_id = " + getViralLoadsConcept().getConceptId()
+					+ " and person in(select distinct patient_id from patient) and obs_datetime > DATE_SUB(now(), INTERVAL 12 MONTH)";
+			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+					.intValue();
+		}
+		return count;
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalVisits() {
-		return getSessionFactory().getCurrentSession()
-				.createCriteria(
-						Encounter.class)
-				.add(Restrictions.in("encounterType",
-						new EncounterType[] { Context.getEncounterService().getEncounterType(2),
-								Context.getEncounterService().getEncounterType(4) }))
-				.list().size();
+		String sql = "select count(*) from encounter where encounter_type in (2,4)";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
 
+		return count;
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalActivePatients() {
-		// TODO person merge should be intersect instead
-		/*
-		 * return
-		 * getSessionFactory().getCurrentSession().createCriteria(Obs.class)
-		 * .add(Restrictions.eq("concept", getReasonForExitingCareConcept()))
-		 * .add(Restrictions.in("person",
-		 * mergeGetAllPersonsEnrolledIntoProgramsAndGetAllPersonsWithOrders()))
-		 * .list().size()
-		 */return null;
+		String sql = "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id = 1811 and program_id = 2 and ord.concept_id in (select distinct concept_id from concept_set where concept_set = 1085)";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
+
+		return count;
 	}
 
 	private Person[] mergeGetAllPersonsEnrolledIntoProgramsAndGetAllPersonsWithOrders() {
@@ -1053,13 +1072,10 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalNewPatients() {
-		/*
-		 * String sql =
-		 * "select count(*) from encounter where encounter_type in (1,3)";
-		 * 
-		 * return
-		 * getSessionFactory().getCurrentSession().createQuery(sql).list().size(
-		 * );
-		 */return null;
+		String sql = "select count(*) from encounter where encounter_type in (1,3)";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
+
+		return count;
 	}
 }

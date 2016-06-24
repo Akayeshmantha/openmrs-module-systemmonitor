@@ -141,6 +141,8 @@ public class DHISGenerateDataValueSetSchemas {
 
 		String tempDirectory = SystemPropertiesIndicators.TEMP_FOLDER;
 
+		System.out.println("OSAndHardwareIndicators.getIpAddress())" + OSAndHardwareIndicators.getIpAddress());
+
 		JSONObject serverRealLocation = CurlEmulator
 				.get(SystemMonitorConstants.IP_INFO_URL + OSAndHardwareIndicators.getIpAddress());
 
@@ -155,7 +157,7 @@ public class DHISGenerateDataValueSetSchemas {
 		Integer totalPatientNew = systemMonitorService.rwandaPIHEMTGetTotalNewPatients();
 
 		Integer totalVisits = systemMonitorService.rwandaPIHEMTGetTotalVisits();
-		
+
 		Integer viralLoadTestResultsEver = systemMonitorService.getTotalViralLoadTestsEver();
 
 		Integer viralLoadTestResultsLastSixMonths = systemMonitorService.getTotalViralLoadTestsLastSixMonths();

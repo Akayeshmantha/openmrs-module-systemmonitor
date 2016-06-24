@@ -15,6 +15,7 @@ package org.openmrs.module.systemmonitor.api;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
@@ -30,7 +31,9 @@ import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleConstants;
 import org.openmrs.module.ModuleUtil;
+import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 import org.openmrs.module.systemmonitor.distributions.RwandaSPHStudyEMT;
+import org.openmrs.module.systemmonitor.indicators.OSAndHardwareIndicators;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 import junit.framework.Assert;
@@ -114,6 +117,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void test_totalOpenMRSObjectsCountingOrIndicators() {
 		Assert.assertEquals(Integer.valueOf(0), systemMonitorService.getTotalEncountersToday(false));
+		Assert.assertEquals(Integer.valueOf(0), systemMonitorService.getTotalEncountersThisWeek(false));
 		Assert.assertEquals(Integer.valueOf(0), systemMonitorService.getTotalEncountersThisMonth(false));
 
 		Encounter savedEnc = encounterService.saveEncounter(buildEncounter(null, null));
@@ -185,28 +189,14 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 		System.out.println("DHIS Generated ValueSet :\n" + emt.generatedDHISDataValueSetJSONString().toString());
 		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 	}
+
+	@Test
+	public void test_hibernateCriteriaRestrictions() throws IOException {
+		System.out.println("Total Count: " + systemMonitorService.unitTestingTheseMetrics());
+	}
 	
 	@Test
-	public void test_hibernateCriteriaRestrictions() {
-		System.out.println("Total Count: " + systemMonitorService.unitTestingTheseMetrics());
-
-		Integer encounterTotal = systemMonitorService.rwandaPIHEMTGetTotalEncounters();
-
-		Integer obsTotal = systemMonitorService.rwandaPIHEMTGetTotalObservations();
-
-		Integer totalUsers = systemMonitorService.rwandaPIHEMTGetTotalUsers();
-
-		Integer totalPatientActive = systemMonitorService.rwandaPIHEMTGetTotalActivePatients();
-
-		Integer totalPatientNew = systemMonitorService.rwandaPIHEMTGetTotalNewPatients();
-
-		Integer totalVisits = systemMonitorService.rwandaPIHEMTGetTotalVisits();
-		
-		Integer viralLoadTestResultsEver = systemMonitorService.getTotalViralLoadTestsEver();
-
-		Integer viralLoadTestResultsLastSixMonths = systemMonitorService.getTotalViralLoadTestsLastSixMonths();
-
-		Integer viralLoadTestResultsLastYear = systemMonitorService.getTotalViralLoadTestsLastYear();
-
+	public void testGetIp() {
+		System.out.println("IP ADDR: " + OSAndHardwareIndicators.getIpAddress());
 	}
 }

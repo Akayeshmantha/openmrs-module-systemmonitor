@@ -1,8 +1,10 @@
 package org.openmrs.module.systemmonitor.indicators;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.openmrs.module.systemmonitor.SystemMonitorConstants;
 import org.openmrs.module.systemmonitor.curl.CurlEmulator;
@@ -96,8 +98,14 @@ public class OSAndHardwareIndicators {
 
 	public static String getIpAddress() {
 		try {
-			return InetAddress.getLocalHost().getHostAddress();
+			String publicIp = new CurlEmulator().sendNormalHtmlGET("http://ipinfo.io/ip");
+			String finalIP = StringUtils.isNotBlank(publicIp) && publicIp.split("\\.").length == 4 ? publicIp
+					: InetAddress.getLocalHost().getHostAddress();
+
+			return finalIP;
 		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;

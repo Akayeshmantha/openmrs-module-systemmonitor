@@ -23,31 +23,31 @@ import org.openmrs.module.systemmonitor.api.SystemMonitorService;
  */
 public interface SystemMonitorDAO {
 
-	Date getThisWeekEndDate();
+	String getThisWeekEndDate();
 
-	Date getThisWeekStartDate();
+	String getThisWeekStartDate();
 
-	Date getToday();
+	String getToday();
 
-	Date getLastWeekStartDate();
+	String getLastWeekStartDate();
 
-	Date getLastYearEndDate();
+	String getLastYearEndDate();
 
-	Date getLastYearStartDate();
+	String getLastYearStartDate();
 
-	Date getThisYearEndDate();
+	String getThisYearEndDate();
 
-	Date getThisYearStartDate();
+	String getThisYearStartDate();
 
-	Date getLastMonthEndDate();
+	String getLastMonthEndDate();
 
-	Date getLastMonthStartDate();
+	String getLastMonthStartDate();
 
-	Date getThisMonthEndDate();
+	String getThisMonthEndDate();
 
-	Date getThisMonthStartDate();
+	String getThisMonthStartDate();
 
-	Date getLastWeekEndDate();
+	String getLastWeekEndDate();
 
 	Integer getTotalPatientsToday(Boolean includeRetired);
 
@@ -225,13 +225,13 @@ public interface SystemMonitorDAO {
 
 	Integer rwandaPIHEMTGetTotalObservations();
 
-	Date getOneYearBackDate();
+	String getOneYearBackDate();
 
 	Integer rwandaPIHEMTGetTotalUsers();
 
 	Person[] getAllPersonsWhoArePatients();
 
-	Date getOneHalfYearBackDate();
+	String getOneHalfYearBackDate();
 
 	Integer unitTestingTheseMetrics();
 }

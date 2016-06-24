@@ -56,67 +56,67 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	@Override
-	public Date getThisWeekEndDate() {
+	public String getThisWeekEndDate() {
 		return dao.getThisWeekEndDate();
 	}
 
 	@Override
-	public Date getThisWeekStartDate() {
+	public String getThisWeekStartDate() {
 		return dao.getThisWeekStartDate();
 	}
 
 	@Override
-	public Date getToday() {
+	public String getToday() {
 		return dao.getToday();
 	}
 
 	@Override
-	public Date getLastWeekStartDate() {
+	public String getLastWeekStartDate() {
 		return dao.getLastWeekStartDate();
 	}
 
 	@Override
-	public Date getLastYearEndDate() {
+	public String getLastYearEndDate() {
 		return dao.getLastYearEndDate();
 	}
 
 	@Override
-	public Date getLastYearStartDate() {
+	public String getLastYearStartDate() {
 		return dao.getLastYearStartDate();
 	}
 
 	@Override
-	public Date getThisYearEndDate() {
+	public String getThisYearEndDate() {
 		return dao.getThisYearEndDate();
 	}
 
 	@Override
-	public Date getThisYearStartDate() {
+	public String getThisYearStartDate() {
 		return dao.getThisYearStartDate();
 	}
 
 	@Override
-	public Date getLastMonthEndDate() {
+	public String getLastMonthEndDate() {
 		return dao.getLastMonthEndDate();
 	}
 
 	@Override
-	public Date getLastMonthStartDate() {
+	public String getLastMonthStartDate() {
 		return dao.getLastMonthStartDate();
 	}
 
 	@Override
-	public Date getThisMonthEndDate() {
+	public String getThisMonthEndDate() {
 		return dao.getThisMonthEndDate();
 	}
 
 	@Override
-	public Date getThisMonthStartDate() {
+	public String getThisMonthStartDate() {
 		return dao.getThisMonthStartDate();
 	}
 
 	@Override
-	public Date getLastWeekEndDate() {
+	public String getLastWeekEndDate() {
 		return dao.getLastWeekEndDate();
 	}
 
@@ -561,7 +561,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	@Override
-	public Date getOneYearBackDate() {
+	public String getOneYearBackDate() {
 		return dao.getOneYearBackDate();
 	}
 
@@ -576,7 +576,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	@Override
-	public Date getOneHalfYearBackDate() {
+	public String getOneHalfYearBackDate() {
 		return dao.getOneHalfYearBackDate();
 	}
 
