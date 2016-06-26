@@ -581,16 +581,19 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	@Override
-	public void transferMappingsFileToDataDirectory() {
+	public void transferDHISMappingsAndMetadataFileToDataDirectory() {
 		if (!SystemMonitorConstants.SYSTEMMONITOR_DIRECTORY.exists()) {
 			SystemMonitorConstants.SYSTEMMONITOR_DIRECTORY.mkdirs();
 		}
 
 		File mappingsFile = new File(getClass().getClassLoader()
 				.getResource(SystemMonitorConstants.SYSTEMMONITOR_MAPPING_FILENAME).getFile());
-
+		File dataElementsFile = new File(getClass().getClassLoader()
+				.getResource(SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILENAME).getFile());
+		
 		try {
 			FileUtils.copyFile(mappingsFile, SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE);
+			FileUtils.copyFile(dataElementsFile, SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -621,6 +624,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 
 				moduleJSON.put("id", module.getModuleId());
 				moduleJSON.put("name", module.getName());
+				moduleJSON.put("version", module.getVersion());
 				moduleJSON.put("author", module.getAuthor());
 				moduleJSON.put("description", module.getDescription());
 

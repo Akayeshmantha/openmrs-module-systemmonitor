@@ -60,7 +60,7 @@
 <div id="renderDHISDataValueSets"></div>
 
 <script type="text/javascript">
-	var jsonData = ${data};
+	var jsonData = ${data.allData};
 
 	document.getElementById("renderDHISDataValueSets").appendChild(
 			renderjson(jsonData));

@@ -15,28 +15,42 @@ package org.openmrs.module.systemmonitor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.module.Activator;
-import org.openmrs.module.BaseModuleActivator;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.ModuleActivator;
+import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 
 /**
  * This class contains the logic that is run every time this module is either
  * started or stopped.
  */
-public class SystemMonitorActivator extends BaseModuleActivator {
+public class SystemMonitorActivator implements ModuleActivator {
 
 	protected Log log = LogFactory.getLog(getClass());
 
-	/**
-	 * @see Activator#startup()
-	 */
-	public void startup() {
+	@Override
+	public void contextRefreshed() {
+	}
+
+	@Override
+	public void started() {
+		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
+	}
+
+	@Override
+	public void stopped() {
+	}
+
+	@Override
+	public void willRefreshContext() {
+	}
+
+	@Override
+	public void willStart() {
 		log.info("Starting System Monitor Module");
 	}
 
-	/**
-	 * @see Activator#shutdown()
-	 */
-	public void shutdown() {
+	@Override
+	public void willStop() {
 		log.info("Shutting down System Monitor Module");
 	}
 }

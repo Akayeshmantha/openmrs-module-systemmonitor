@@ -24,7 +24,7 @@ public class DHISGenerateDataValueSetSchemas {
 	 * @TODO re-write this from a string-json parse approach to json itself
 	 * 
 	 * @return dataValueSets json object
-	 * @throws UnknownHostException 
+	 * @throws UnknownHostException
 	 */
 	public static JSONObject generateRwandaSPHEMTDHISDataValueSets() {
 		Calendar cal = Calendar.getInstance();
@@ -32,6 +32,9 @@ public class DHISGenerateDataValueSetSchemas {
 		SimpleDateFormat dFormat = new SimpleDateFormat("yyyyMMdd");
 		File mappingsFile = SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE;
 		JSONObject jsonObj = new JSONObject();
+		JSONObject jsonObj2 = new JSONObject();
+		JSONObject finalJSON = new JSONObject();
+		JSONArray jsonToBePushed = new JSONArray();
 		JSONArray jsonDataValueSets = new JSONArray();
 		SystemMonitorService systemMonitorService = Context.getService(SystemMonitorService.class);
 
@@ -290,6 +293,8 @@ public class DHISGenerateDataValueSetSchemas {
 
 			JSONObject systemRealLocationDataElementJSON = new JSONObject();
 			JSONObject installedModulesDataElementJSON = new JSONObject();
+			JSONObject systemRealLocationDataElementJSON2 = new JSONObject();
+			JSONObject installedModulesDataElementJSON2 = new JSONObject();
 
 			systemRealLocationDataElementJSON.put("dataElement",
 					DHISDataElementMapping.getDHISMappedObject("DATA-ELEMENT_systemRealLocation"));
@@ -299,6 +304,15 @@ public class DHISGenerateDataValueSetSchemas {
 					DHISDataElementMapping.getDHISMappedObject("DATA-ELEMENT_systemInfo_installedModules"));
 			installedModulesDataElementJSON.put("period", dFormat.format(today));
 			installedModulesDataElementJSON.put("value", systemMonitorService.getInstalledModules());
+			systemRealLocationDataElementJSON2.put("dataElement",
+					DHISDataElementMapping.getDHISMappedObject("DATA-ELEMENT_systemRealLocation"));
+			systemRealLocationDataElementJSON2.put("period", dFormat.format(today));
+			systemRealLocationDataElementJSON2.put("value", convertJSONToCleanString(serverRealLocation, null));
+			installedModulesDataElementJSON2.put("dataElement",
+					DHISDataElementMapping.getDHISMappedObject("DATA-ELEMENT_systemInfo_installedModules"));
+			installedModulesDataElementJSON2.put("period", dFormat.format(today));
+			installedModulesDataElementJSON2.put("value",
+					convertJSONToCleanString(null, systemMonitorService.getInstalledModules()));
 			jsonDataValueSets.put(new JSONObject(systemIdDataElement));
 			jsonDataValueSets.put(new JSONObject(openMRSAppNameDataElement));
 			jsonDataValueSets.put(new JSONObject(primaryClinicDaysDataElement));
@@ -339,10 +353,38 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(new JSONObject(systemInfo_openMRSVersion));
 			jsonDataValueSets.put(systemRealLocationDataElementJSON);
 			jsonDataValueSets.put(installedModulesDataElementJSON);
+			jsonToBePushed = jsonDataValueSets;
+			jsonToBePushed.put(systemRealLocationDataElementJSON2);
+			jsonToBePushed.put(installedModulesDataElementJSON2);
 			jsonObj.put("dataValues", jsonDataValueSets);
-
+			jsonObj2.put("dataValues", jsonToBePushed);
+			finalJSON.put("allData", jsonObj);
+			finalJSON.put("toBePushed", jsonObj2);
 		}
-		return jsonObj;
+		return finalJSON;
 	}
 
+	private static String convertJSONToCleanString(JSONObject locationsJson, JSONArray modulesJson) {
+		String string = null;
+
+		if (locationsJson != null && modulesJson == null) {// is Location
+			string = "Region: " + locationsJson.getString("region") + "; Hostname: "
+					+ locationsJson.getString("hostname") + "; ISP: " + locationsJson.getString("org") + "; Country: "
+					+ locationsJson.getString("country") + "; City: " + locationsJson.getString("city")
+					+ "; IP Address: " + locationsJson.getString("ip") + "; Location(Latitude,Longitude): "
+					+ locationsJson.getString("loc");
+		} else if (modulesJson != null && locationsJson == null) {// is
+																	// modules
+			string = "";
+
+			for (int i = 0; i < modulesJson.length(); i++) {
+				string += modulesJson.getJSONObject(i).getString("name") + "-"
+						+ modulesJson.getJSONObject(i).getString("version");
+				if (i != modulesJson.length() - 1) {
+					string += ", ";
+				}
+			}
+		}
+		return string;
+	}
 }

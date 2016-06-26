@@ -174,14 +174,14 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 
 	@Ignore
 	public void test_transferMappingsFileToDataDirectory() {
-		systemMonitorService.transferMappingsFileToDataDirectory();
+		systemMonitorService.transferDHISMappingsAndMetadataFileToDataDirectory();
 	}
 
 	@Test
 	public void test_generatingDHISJsonAndInstallationOfSystemMonitorModule() {
 		RwandaSPHStudyEMT emt = new RwandaSPHStudyEMT();
 
-		systemMonitorService.transferMappingsFileToDataDirectory();
+		//systemMonitorService.transferDHISMappingsAndMetadataFileToDataDirectory();
 
 		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 		System.out.println("Installed Modules: " + systemMonitorService.getInstalledModules().toString());

@@ -244,7 +244,7 @@ public interface SystemMonitorService extends OpenmrsService {
 
 	String getOneHalfYearBackDate();
 
-	void transferMappingsFileToDataDirectory();
+	void transferDHISMappingsAndMetadataFileToDataDirectory();
 
 	String getCurrentConfiguredDHISOrgUnit();
 
