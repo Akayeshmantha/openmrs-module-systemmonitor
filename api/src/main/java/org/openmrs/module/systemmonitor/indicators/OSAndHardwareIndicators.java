@@ -5,8 +5,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
-import org.openmrs.module.systemmonitor.SystemMonitorConstants;
 import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 
 import oshi.SystemInfo;
@@ -79,8 +77,6 @@ public class OSAndHardwareIndicators {
 	public static String OS_VERSION_BUILDNUMBER = version.getBuildNumber();
 
 	public static String OS_VERSION_NUMBER = version.getVersion();
-
-	public static JSONObject IP_INFO = CurlEmulator.get(SystemMonitorConstants.IP_INFO_URL + getIpAddress());
 
 	/**
 	 * Time from when System started in seconds

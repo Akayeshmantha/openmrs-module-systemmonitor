@@ -1,6 +1,7 @@
 package org.openmrs.module.systemmonitor.export;
 
 import java.io.File;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,48 +23,8 @@ public class DHISGenerateDataValueSetSchemas {
 	/**
 	 * @TODO re-write this from a string-json parse approach to json itself
 	 * 
-	 * @param systemId
-	 * @param dhisOrganizationUnitUid
-	 * @param clinicDays
-	 * @param clinicHours
-	 * @param encounterTotal
-	 * @param obsTotal
-	 * @param totalUsers
-	 * @param openmrsAPPName
-	 * @param totalPatientActive
-	 * @param totalPatientNew
-	 * @param totalVisits
-	 * @param startupCounts
-	 * @param thisWeekUptime
-	 * @param previousWeekUptime
-	 * @param previousMonthUptime
-	 * @param freeMemory
-	 * @param usedMemory
-	 * @param totalMemory
-	 * @param openmrsUptimePercentage
-	 * @param viralLoadTestResultsEver
-	 * @param viralLoadTestResultsLastSixMonths
-	 * @param viralLoadTestResultsLastYear
-	 * @param operatingSystem
-	 * @param operatingSystemArch
-	 * @param operatingSystemVersion
-	 * @param javaVersion
-	 * @param javaVendor
-	 * @param jvmVersion
-	 * @param jvmVendor
-	 * @param javaRuntimeName
-	 * @param javaRuntimeVersion
-	 * @param userName
-	 * @param systemLanguage
-	 * @param systemTimezone
-	 * @param userDirectory
-	 * @param fileSystemEncoding
-	 * @param systemDateTime
-	 * @param openmrsVersion
-	 * @param installedModules
-	 * @param tempDirectory
-	 * @param serverRealLocation
-	 * @return
+	 * @return dataValueSets json object
+	 * @throws UnknownHostException 
 	 */
 	public static JSONObject generateRwandaSPHEMTDHISDataValueSets() {
 		Calendar cal = Calendar.getInstance();
@@ -76,7 +37,8 @@ public class DHISGenerateDataValueSetSchemas {
 
 		String systemId = OSAndHardwareIndicators.getHostName();
 
-		String dhisOrganizationUnitUid = systemMonitorService.getCurrentConfiguredDHISOrgUnit();
+		String dhisOrganizationUnitUid = DHISDataElementMapping
+				.getDHISMappedObject(systemMonitorService.getCurrentConfiguredDHISOrgUnit());
 
 		String clinicDays = null;
 

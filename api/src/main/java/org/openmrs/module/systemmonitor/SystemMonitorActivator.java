@@ -15,11 +15,8 @@ package org.openmrs.module.systemmonitor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.api.context.Context;
 import org.openmrs.module.Activator;
 import org.openmrs.module.BaseModuleActivator;
-import org.openmrs.module.systemmonitor.api.SystemMonitorService;
-import org.openmrs.module.systemmonitor.distributions.RwandaSPHStudyEMT;
 
 /**
  * This class contains the logic that is run every time this module is either
@@ -33,17 +30,7 @@ public class SystemMonitorActivator extends BaseModuleActivator {
 	 * @see Activator#startup()
 	 */
 	public void startup() {
-		SystemMonitorService systemMonitorService = Context.getService(SystemMonitorService.class);
-		RwandaSPHStudyEMT emt = new RwandaSPHStudyEMT();
-
 		log.info("Starting System Monitor Module");
-
-		//systemMonitorService.transferMappingsFileToDataDirectory();
-		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
-		System.out.println("Installed Modules: " + systemMonitorService.getInstalledModules().toString());
-		System.out.println("DHIS Generated ValueSet: " +
-		emt.generatedDHISDataValueSetJSONString());
-		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 	}
 
 	/**

@@ -777,9 +777,12 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	private Integer fetchTotalOpenMRSObject(Boolean includeRetired, @SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+				+ voidedOrRetiredParameterName + "=" + includeRetired;
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
 
-		return getSessionFactory().getCurrentSession().createCriteria(clazz)
-				.add(Restrictions.eq(voidedOrRetiredParameterName, includeRetired)).list().size();
+		return count;
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountLastYear(Boolean includeRetired,
@@ -934,7 +937,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		if (getViralLoadsConcept() != null) {
 			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
 					+ " where voided=false and concept_id = " + getViralLoadsConcept().getConceptId()
-					+ " and person in(select distinct patient_id from patient)";
+					+ " and person_id in(select distinct patient_id from patient)";
 			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 					.intValue();
 		}
@@ -997,7 +1000,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		if (getViralLoadsConcept() != null) {
 			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
 					+ " where voided=false and concept_id = " + getViralLoadsConcept().getConceptId()
-					+ " and person in(select distinct patient_id from patient) and obs_datetime > DATE_SUB(now(), INTERVAL 6 MONTH)";
+					+ " and person_id in(select distinct patient_id from patient) and obs_datetime > DATE_SUB(now(), INTERVAL 6 MONTH)";
 			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 					.intValue();
 		}
@@ -1012,7 +1015,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		if (getViralLoadsConcept() != null) {
 			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
 					+ " where voided=false and concept_id = " + getViralLoadsConcept().getConceptId()
-					+ " and person in(select distinct patient_id from patient) and obs_datetime > DATE_SUB(now(), INTERVAL 12 MONTH)";
+					+ " and person_id in(select distinct patient_id from patient) and obs_datetime > DATE_SUB(now(), INTERVAL 12 MONTH)";
 			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 					.intValue();
 		}

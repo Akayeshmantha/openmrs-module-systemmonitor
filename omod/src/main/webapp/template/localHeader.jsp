@@ -5,10 +5,10 @@
 				code="admin.title.short" /></a></li>
 
 	<li
-		<c:if test='<%= request.getRequestURI().contains("/manage") %>'>class="active"</c:if>>
+		<c:if test='<%= request.getRequestURI().contains("/dhisDataValues") %>'>class="active"</c:if>>
 		<a
-		href="${pageContext.request.contextPath}/module/systemmonitor/manage.form"><spring:message
-				code="systemmonitor.manage" /></a>
+		href="${pageContext.request.contextPath}/module/systemmonitor/dhisDataValues.form"><spring:message
+				code="systemmonitor.dhisDataValues" /></a>
 	</li>
 	
 	<!-- Add further links here -->

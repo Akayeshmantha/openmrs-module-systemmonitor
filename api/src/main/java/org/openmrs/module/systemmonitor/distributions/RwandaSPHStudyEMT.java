@@ -15,6 +15,5 @@ public class RwandaSPHStudyEMT {
 
 	public JSONObject generatedDHISDataValueSetJSONString() {
 		return DHISGenerateDataValueSetSchemas.generateRwandaSPHEMTDHISDataValueSets();
-	};
-
+	}
 }

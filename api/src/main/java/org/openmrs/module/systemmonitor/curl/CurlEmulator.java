@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
@@ -32,20 +33,20 @@ public class CurlEmulator {
 	 * @return json response from the url
 	 */
 	public static JSONObject get(String urlString) {
-		try {
-			Client client = Client.create();
-			WebResource webResource = client.resource(urlString);
-			ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+		if (StringUtils.isNotBlank(urlString) && !urlString.endsWith("null")) {
+			try {
+				Client client = Client.create();
+				WebResource webResource = client.resource(urlString);
+				ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+				if (response.getStatus() != 200) {
+					throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+				}
+
+				return new JSONObject(response.getEntity(String.class));
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-
-			return new JSONObject(response.getEntity(String.class));
-		} catch (Exception e) {
-			e.printStackTrace();
-
 		}
-
 		return null;
 	}
 
@@ -61,51 +62,54 @@ public class CurlEmulator {
 	 * 
 	 * @return serverReponse, text response message from the server
 	 */
-	public static String post(String urlString, JSONObject data, String username, String password) {
+	public static String post(String urlString, JSONObject data, String username, String password)
+			throws UnknownHostException {
 		String serverResponse = null;
 
-		try {
-			Client client = Client.create();
+		if (StringUtils.isNotBlank(urlString) || !urlString.endsWith("null")) {
+			try {
+				Client client = Client.create();
 
-			if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
-				client.addFilter(new HTTPBasicAuthFilter(username, password));
+				if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
+					client.addFilter(new HTTPBasicAuthFilter(username, password));
+				}
+
+				WebResource webResource = client.resource(urlString);
+				ClientResponse response = webResource.type("application/json").post(ClientResponse.class,
+						data.toString());
+
+				if (response.getStatus() != 201) {
+					throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+				}
+
+				serverResponse = response.getEntity(String.class);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-
-			WebResource webResource = client.resource(urlString);
-			ClientResponse response = webResource.type("application/json").post(ClientResponse.class, data.toString());
-
-			if (response.getStatus() != 201) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-			}
-
-			serverResponse = response.getEntity(String.class);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return serverResponse;
 	}
 
-	public static String sendNormalHtmlGET(String url) throws IOException {
-		URL obj = new URL(url);
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-		con.setRequestMethod("GET");
-		// con.setRequestProperty("User-Agent", USER_AGENT);
-		int responseCode = con.getResponseCode();
-		if (responseCode == HttpURLConnection.HTTP_OK) { // success
-			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-			String inputLine;
-			StringBuffer response = new StringBuffer();
+	public static String sendNormalHtmlGET(String url) throws IOException, UnknownHostException {
+		if (StringUtils.isNotBlank(url) || !url.endsWith("null")) {
+			URL obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+			con.setRequestMethod("GET");
+			// con.setRequestProperty("User-Agent", USER_AGENT);
+			int responseCode = con.getResponseCode();
+			if (responseCode == HttpURLConnection.HTTP_OK) { // success
+				BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+				String inputLine;
+				StringBuffer response = new StringBuffer();
 
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
+				while ((inputLine = in.readLine()) != null) {
+					response.append(inputLine);
+				}
+				in.close();
+
+				return response.toString();
 			}
-			in.close();
-
-			return response.toString();
-		} else {
-			System.out.println("GET request not worked");
-			return null;
 		}
-
+		return null;
 	}
 }

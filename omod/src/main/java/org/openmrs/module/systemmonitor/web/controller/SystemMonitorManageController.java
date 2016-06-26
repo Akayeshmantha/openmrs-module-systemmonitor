@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class SystemMonitorManageController {
-	
-	@RequestMapping(value = "/module/systemmonitor/manage", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/module/systemmonitor/dhisDataValues", method = RequestMethod.GET)
 	public void manage(ModelMap model) {
 		RwandaSPHStudyEMT emt = new RwandaSPHStudyEMT();
 
