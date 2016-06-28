@@ -33,7 +33,6 @@ import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
 import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 import org.openmrs.module.systemmonitor.export.DHISGenerateDataValueSetSchemas;
-import org.openmrs.module.systemmonitor.scheduler.SystemMonitorTimerTask;
 
 /**
  * It is a default implementation of {@link SystemMonitorService}.
@@ -43,8 +42,6 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	protected final Log log = LogFactory.getLog(this.getClass());
 
 	private SystemMonitorDAO dao;
-
-	private SystemMonitorTimerTask systemMonitoringTask;
 
 	/**
 	 * @param dao
@@ -654,18 +651,19 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	@Override
-	public String pushMonitoredDataToDHIS() {
+	public JSONObject pushMonitoredDataToDHIS() {
 		JSONObject dataToBePushed = getDataToPushToDHIS();
-		
-		String dhisUserName = ConfigurableGlobalProperties.DHIS_USERNAME;
-		String dhisPassword = ConfigurableGlobalProperties.DHIS_PASSWORD;
-		String dhisPostUrl = ConfigurableGlobalProperties.DHISAPI_URL;
 
-		System.out.println("dataToBePushed: " + dataToBePushed);
+		String dhisUserName = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
+		String dhisPassword = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_PASSWORD);
+		String dhisPostUrl = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL);
 
 		if (StringUtils.isNotBlank(dhisPostUrl) && StringUtils.isNotBlank(dhisPassword)
 				&& StringUtils.isNotBlank(dhisUserName) && dataToBePushed != null) {
-			try {
+			try {//TODO if no connection or error occurs when pushing, backup the data and push on next trial
 				return CurlEmulator.post(dhisPostUrl, dataToBePushed, dhisUserName, dhisPassword);
 			} catch (UnknownHostException e) {
 				e.printStackTrace();

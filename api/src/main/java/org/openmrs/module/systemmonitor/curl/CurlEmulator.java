@@ -8,6 +8,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
@@ -62,9 +63,9 @@ public class CurlEmulator {
 	 * 
 	 * @return serverReponse, text response message from the server
 	 */
-	public static String post(String urlString, JSONObject data, String username, String password)
+	public static JSONObject post(String urlString, JSONObject data, String username, String password)
 			throws UnknownHostException {
-		String serverResponse = null;
+		JSONObject serverResponse = null;
 
 		if (StringUtils.isNotBlank(urlString) || !urlString.endsWith("null")) {
 			try {
@@ -78,11 +79,15 @@ public class CurlEmulator {
 				ClientResponse response = webResource.type("application/json").post(ClientResponse.class,
 						data.toString());
 
-				if (response.getStatus() != 201) {
+				if (response.getStatus() != 200) {
 					throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 				}
 
-				serverResponse = response.getEntity(String.class);
+				try {
+					serverResponse = new JSONObject(response.getEntity(String.class));
+				} catch (JSONException ex) {
+					ex.printStackTrace();
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

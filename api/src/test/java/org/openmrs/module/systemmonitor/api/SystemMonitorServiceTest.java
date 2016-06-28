@@ -20,7 +20,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -204,14 +203,11 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 
 	@Ignore
 	public void testPushingDataToDHIS() {
-		String serverResponseString = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
-		System.out.print("serverResponseString::::::::::" + serverResponseString);
-		
-		JSONObject serverResponse = StringUtils.isNotBlank(serverResponseString) ? new JSONObject(serverResponseString)
-				: null;
+		JSONObject serverResponse = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
+		System.out.print("serverResponseString::::::::::" + serverResponse);
 
 		if (serverResponse != null) {
-			System.out.println("SERVER STATUS: " +  serverResponse.getString("status"));
+			System.out.println("SERVER STATUS: " + serverResponse.getString("status"));
 		}
 	}
 }

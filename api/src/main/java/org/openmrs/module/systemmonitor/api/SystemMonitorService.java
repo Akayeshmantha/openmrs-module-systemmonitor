@@ -13,8 +13,6 @@
  */
 package org.openmrs.module.systemmonitor.api;
 
-import java.util.Date;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openmrs.Person;
@@ -257,7 +255,7 @@ public interface SystemMonitorService extends OpenmrsService {
 	
 	Integer unitTestingTheseMetrics();
 
-	String pushMonitoredDataToDHIS();
+	JSONObject pushMonitoredDataToDHIS();
 
 	JSONObject getDataToPushToDHIS();
 }

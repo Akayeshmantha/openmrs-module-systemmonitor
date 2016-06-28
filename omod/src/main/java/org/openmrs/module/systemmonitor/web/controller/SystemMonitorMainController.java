@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.systemmonitor.web.controller;
 
+import org.json.JSONObject;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.distributions.RwandaSPHStudyEMT;
@@ -41,7 +42,7 @@ public class SystemMonitorMainController {
 
 	@RequestMapping(value = "/module/systemmonitor/pushToDHIS", method = RequestMethod.POST)
 	public void pushToDHIS(ModelMap model) {
-		String response = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
+		JSONObject response = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
 		
 		System.out.println(response);
 		model.addAttribute("response", response);

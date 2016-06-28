@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
+
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
-    <!--
-        See http://www.liquibase.org/manual/home#available_database_refactorings
-        for a list of supported elements and attributes
-    -->
-    
+	<!-- See http://www.liquibase.org/manual/home#available_database_refactorings 
+		for a list of supported elements and attributes -->
+	<changeSet id="2016June28-1553" author="k-joseph">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT COUNT(*) FROM
+				scheduler_task_config WHERE schedulable_class =
+				'org.openmrs.module.systemmonitor.scheduler.PushMonitoredDataTask';
+			</sqlCheck>
+		</preConditions>
+		<comment>Add Scheduled task for Sending data to the configured DHIS instance every after 4 hours</comment>
+		<insert tableName="scheduler_task_config">
+			<column name="name" value="Push System Monitored Data to DHIS" />
+			<column name="schedulable_class"
+				value="org.openmrs.module.systemmonitor.scheduler.PushMonitoredDataTask" />
+			<column name="start_time" value="2016-06-28 08:00:00" />
+			<column name="start_time_pattern" value="MM/dd/yyyy HH:mm:ss" />
+			<column name="repeat_interval" value="14400" />
+			<column name="start_on_startup" value="0" />
+			<column name="started" value="1" />
+			<column name="created_by" value="1" />
+			<column name="date_created" value="2016-06-28 16:40:32" />
+			<column name="uuid" value="e87dfe90-3d35-11e6-ac61-9e71128cae77" />
+		</insert>
+	</changeSet>
 </databaseChangeLog>
