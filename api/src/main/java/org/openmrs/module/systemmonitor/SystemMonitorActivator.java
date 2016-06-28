@@ -18,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleActivator;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
+import org.openmrs.module.systemmonitor.scheduler.SystemMonitorTimerTask;
 
 /**
  * This class contains the logic that is run every time this module is either
@@ -34,6 +35,8 @@ public class SystemMonitorActivator implements ModuleActivator {
 	@Override
 	public void started() {
 		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
+		
+		SystemMonitorTimerTask.setEnabled(true);//starting scheduler
 	}
 
 	@Override

@@ -51,5 +51,13 @@
 			</list>
 		</property>
 	</bean>
-	
+	<bean id="pushingMonitoredDataTask" class="org.openmrs.module.systemmonitor.scheduler.SystemMonitorTimerTask">
+		<property name="taskClass" value="org.openmrs.module.systemmonitor.scheduler.PushingMonitoredDataTask"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="systemMonitorTimerTask" class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
+	    <property name="delay" value="10000" /> <!-- delay 10 seconds -->
+	    <property name="period" value="60000" /> <!-- 14400000: run every after four hours -->
+	    <property name="runnable" ref="pushingMonitoredDataTask"/>
+	</bean>
 </beans>

@@ -34,7 +34,7 @@ public class DHISGenerateDataValueSetSchemas {
 		JSONObject jsonObj = new JSONObject();
 		JSONObject jsonObj2 = new JSONObject();
 		JSONObject finalJSON = new JSONObject();
-		JSONArray jsonToBePushed = new JSONArray();
+		JSONArray jsonToBePushed;
 		JSONArray jsonDataValueSets = new JSONArray();
 		SystemMonitorService systemMonitorService = Context.getService(SystemMonitorService.class);
 
@@ -351,11 +351,11 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(new JSONObject(systemInfo_systemDateTime));
 			jsonDataValueSets.put(new JSONObject(systemInfo_fileSystemEncoding));
 			jsonDataValueSets.put(new JSONObject(systemInfo_openMRSVersion));
-			jsonDataValueSets.put(systemRealLocationDataElementJSON);
-			jsonDataValueSets.put(installedModulesDataElementJSON);
-			jsonToBePushed = jsonDataValueSets;
+			jsonToBePushed = new JSONArray(jsonDataValueSets.toString());
 			jsonToBePushed.put(systemRealLocationDataElementJSON2);
 			jsonToBePushed.put(installedModulesDataElementJSON2);
+			jsonDataValueSets.put(systemRealLocationDataElementJSON);
+			jsonDataValueSets.put(installedModulesDataElementJSON);
 			jsonObj.put("dataValues", jsonDataValueSets);
 			jsonObj2.put("dataValues", jsonToBePushed);
 			finalJSON.put("allData", jsonObj);
@@ -378,8 +378,8 @@ public class DHISGenerateDataValueSetSchemas {
 			string = "";
 
 			for (int i = 0; i < modulesJson.length(); i++) {
-				string += modulesJson.getJSONObject(i).getString("name") + "-"
-						+ modulesJson.getJSONObject(i).getString("version");
+				string += modulesJson.getJSONObject(i).getString("name") + "("
+						+ modulesJson.getJSONObject(i).getString("version") + ")";
 				if (i != modulesJson.length() - 1) {
 					string += ", ";
 				}

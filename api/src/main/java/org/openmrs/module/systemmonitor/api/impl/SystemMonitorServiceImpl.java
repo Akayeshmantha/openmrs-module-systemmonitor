@@ -15,9 +15,10 @@ package org.openmrs.module.systemmonitor.api.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+import java.net.UnknownHostException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
@@ -30,6 +31,9 @@ import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
 import org.openmrs.module.systemmonitor.SystemMonitorConstants;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
+import org.openmrs.module.systemmonitor.curl.CurlEmulator;
+import org.openmrs.module.systemmonitor.export.DHISGenerateDataValueSetSchemas;
+import org.openmrs.module.systemmonitor.scheduler.SystemMonitorTimerTask;
 
 /**
  * It is a default implementation of {@link SystemMonitorService}.
@@ -39,6 +43,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	protected final Log log = LogFactory.getLog(this.getClass());
 
 	private SystemMonitorDAO dao;
+
+	private SystemMonitorTimerTask systemMonitoringTask;
 
 	/**
 	 * @param dao
@@ -590,7 +596,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				.getResource(SystemMonitorConstants.SYSTEMMONITOR_MAPPING_FILENAME).getFile());
 		File dataElementsFile = new File(getClass().getClassLoader()
 				.getResource(SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILENAME).getFile());
-		
+
 		try {
 			FileUtils.copyFile(mappingsFile, SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE);
 			FileUtils.copyFile(dataElementsFile, SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);
@@ -631,12 +637,40 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				modulesArray.put(moduleJSON);
 			}
 		}
-		
+
 		return modulesArray;
 	}
 
 	@Override
 	public Integer unitTestingTheseMetrics() {
 		return dao.unitTestingTheseMetrics();
+	}
+
+	@Override
+	public JSONObject getDataToPushToDHIS() {
+		return DHISGenerateDataValueSetSchemas.generateRwandaSPHEMTDHISDataValueSets().length() > 0
+				? DHISGenerateDataValueSetSchemas.generateRwandaSPHEMTDHISDataValueSets().getJSONObject("toBePushed")
+				: null;
+	}
+
+	@Override
+	public String pushMonitoredDataToDHIS() {
+		JSONObject dataToBePushed = getDataToPushToDHIS();
+		
+		String dhisUserName = ConfigurableGlobalProperties.DHIS_USERNAME;
+		String dhisPassword = ConfigurableGlobalProperties.DHIS_PASSWORD;
+		String dhisPostUrl = ConfigurableGlobalProperties.DHISAPI_URL;
+
+		System.out.println("dataToBePushed: " + dataToBePushed);
+
+		if (StringUtils.isNotBlank(dhisPostUrl) && StringUtils.isNotBlank(dhisPassword)
+				&& StringUtils.isNotBlank(dhisUserName) && dataToBePushed != null) {
+			try {
+				return CurlEmulator.post(dhisPostUrl, dataToBePushed, dhisUserName, dhisPassword);
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 }

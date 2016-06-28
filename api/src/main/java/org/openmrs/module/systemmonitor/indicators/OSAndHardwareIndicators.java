@@ -94,6 +94,7 @@ public class OSAndHardwareIndicators {
 
 	public static String getIpAddress() {
 		try {
+			@SuppressWarnings("static-access")
 			String publicIp = new CurlEmulator().sendNormalHtmlGET("http://ipinfo.io/ip");
 			String finalIP = StringUtils.isNotBlank(publicIp) && publicIp.split("\\.").length == 4 ? publicIp
 					: InetAddress.getLocalHost().getHostAddress();

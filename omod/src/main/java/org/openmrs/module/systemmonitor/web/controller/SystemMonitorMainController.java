@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.systemmonitor.web.controller;
 
+import org.openmrs.api.context.Context;
+import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.distributions.RwandaSPHStudyEMT;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,12 +25,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * The main controller.
  */
 @Controller
-public class SystemMonitorManageController {
+public class SystemMonitorMainController {
 
 	@RequestMapping(value = "/module/systemmonitor/dhisDataValues", method = RequestMethod.GET)
-	public void manage(ModelMap model) {
+	public void dhisDataValuesViewer(ModelMap model) {
 		RwandaSPHStudyEMT emt = new RwandaSPHStudyEMT();
 
 		model.addAttribute("data", emt.generatedDHISDataValueSetJSONString());
+	}
+
+	@RequestMapping(value = "/module/systemmonitor/pushToDHIS", method = RequestMethod.GET)
+	public void renderPushToDHIS(ModelMap model) {
+		model.addAttribute("response", "");
+	}
+
+	@RequestMapping(value = "/module/systemmonitor/pushToDHIS", method = RequestMethod.POST)
+	public void pushToDHIS(ModelMap model) {
+		String response = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
+		
+		System.out.println(response);
+		model.addAttribute("response", response);
 	}
 }

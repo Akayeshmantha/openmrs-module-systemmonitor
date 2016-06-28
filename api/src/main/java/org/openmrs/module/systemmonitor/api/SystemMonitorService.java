@@ -16,6 +16,7 @@ package org.openmrs.module.systemmonitor.api;
 import java.util.Date;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.openmrs.Person;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
@@ -255,4 +256,8 @@ public interface SystemMonitorService extends OpenmrsService {
 	JSONArray getInstalledModules();
 	
 	Integer unitTestingTheseMetrics();
+
+	String pushMonitoredDataToDHIS();
+
+	JSONObject getDataToPushToDHIS();
 }

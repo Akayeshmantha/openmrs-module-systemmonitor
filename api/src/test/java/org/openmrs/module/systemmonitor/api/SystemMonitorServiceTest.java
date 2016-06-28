@@ -16,11 +16,12 @@ package org.openmrs.module.systemmonitor.api;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -32,7 +33,6 @@ import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleConstants;
 import org.openmrs.module.ModuleUtil;
-import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 import org.openmrs.module.systemmonitor.distributions.RwandaSPHStudyEMT;
 import org.openmrs.module.systemmonitor.indicators.OSAndHardwareIndicators;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
@@ -136,7 +136,9 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 
 		encounterService.saveEncounter(buildEncounter(lastWeek.getTime(), null));// adds
 																					// to
-																					// this/current																		// month
+																					// this/current
+																					// //
+																					// month
 		encounterService.saveEncounter(buildEncounter(lastMonth.getTime(), null));
 		encounterService.saveEncounter(buildEncounter(lastMonth.getTime(), null));
 		encounterService.saveEncounter(buildEncounter(lastYear.getTime(), null));
@@ -181,7 +183,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 	public void test_generatingDHISJsonAndInstallationOfSystemMonitorModule() {
 		RwandaSPHStudyEMT emt = new RwandaSPHStudyEMT();
 
-		//systemMonitorService.transferDHISMappingsAndMetadataFileToDataDirectory();
+		// systemMonitorService.transferDHISMappingsAndMetadataFileToDataDirectory();
 
 		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 		System.out.println("Installed Modules: " + systemMonitorService.getInstalledModules().toString());
@@ -198,5 +200,18 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void testGetIp() {
 		System.out.println("IP ADDR: " + OSAndHardwareIndicators.getIpAddress());
+	}
+
+	@Ignore
+	public void testPushingDataToDHIS() {
+		String serverResponseString = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
+		System.out.print("serverResponseString::::::::::" + serverResponseString);
+		
+		JSONObject serverResponse = StringUtils.isNotBlank(serverResponseString) ? new JSONObject(serverResponseString)
+				: null;
+
+		if (serverResponse != null) {
+			System.out.println("SERVER STATUS: " +  serverResponse.getString("status"));
+		}
 	}
 }
