@@ -34,6 +34,7 @@ public class SystemMonitorActivator implements ModuleActivator {
 	@Override
 	public void started() {
 		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
+		Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
 	}
 
 	@Override

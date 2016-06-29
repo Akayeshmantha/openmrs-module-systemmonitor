@@ -33,10 +33,15 @@ public class CurlEmulator {
 	 * 
 	 * @return json response from the url
 	 */
-	public static JSONObject get(String urlString) {
+	public static JSONObject get(String urlString, String username, String password) {
 		if (StringUtils.isNotBlank(urlString) && !urlString.endsWith("null")) {
 			try {
 				Client client = Client.create();
+
+				if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
+					client.addFilter(new HTTPBasicAuthFilter(username, password));
+				}
+
 				WebResource webResource = client.resource(urlString);
 				ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
 				if (response.getStatus() != 200) {

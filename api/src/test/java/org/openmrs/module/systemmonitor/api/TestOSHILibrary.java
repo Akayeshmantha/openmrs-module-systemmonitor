@@ -88,12 +88,12 @@ public class TestOSHILibrary {
 			String ipInfoUrl = "http://ipinfo.io/" + OSAndHardwareIndicators.getIpAddress();
 			String googleIpInfoUrl = "http://ipinfo.io/8.8.8.8";
 			System.out.println("ipInfoUrl: " + ipInfoUrl);
-			System.out.println("CurlEmulator.get(googleIpInfoUrl): " + CurlEmulator.get(googleIpInfoUrl));
+			System.out.println("CurlEmulator.get(googleIpInfoUrl): " + CurlEmulator.get(googleIpInfoUrl, null, null));
 
 			System.out.println("ipinfo.io's response about Google.com: "
-					+ (CurlEmulator.get(googleIpInfoUrl) != null ? CurlEmulator.get(googleIpInfoUrl).toString() : ""));
+					+ (CurlEmulator.get(googleIpInfoUrl, null, null) != null ? CurlEmulator.get(googleIpInfoUrl, null, null).toString() : ""));
 			System.out.println("ipinfo.io's response for This PC: "
-					+ (CurlEmulator.get(ipInfoUrl) != null ? CurlEmulator.get(ipInfoUrl).toString() : ""));
+					+ (CurlEmulator.get(ipInfoUrl, null, null) != null ? CurlEmulator.get(ipInfoUrl, null, null).toString() : ""));
 
 			System.out.println("NETWORK MTU: " + net.getMTU()
 					+ "\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");

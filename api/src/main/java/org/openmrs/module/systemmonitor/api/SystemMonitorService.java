@@ -252,10 +252,24 @@ public interface SystemMonitorService extends OpenmrsService {
 	String getCurrentConfiguredDHISPassword();
 
 	JSONArray getInstalledModules();
-	
+
 	Integer unitTestingTheseMetrics();
 
 	JSONObject pushMonitoredDataToDHIS();
 
 	JSONObject getDataToPushToDHIS();
+
+	/**
+	 * Fetches the whole dhis dataelement/indicator/metric json object to get
+	 * its id use; getIndicatorOrMetricOrDataElement("id").getString("id") and
+	 * its name use; getIndicatorOrMetricOrDataElement("id").getString("name")
+	 * 
+	 * @param indicatorUid
+	 * @return
+	 */
+	JSONObject getIndicatorOrMetricOrDataElement(String indicatorUid);
+
+	void updateLocallyStoredDHISMetadata();
+
+	JSONObject getDHISOrgUnit(String orgUnitId);
 }

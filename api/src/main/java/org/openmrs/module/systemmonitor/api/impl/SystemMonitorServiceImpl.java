@@ -13,7 +13,10 @@
  */
 package org.openmrs.module.systemmonitor.api.impl;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
@@ -33,6 +36,7 @@ import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
 import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 import org.openmrs.module.systemmonitor.export.DHISGenerateDataValueSetSchemas;
+import org.openmrs.module.systemmonitor.mapping.DHISMapping;
 
 /**
  * It is a default implementation of {@link SystemMonitorService}.
@@ -658,17 +662,162 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
 		String dhisPassword = Context.getAdministrationService()
 				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_PASSWORD);
-		String dhisPostUrl = Context.getAdministrationService()
-				.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL);
+		String dhisPostUrl = (Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)) != null
+						? Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)
+								+ SystemMonitorConstants.DHIS_API_DATAVALUES_URL
+						: null;
 
 		if (StringUtils.isNotBlank(dhisPostUrl) && StringUtils.isNotBlank(dhisPassword)
 				&& StringUtils.isNotBlank(dhisUserName) && dataToBePushed != null) {
-			try {//TODO if no connection or error occurs when pushing, backup the data and push on next trial
+			try {// TODO if no connection or error occurs when pushing, backup
+					// the data and push on next trial
 				return CurlEmulator.post(dhisPostUrl, dataToBePushed, dhisUserName, dhisPassword);
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public JSONObject getIndicatorOrMetricOrDataElement(String indicatorUid) {
+		JSONObject metric = null;
+		File dataElementsFile = SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE;
+		String jsonDataElementsString = "";
+		JSONObject jsonDataElements;
+
+		if (StringUtils.isNotBlank(indicatorUid) && dataElementsFile != null && dataElementsFile.exists()) {
+			jsonDataElementsString = readFileToString(indicatorUid, dataElementsFile, jsonDataElementsString);
+			if (StringUtils.isNotBlank(jsonDataElementsString)) {
+				jsonDataElements = new JSONObject(jsonDataElementsString);
+				if (jsonDataElements != null && jsonDataElements.getJSONArray("dataElements") != null) {
+					for (int i = 0; i < jsonDataElements.getJSONArray("dataElements").length(); i++) {
+						JSONObject json = jsonDataElements.getJSONArray("dataElements").getJSONObject(i);
+
+						if (json != null && StringUtils.isNotBlank(json.getString("id"))
+								&& indicatorUid.equals(json.getString("id"))) {
+							metric = json;
+							break;
+						}
+					}
+				}
+			}
+		}
+		return metric;
+	}
+
+	@Override
+	public JSONObject getDHISOrgUnit(String orgUnitId) {
+		JSONObject orgUnitObj = null;
+		File orgUnitsMetadataFile = SystemMonitorConstants.SYSTEMMONITOR_ORGUNIT_FILE;
+		String jsonOrgUnitsString = "";
+		JSONObject jsonOrgUnits;
+
+		if (StringUtils.isNotBlank(orgUnitId) && orgUnitsMetadataFile != null && orgUnitsMetadataFile.exists()) {
+			jsonOrgUnitsString = readFileToString(orgUnitId, orgUnitsMetadataFile, jsonOrgUnitsString);
+			if (StringUtils.isNotBlank(jsonOrgUnitsString)) {
+				jsonOrgUnits = new JSONObject(jsonOrgUnitsString);
+
+				if (jsonOrgUnits != null && orgUnitId.equals(jsonOrgUnits.getString("id"))) {
+					orgUnitObj = jsonOrgUnits;
+				}
+			}
+		}
+		return orgUnitObj;
+	}
+
+	private String readFileToString(String objectUid, File mappingFile, String jsonDataElementsString) {
+		if (StringUtils.isNotBlank(objectUid) && mappingFile != null && mappingFile.isFile()) {
+			BufferedReader br = null;
+
+			try {
+				String line;
+				br = new BufferedReader(new FileReader(mappingFile));
+				while ((line = br.readLine()) != null) {
+					jsonDataElementsString += line + "\n";
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (br != null)
+						br.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+		return jsonDataElementsString;
+	}
+
+	@Override
+	public void updateLocallyStoredDHISMetadata() {
+		updateDataElementsFromDHISConfiguredRemoteInstance();
+		updateOrgUnitsFromDHISConfiguredRemoteInstance();
+	}
+
+	private void updateDataElementsFromDHISConfiguredRemoteInstance() {
+		updateDHISDataElementsOrOrgUnits(true);
+	}
+
+	private void updateOrgUnitsFromDHISConfiguredRemoteInstance() {
+		updateDHISDataElementsOrOrgUnits(false);
+	}
+
+	private void writeToFile(String textToOverwriteTheFile, File file) {
+		if (StringUtils.isNotBlank(textToOverwriteTheFile) && file != null) {
+			try {
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+
+				FileWriter fileWriter = new FileWriter(file);
+				fileWriter.write(textToOverwriteTheFile);
+				fileWriter.flush();
+				fileWriter.close();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void updateDHISDataElementsOrOrgUnits(boolean isDataelementUpdateIfTrueOrOrgUnitUpdateIfFalse) {
+		String dhisUserName = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
+		String dhisPassword = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_PASSWORD);
+		String dhisGetUrl;
+		String configuredOrgUnitID = DHISMapping.getDHISMappedObjectValue(getCurrentConfiguredDHISOrgUnit());
+		File dhisDataFile;
+
+		if (isDataelementUpdateIfTrueOrOrgUnitUpdateIfFalse) {
+			dhisGetUrl = (Context.getAdministrationService()
+					.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)) != null
+							? Context.getAdministrationService()
+									.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)
+									+ SystemMonitorConstants.DHIS_API_DATAELEMENTS_URL
+							: null;
+			dhisDataFile = SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE;
+		} else {
+			dhisGetUrl = (StringUtils
+					.isNotBlank(Context.getAdministrationService()
+							.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL))
+					&& StringUtils.isNotBlank(configuredOrgUnitID))
+							? Context.getAdministrationService()
+									.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)
+									+ SystemMonitorConstants.DHIS_API_ORGUNITS_URL + configuredOrgUnitID
+							: null;
+			dhisDataFile = SystemMonitorConstants.SYSTEMMONITOR_ORGUNIT_FILE;
+		}
+		if (StringUtils.isNotBlank(dhisGetUrl) && StringUtils.isNotBlank(dhisPassword)
+				&& StringUtils.isNotBlank(dhisUserName)) {
+			JSONObject returnedJSON = CurlEmulator.get(dhisGetUrl, dhisUserName, dhisPassword);
+
+			if (returnedJSON != null) {
+				writeToFile(returnedJSON.toString(), dhisDataFile);
+			}
+		}
 	}
 }

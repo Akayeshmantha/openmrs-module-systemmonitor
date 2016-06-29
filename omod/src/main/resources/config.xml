@@ -77,10 +77,10 @@
 	</globalProperty>
 
 	<globalProperty>
-		<property>systemmonitor.DHISURL</property>
-		<defaultValue>http://82.196.9.250:8080/api/dataValueSets
+		<property>systemmonitor.DHISAPIROOTURL</property>
+		<defaultValue>http://82.196.9.250:8080/api
 		</defaultValue>
-		<description>DHIS2 Instance's /api/dataValueSets url/link
+		<description>DHIS2 Instance's Web API Root url/link
 		</description>
 	</globalProperty>
 

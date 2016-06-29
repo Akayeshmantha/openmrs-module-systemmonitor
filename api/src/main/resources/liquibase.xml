@@ -18,14 +18,38 @@
 			<column name="name" value="Push System Monitored Data to DHIS" />
 			<column name="schedulable_class"
 				value="org.openmrs.module.systemmonitor.scheduler.PushMonitoredDataTask" />
+			<column name="description" value="Scheduled task for Sending data to the configured DHIS instance every after 4 hours" />
 			<column name="start_time" value="2016-06-28 08:00:00" />
 			<column name="start_time_pattern" value="MM/dd/yyyy HH:mm:ss" />
 			<column name="repeat_interval" value="14400" />
-			<column name="start_on_startup" value="0" />
+			<column name="start_on_startup" value="1" />
 			<column name="started" value="1" />
 			<column name="created_by" value="1" />
 			<column name="date_created" value="2016-06-28 16:40:32" />
 			<column name="uuid" value="e87dfe90-3d35-11e6-ac61-9e71128cae77" />
+		</insert>
+	</changeSet>
+	<changeSet id="2016June29-1721" author="k-joseph">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT COUNT(*) FROM
+				scheduler_task_config WHERE schedulable_class =
+				'org.openmrs.module.systemmonitor.scheduler.UpdateLocallyStoredDHISMetadataFromRemoteTask';
+			</sqlCheck>
+		</preConditions>
+		<comment>Add Scheduled task for updating DHIS metadata locally from configured remote instance once a day at mid-day</comment>
+		<insert tableName="scheduler_task_config">
+			<column name="name" value="Update Locally Stored DHIS Metadata" />
+			<column name="schedulable_class"
+				value="org.openmrs.module.systemmonitor.scheduler.UpdateLocallyStoredDHISMetadataFromRemoteTask" />
+			<column name="description" value="Scheduled task for updating DHIS metadata locally from configured remote instance once a day at mid-day" />
+			<column name="start_time" value="2016-06-29 12:00:00" />
+			<column name="start_time_pattern" value="MM/dd/yyyy HH:mm:ss" />
+			<column name="repeat_interval" value="86400" />
+			<column name="start_on_startup" value="1" />
+			<column name="started" value="1" />
+			<column name="created_by" value="1" />
+			<column name="date_created" value="2016-06-29 17:20:21" />
+			<column name="uuid" value="a790a422-3e08-11e6-ac61-9e71128cae77" />
 		</insert>
 	</changeSet>
 </databaseChangeLog>

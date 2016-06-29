@@ -15,10 +15,18 @@ public class SystemMonitorConstants {
 	public static String SYSTEMMONITOR_DIRECTORYNAME = "SystemMonitor";
 
 	public static String SYSTEMMONITOR_MAPPING_FILENAME = "mapping-to-dhis.txt";
-	
+
 	public static String SYSTEMMONITOR_DATAELEMENTSMETADATA_FILENAME = "dhis-dataelementsMetadata.json";
 
+	public static String SYSTEMMONITOR_ORGUNIT_FILENAME = "dhis-configuredOrgUnit.json";
+
 	public static String IP_INFO_URL = "http://ipinfo.io/";
+
+	public static String DHIS_API_DATAVALUES_URL = "/dataValueSets/";
+
+	public static String DHIS_API_ORGUNITS_URL = "/organisationUnits/";
+
+	public static String DHIS_API_DATAELEMENTS_URL = "/dataElements/";
 
 	public static String OPENMRS_WEBAPPNAME = WebConstants.WEBAPP_NAME;
 
@@ -36,9 +44,12 @@ public class SystemMonitorConstants {
 
 	public static File SYSTEMMONITOR_FINAL_MAPPINGFILE = new File(
 			SYSTEMMONITOR_DIRECTORYPATH + File.separator + SYSTEMMONITOR_MAPPING_FILENAME);
-	
+
 	public static File SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE = new File(
 			SYSTEMMONITOR_DIRECTORYPATH + File.separator + SYSTEMMONITOR_DATAELEMENTSMETADATA_FILENAME);
+
+	public static File SYSTEMMONITOR_ORGUNIT_FILE = new File(
+			SYSTEMMONITOR_DIRECTORYPATH + File.separator + SYSTEMMONITOR_ORGUNIT_FILENAME);
 
 	public static Collection<Module> LOADED_MODULES = ModuleFactory.getLoadedModules();
 }

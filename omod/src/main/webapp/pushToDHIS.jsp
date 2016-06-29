@@ -11,6 +11,7 @@
 <form method="post">
 <input type="submit" value="Push/Send Data">
 </form>
+<br /><br />
 <div id="dhis2ServerResponse">${response}</div>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>

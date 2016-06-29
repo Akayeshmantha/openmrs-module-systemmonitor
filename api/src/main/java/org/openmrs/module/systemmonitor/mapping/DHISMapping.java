@@ -16,10 +16,10 @@ import org.openmrs.module.systemmonitor.SystemMonitorConstants;
  * @author k-joseph
  *
  */
-public class DHISDataElementMapping {
+public class DHISMapping {
 	private static File mappingFile = SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE;
 
-	public static String getDHISMappedObject(String objectCode) {
+	public static String getDHISMappedObjectValue(String objectCode) {
 		String objectMappedValue = null;
 
 		if (mappingFile.exists() && mappingFile.isFile() && StringUtils.isNotBlank(objectCode)) {
