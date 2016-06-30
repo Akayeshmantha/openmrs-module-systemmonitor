@@ -58,45 +58,72 @@
 	</globalProperty>
 
 	<globalProperty>
-		<property>systemmonitor.reasonForExistingCare</property>
+		<property>systemmonitor.reasonForExistingCareConceptId</property>
 		<defaultValue>1811</defaultValue>
-		<description>Supports configuring the REASON FOR EXITING CARE Concept</description>
+		<description>
+			Supports configuring the REASON FOR EXITING CARE Concept
+		</description>
 	</globalProperty>
-	
+
 	<globalProperty>
 		<property>systemmonitor.hivProgramID</property>
 		<defaultValue>2</defaultValue>
 		<description>Supports configuring the HIV Program by ID</description>
 	</globalProperty>
-	
+
 	<globalProperty>
 		<property>systemmonitor.SITEID</property>
 		<defaultValue>JEMBI</defaultValue>
-		<description>This ID identifies a site (in Rwanda it is called FOSID) and is mapped to
-			a DHIS2 organization Unit</description>
+		<description>This ID identifies a site (in Rwanda it is called FOSID)
+			and is mapped to
+			a DHIS2 organization Unit
+		</description>
 	</globalProperty>
 
 	<globalProperty>
 		<property>systemmonitor.DHISAPIROOTURL</property>
 		<defaultValue>http://82.196.9.250:8080/api
 		</defaultValue>
-		<description>DHIS2 Instance's Web API Root url/link
+		<description>
+			DHIS2 Instance's Web API Root url/link
 		</description>
 	</globalProperty>
 
 	<globalProperty>
 		<property>systemmonitor.DHISUSERNAME</property>
 		<defaultValue>admin</defaultValue>
-		<description>DHIS2 Account Username, Organization account is preferred
+		<description>
+			DHIS2 Account Username, Organization account is preferred
 		</description>
 	</globalProperty>
 
 	<globalProperty>
 		<property>systemmonitor.DHISPASSWORD</property>
 		<defaultValue>district</defaultValue>
-		<description>DHIS2 Password, Organization account is preferred
+		<description>
+			DHIS2 Password, Organization account is preferred
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.configurations.openingHour</property>
+		<defaultValue>0800</defaultValue>
+		<description>
+			Clinic's/Site's Opening hour
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.configurations.closingHour</property>
+		<defaultValue>1700</defaultValue>
+		<description>
+			Clinic's/Site's Closing hour
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.configurations.openingDays</property>
+		<defaultValue>Mo,Tu,We,Th,Fr</defaultValue>
+		<description>
+			Clinic's/Site's Opening Days
 		</description>
 	</globalProperty>
 
 </module>
-

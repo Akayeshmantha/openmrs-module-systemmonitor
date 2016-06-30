@@ -46,6 +46,7 @@ public class AdminList extends AdministrationSectionExt {
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
 		map.put("/module/systemmonitor/dhisDataValues.form", "systemmonitor.dhisDataValues");
 		map.put("/module/systemmonitor/pushToDHIS.form", "systemmonitor.pushToDHIS");
+		map.put("/module/systemmonitor/configurations.form", "systemmonitor.configurations");
 		return map;
 	}
 	

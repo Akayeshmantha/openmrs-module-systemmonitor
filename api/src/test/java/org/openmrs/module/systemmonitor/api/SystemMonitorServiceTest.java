@@ -32,6 +32,7 @@ import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleConstants;
 import org.openmrs.module.ModuleUtil;
+import org.openmrs.module.systemmonitor.SystemMonitorConstants;
 import org.openmrs.module.systemmonitor.distributions.RwandaSPHStudyEMT;
 import org.openmrs.module.systemmonitor.indicators.OSAndHardwareIndicators;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
@@ -178,7 +179,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 		systemMonitorService.transferDHISMappingsAndMetadataFileToDataDirectory();
 	}
 
-	@Test
+	@Ignore
 	public void test_generatingDHISJsonAndInstallationOfSystemMonitorModule() {
 		RwandaSPHStudyEMT emt = new RwandaSPHStudyEMT();
 
@@ -209,5 +210,10 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 		if (serverResponse != null) {
 			System.out.println("SERVER STATUS: " + serverResponse.getString("status"));
 		}
+	}
+	
+	@Test
+	public void test_matchRequiredVersions() {
+		System.out.println("Current OpenMRS Version: " + SystemMonitorConstants.OPENMRS_VERSION + ", is it greater than 1.9? " + ModuleUtil.matchRequiredVersions(SystemMonitorConstants.OPENMRS_VERSION, "1.9"));
 	}
 }

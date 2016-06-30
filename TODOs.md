@@ -1,3 +1,5 @@
+TODOs:
+______________________________________________
 * supporting uploading supported metadata json into the configured DHIS instance
 * Read from the local DHIS Data Elements metadata copy to name indicators in the module's pages
 * Writing well timed (similar to EMT) scheduling tasks for both data capture and pushing into DHIS2
@@ -14,3 +16,5 @@
 * Create a scheduled task none daily indicators and data failed to be pushed because of no internet connection
 * Create a scheduled task to keep updating both the stored dataelements and organisation units
 * Fix System uptime push % datatype conflict
+* reloadConfigurations api method, saves gps and reloads dhismetadata if site is changed or dhis account
+* if user changes configurations of dhis instance mainly url, after getting metadata from server, confirm that it matches with the embedded mappings file

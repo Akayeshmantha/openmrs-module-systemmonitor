@@ -42,11 +42,12 @@ public class DHISGenerateDataValueSetSchemas {
 				? OSAndHardwareIndicators.getMacAddress().replace(":", "") : "");
 
 		String dhisOrganizationUnitUid = DHISMapping
-				.getDHISMappedObjectValue(systemMonitorService.getCurrentConfiguredDHISOrgUnit());
+				.getDHISMappedObjectValue(systemMonitorService.getCurrentConfiguredDHISOrgUnit().getPropertyValue());
 
-		String clinicDays = null;
+		String clinicDays = SystemMonitorConstants.CLINIC_OPENING_DAYS;
 
-		String clinicHours = null;
+		String clinicHours = SystemMonitorConstants.CLINIC_OPENING_HOUR + " - "
+				+ SystemMonitorConstants.CLINIC_CLOSING_HOUR;
 
 		String openmrsAPPName = WebConstants.WEBAPP_NAME;
 

@@ -15,6 +15,7 @@ package org.openmrs.module.systemmonitor.api;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.openmrs.GlobalProperty;
 import org.openmrs.Person;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
@@ -245,11 +246,11 @@ public interface SystemMonitorService extends OpenmrsService {
 
 	void transferDHISMappingsAndMetadataFileToDataDirectory();
 
-	String getCurrentConfiguredDHISOrgUnit();
+	GlobalProperty getCurrentConfiguredDHISOrgUnit();
 
-	String getCurrentConfiguredDHISUsername();
+	GlobalProperty getCurrentConfiguredDHISUsername();
 
-	String getCurrentConfiguredDHISPassword();
+	GlobalProperty getCurrentConfiguredDHISPassword();
 
 	JSONArray getInstalledModules();
 
@@ -272,4 +273,10 @@ public interface SystemMonitorService extends OpenmrsService {
 	void updateLocallyStoredDHISMetadata();
 
 	JSONObject getDHISOrgUnit(String orgUnitId);
+
+	GlobalProperty getConfiguredOpeningHour();
+
+	GlobalProperty getConfiguredClosingHour();
+
+	GlobalProperty getConfiguredOpeningDays();
 }

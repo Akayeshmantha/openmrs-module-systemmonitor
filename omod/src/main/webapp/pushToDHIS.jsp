@@ -1,15 +1,13 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
-
 <%@ include file="template/localHeader.jsp"%>
-<openmrs:htmlInclude file="/moduleResources/systemmonitor/renderjson.js" />
 
 <h3>
 	<spring:message code="systemmonitor.pusToDHIS" />
 </h3>
 
 <form method="post">
-<input type="submit" value="Push/Send Data">
+<input type="submit" value='<spring:message code="systemmonitor.pushOrSendData"/>'>
 </form>
 <br /><br />
 <div id="dhis2ServerResponse">${response}</div>

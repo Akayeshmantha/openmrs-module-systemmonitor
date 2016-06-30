@@ -1,8 +1,9 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
-
 <%@ include file="template/localHeader.jsp"%>
+
 <openmrs:htmlInclude file="/moduleResources/systemmonitor/renderjson.js" />
+
 <style type="text/css">
 #renderDHISDataValueSets {
 	font-size: 150%;
@@ -56,7 +57,9 @@
 
 <br />
 <br />
-<h3>SystemMonitor Data:</h3>
+<h3>
+	<spring:message code="systemmonitor.data" />
+</h3>
 <div id="renderDHISDataValueSets"></div>
 
 <script type="text/javascript">

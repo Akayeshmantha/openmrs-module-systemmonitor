@@ -13,10 +13,14 @@
  */
 package org.openmrs.module.systemmonitor.web.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONObject;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.systemmonitor.ConfigureGPs;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.distributions.RwandaSPHStudyEMT;
+import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,8 +47,27 @@ public class SystemMonitorMainController {
 	@RequestMapping(value = "/module/systemmonitor/pushToDHIS", method = RequestMethod.POST)
 	public void pushToDHIS(ModelMap model) {
 		JSONObject response = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
-		
+
 		System.out.println(response);
 		model.addAttribute("response", response);
+	}
+
+	@RequestMapping(value = "/module/systemmonitor/configurations", method = RequestMethod.GET)
+	public void renderConfigurations(ModelMap model) {
+		model.addAttribute("configurations", new ConfigureGPs());
+	}
+
+	@RequestMapping(value = "/module/systemmonitor/configurations", method = RequestMethod.POST)
+	public void postConfigurations(ModelMap model, HttpServletRequest request) {
+		ConfigureGPs configs = new ConfigureGPs();
+
+		try {
+			configs.updateAndPersistConfigurableGPs(request);
+			request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+					"systemmonitor.configurations.save.success");
+		} catch (Exception e) {
+			request.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR, e);
+		}
+		model.addAttribute("configurations", configs);
 	}
 }

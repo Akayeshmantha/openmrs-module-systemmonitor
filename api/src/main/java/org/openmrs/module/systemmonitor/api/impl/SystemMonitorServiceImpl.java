@@ -26,6 +26,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.openmrs.GlobalProperty;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
@@ -607,18 +608,33 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	@Override
-	public String getCurrentConfiguredDHISOrgUnit() {
-		return Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.SITE_ID);
+	public GlobalProperty getCurrentConfiguredDHISOrgUnit() {
+		return Context.getAdministrationService().getGlobalPropertyObject(ConfigurableGlobalProperties.SITE_ID);
 	}
 
 	@Override
-	public String getCurrentConfiguredDHISUsername() {
-		return Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
+	public GlobalProperty getCurrentConfiguredDHISUsername() {
+		return Context.getAdministrationService().getGlobalPropertyObject(ConfigurableGlobalProperties.DHIS_USERNAME);
 	}
 
 	@Override
-	public String getCurrentConfiguredDHISPassword() {
-		return Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.DHIS_PASSWORD);
+	public GlobalProperty getCurrentConfiguredDHISPassword() {
+		return Context.getAdministrationService().getGlobalPropertyObject(ConfigurableGlobalProperties.DHIS_PASSWORD);
+	}
+	
+	@Override
+	public GlobalProperty getConfiguredOpeningHour() {
+		return Context.getAdministrationService().getGlobalPropertyObject(ConfigurableGlobalProperties.CONFIGS_OPENNINGHOUR);
+	}
+	
+	@Override
+	public GlobalProperty getConfiguredClosingHour() {
+		return Context.getAdministrationService().getGlobalPropertyObject(ConfigurableGlobalProperties.CONFIGS_CLOSINGHOUR);
+	}
+	
+	@Override
+	public GlobalProperty getConfiguredOpeningDays() {
+		return Context.getAdministrationService().getGlobalPropertyObject(ConfigurableGlobalProperties.CONFIGS_OPENNINGDAYS);
 	}
 
 	@Override
@@ -789,7 +805,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		String dhisPassword = Context.getAdministrationService()
 				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_PASSWORD);
 		String dhisGetUrl;
-		String configuredOrgUnitID = DHISMapping.getDHISMappedObjectValue(getCurrentConfiguredDHISOrgUnit());
+		String configuredOrgUnitID = DHISMapping
+				.getDHISMappedObjectValue(getCurrentConfiguredDHISOrgUnit().getPropertyValue());
 		File dhisDataFile;
 
 		if (isDataelementUpdateIfTrueOrOrgUnitUpdateIfFalse) {

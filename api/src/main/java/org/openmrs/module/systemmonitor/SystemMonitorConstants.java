@@ -3,6 +3,7 @@ package org.openmrs.module.systemmonitor;
 import java.io.File;
 import java.util.Collection;
 
+import org.openmrs.api.context.Context;
 import org.openmrs.module.Module;
 import org.openmrs.module.ModuleFactory;
 import org.openmrs.module.ModuleUtil;
@@ -52,4 +53,13 @@ public class SystemMonitorConstants {
 			SYSTEMMONITOR_DIRECTORYPATH + File.separator + SYSTEMMONITOR_ORGUNIT_FILENAME);
 
 	public static Collection<Module> LOADED_MODULES = ModuleFactory.getLoadedModules();
+
+	public static String CLINIC_OPENING_DAYS = Context.getAdministrationService()
+			.getGlobalProperty(ConfigurableGlobalProperties.CONFIGS_OPENNINGDAYS);
+
+	public static String CLINIC_OPENING_HOUR = Context.getAdministrationService()
+			.getGlobalProperty(ConfigurableGlobalProperties.CONFIGS_OPENNINGHOUR);
+
+	public static String CLINIC_CLOSING_HOUR = Context.getAdministrationService()
+			.getGlobalProperty(ConfigurableGlobalProperties.CONFIGS_CLOSINGHOUR);
 }

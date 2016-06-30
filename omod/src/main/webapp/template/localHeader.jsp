@@ -16,6 +16,12 @@
 		href="${pageContext.request.contextPath}/module/systemmonitor/pushToDHIS.form"><spring:message
 				code="systemmonitor.pushToDHIS" /></a>
 	</li>
+	<li
+		<c:if test='<%= request.getRequestURI().contains("/configurations") %>'>class="active"</c:if>>
+		<a
+		href="${pageContext.request.contextPath}/module/systemmonitor/configurations.form"><spring:message
+				code="systemmonitor.configurations" /></a>
+	</li>
 	<!-- Add further links here -->
 </ul>
 <h2>
