@@ -16,6 +16,8 @@ import org.openmrs.module.ModuleUtil;
 public class ConfigureGPs {
 	private GlobalProperty viralLoadConceptIdGp;
 
+	private GlobalProperty cd4CountConceptIdGp;
+
 	private GlobalProperty reasonForExistingCareConceptIdGp;
 
 	private GlobalProperty hivProgramIdGp;
@@ -40,6 +42,12 @@ public class ConfigureGPs {
 
 	private boolean mustSetScheduler;
 
+	private GlobalProperty arvDrugsConceptSetGp;
+
+	private GlobalProperty numberOfVisitsMetricEncounterTypeIdsGp;
+
+	private GlobalProperty numberOfTotalNewPatientsMetricEncounterTypeIdsGp;
+
 	public ConfigureGPs() {
 		initialiseGPsWithTheirCurrentValues();
 	}
@@ -47,6 +55,8 @@ public class ConfigureGPs {
 	private void initialiseGPsWithTheirCurrentValues() {
 		viralLoadConceptIdGp = Context.getAdministrationService()
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.VIRALLOAD_CONCEPTID);
+		cd4CountConceptIdGp = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.CD4COUNT_CONCEPTID);
 		reasonForExistingCareConceptIdGp = Context.getAdministrationService()
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.CAREEXITREASON_CONCEPTID);
 		hivProgramIdGp = Context.getAdministrationService()
@@ -64,6 +74,13 @@ public class ConfigureGPs {
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.CONFIGS_OPENNINGDAYS);
 		closingHourGp = Context.getAdministrationService()
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.CONFIGS_CLOSINGHOUR);
+		arvDrugsConceptSetGp = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.ARVDRUGS_CONCEPTSETID);
+		numberOfVisitsMetricEncounterTypeIdsGp = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFVISITS);
+		numberOfTotalNewPatientsMetricEncounterTypeIdsGp = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFPATIENTSNEW);
+
 		if (mustConfigureSchedulerAccount()) {
 			schedulerUsernameGp = Context.getAdministrationService().getGlobalPropertyObject("scheduler.username");
 			schedulerPasswordGp = Context.getAdministrationService().getGlobalPropertyObject("scheduler.password");
@@ -82,6 +99,7 @@ public class ConfigureGPs {
 			schedulerPasswordGp.setPropertyValue(request.getParameter("schedulerPassword"));
 		}
 		viralLoadConceptIdGp.setPropertyValue(request.getParameter("viralLoadConceptId"));
+		cd4CountConceptIdGp.setPropertyValue(request.getParameter("cd4CountConceptId"));
 		reasonForExistingCareConceptIdGp.setPropertyValue(request.getParameter("reasonForExistingCareConceptId"));
 		hivProgramIdGp.setPropertyValue(request.getParameter("hivProgramId"));
 		siteIdGp.setPropertyValue(request.getParameter("siteId"));
@@ -91,12 +109,18 @@ public class ConfigureGPs {
 		openingDaysGp.setPropertyValue(request.getParameter("openingDays"));
 		openingHourGp.setPropertyValue(request.getParameter("openingHour"));
 		closingHourGp.setPropertyValue(request.getParameter("closingHour"));
+		arvDrugsConceptSetGp.setPropertyValue(request.getParameter("arvDrugsConceptSetId"));
+		numberOfVisitsMetricEncounterTypeIdsGp
+				.setPropertyValue(request.getParameter("numberOfVisitsMetricEncounterTypeIds"));
+		numberOfTotalNewPatientsMetricEncounterTypeIdsGp
+				.setPropertyValue(request.getParameter("numberOfTotalNewPatientsMetricEncounterTypeIds"));
 
 		if (mustConfigureSchedulerAccount()) {
 			gps.add(schedulerUsernameGp);
 			gps.add(schedulerPasswordGp);
 		}
 		gps.add(viralLoadConceptIdGp);
+		gps.add(cd4CountConceptIdGp);
 		gps.add(reasonForExistingCareConceptIdGp);
 		gps.add(hivProgramIdGp);
 		gps.add(siteIdGp);
@@ -106,6 +130,9 @@ public class ConfigureGPs {
 		gps.add(openingDaysGp);
 		gps.add(openingHourGp);
 		gps.add(closingHourGp);
+		gps.add(arvDrugsConceptSetGp);
+		gps.add(numberOfVisitsMetricEncounterTypeIdsGp);
+		gps.add(numberOfTotalNewPatientsMetricEncounterTypeIdsGp);
 
 		Context.getAdministrationService().saveGlobalProperties(gps);
 	}
@@ -161,4 +188,21 @@ public class ConfigureGPs {
 	public boolean getMustSetScheduler() {
 		return mustConfigureSchedulerAccount();
 	}
+
+	public GlobalProperty getNumberOfTotalNewPatientsMetricEncounterTypeIdsGp() {
+		return numberOfTotalNewPatientsMetricEncounterTypeIdsGp;
+	}
+
+	public GlobalProperty getArvDrugsConceptSetGp() {
+		return arvDrugsConceptSetGp;
+	}
+
+	public GlobalProperty getCd4CountConceptIdGp() {
+		return cd4CountConceptIdGp;
+	}
+
+	public GlobalProperty getNumberOfVisitsMetricEncounterTypeIdsGp() {
+		return numberOfVisitsMetricEncounterTypeIdsGp;
+	}
+
 }

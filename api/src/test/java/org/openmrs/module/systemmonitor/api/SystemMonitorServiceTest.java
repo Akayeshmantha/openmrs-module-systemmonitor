@@ -192,7 +192,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 	}
 
-	@Test
+	@Ignore
 	public void test_hibernateCriteriaRestrictions() throws IOException {
 		System.out.println("Total Count: " + systemMonitorService.unitTestingTheseMetrics());
 	}

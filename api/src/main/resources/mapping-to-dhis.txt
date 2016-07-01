@@ -49,6 +49,11 @@ DATA-ELEMENT_systemInfo_tempDirectory=FveZHUNsC1o
 DATA-ELEMENT_systemInfo_openMRSVersion=Gnpcar514A3
 DATA-ELEMENT_systemInfo_installedModules=ICTGPRAVZVZ
 DATA-ELEMENT_systemRealLocation=hKJXqpumYZ6
+DATA-ELEMENT_patientsCD4CountTestResults_ever=UEfoD5rcZbC
+DATA-ELEMENT_patientsCD4CountTestResults_last6Months=d3XqMIFIoz6
+DATA-ELEMENT_patientsCD4CountTestResults_LastYear=GHq0YsrAsaf
+DATA-ELEMENT_serverUptimeSecs=RiyIySUEl1W
+DATA-ELEMENT_openmrsUptimeSecs=WdPwtuNKhcd
 ------------------------------------------------------------------------------------
 
 

@@ -15,6 +15,7 @@ package org.openmrs.module.systemmonitor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleActivator;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
@@ -35,6 +36,8 @@ public class SystemMonitorActivator implements ModuleActivator {
 	public void started() {
 		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
 		Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
+		Context.getService(SystemMonitorService.class)
+				.updateNumberOfSecondsAtOpenMRSStartup(System.currentTimeMillis() / 1000);
 	}
 
 	@Override

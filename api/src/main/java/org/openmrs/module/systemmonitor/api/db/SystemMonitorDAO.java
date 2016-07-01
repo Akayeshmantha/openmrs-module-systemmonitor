@@ -13,13 +13,13 @@
  */
 package org.openmrs.module.systemmonitor.api.db;
 
-import java.util.Date;
-
+import org.openmrs.Concept;
 import org.openmrs.Person;
+import org.openmrs.Program;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 
 /**
- *  Database methods for {@link SystemMonitorService}.
+ * Database methods for {@link SystemMonitorService}.
  */
 public interface SystemMonitorDAO {
 
@@ -234,4 +234,20 @@ public interface SystemMonitorDAO {
 	String getOneHalfYearBackDate();
 
 	Integer unitTestingTheseMetrics();
+
+	Integer getTotalCD4CountTestsEver();
+
+	Integer getTotalCD4CountTestsLastSixMonths();
+
+	Integer getTotalCD4CountTestsLastYear();
+
+	Program getHIVProgram();
+
+	Concept getReasonForExitingCareConcept();
+
+	Concept getCD4CountConcept();
+
+	Concept getViralLoadsConcept();
+
+	Concept getARVDrugsConceptSet();
 }

@@ -37,11 +37,39 @@
 			<td>${configurations.viralLoadConceptIdGp.description}</td>
 		</tr>
 		<tr>
+			<td>${configurations.cd4CountConceptIdGp.property}</td>
+			<td><input type="text"
+				value="${configurations.cd4CountConceptIdGp.propertyValue}"
+				name="cd4CountConceptId" /></td>
+			<td>${configurations.cd4CountConceptIdGp.description}</td>
+		</tr>
+		<tr>
 			<td>${configurations.reasonForExistingCareConceptIdGp.property}</td>
 			<td><input type="text"
 				value="${configurations.reasonForExistingCareConceptIdGp.propertyValue}"
 				name="reasonForExistingCareConceptId" /></td>
 			<td>${configurations.reasonForExistingCareConceptIdGp.description}</td>
+		</tr>	
+		<tr>
+			<td>${configurations.arvDrugsConceptSetGp.property}</td>
+			<td><input type="text"
+				value="${configurations.arvDrugsConceptSetGp.propertyValue}"
+				name="arvDrugsConceptSetId" /></td>
+			<td>${configurations.arvDrugsConceptSetGp.description}</td>
+		</tr>
+		<tr>
+			<td>${configurations.numberOfVisitsMetricEncounterTypeIdsGp.property}</td>
+			<td><input type="text"
+				value="${configurations.numberOfVisitsMetricEncounterTypeIdsGp.propertyValue}"
+				name="numberOfVisitsMetricEncounterTypeIds" /></td>
+			<td>${configurations.numberOfVisitsMetricEncounterTypeIdsGp.description}</td>
+		</tr>
+		<tr>
+			<td>${configurations.numberOfTotalNewPatientsMetricEncounterTypeIdsGp.property}</td>
+			<td><input type="text"
+				value="${configurations.numberOfTotalNewPatientsMetricEncounterTypeIdsGp.propertyValue}"
+				name="numberOfTotalNewPatientsMetricEncounterTypeIds" /></td>
+			<td>${configurations.numberOfTotalNewPatientsMetricEncounterTypeIdsGp.description}</td>
 		</tr>
 		<tr>
 			<td>${configurations.hivProgramIdGp.property}</td>
@@ -82,7 +110,7 @@
 			<td><spring:message code="systemmonitor.opening.days" /></td>
 			<td><input type="text" name="openingDays"
 				value="${configurations.openingDaysGp.propertyValue}" /></td>
-			<td><spring:message code="systemmonitor.opening.hour.desc" /></td>
+			<td><spring:message code="systemmonitor.opening.days.desc" /></td>
 		</tr>
 		<tr>
 			<td><spring:message code="systemmonitor.opening.hour" /></td>

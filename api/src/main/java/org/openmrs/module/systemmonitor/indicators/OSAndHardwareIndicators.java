@@ -104,9 +104,9 @@ public class OSAndHardwareIndicators {
 	public static String OS_VERSION_NUMBER = version.getVersion();
 
 	/**
-	 * Time from when System started in seconds
+	 * Time from when System started in minutes
 	 */
-	public static Long PROCESSOR_SYSTEM_UPTIME = p.getSystemUptime();
+	public static Long PROCESSOR_SYSTEM_UPTIME = p.getSystemUptime() / 60;
 
 	public static String getHostName() {
 		try {

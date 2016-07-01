@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.net.InetAddress;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 import org.openmrs.module.systemmonitor.indicators.OSAndHardwareIndicators;
@@ -155,7 +156,7 @@ public class TestOSHILibrary {
 				+ "\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
 	}
 
-	@Test
+	@Ignore
 	public void test_systemDisks() {
 		SystemInfo si = new SystemInfo();
 

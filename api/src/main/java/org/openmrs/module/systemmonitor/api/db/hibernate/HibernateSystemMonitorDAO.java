@@ -40,6 +40,7 @@ import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.PatientProgram;
 import org.openmrs.Person;
+import org.openmrs.Program;
 import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.Visit;
@@ -72,21 +73,40 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return sessionFactory;
 	}
 
-	private Concept getViralLoadsConcept() {
-		String viralLoadConcept = Context.getAdministrationService()
-				.getGlobalProperty(ConfigurableGlobalProperties.VIRALLOAD_CONCEPTID);
-		Integer viralLoadConceptId = viralLoadConcept != null ? Integer.parseInt(viralLoadConcept) : null;
+	private Concept getConceptByGpCode(String globalPropertyCode) {
+		String concept = Context.getAdministrationService().getGlobalProperty(globalPropertyCode);
+		Integer conceptId = concept != null ? Integer.parseInt(concept) : null;
 
-		return viralLoadConceptId != null ? Context.getConceptService().getConcept(viralLoadConceptId) : null;
+		return conceptId != null ? Context.getConceptService().getConcept(conceptId) : null;
 	}
 
-	@SuppressWarnings("unused")
-	private Concept getReasonForExitingCareConcept() {
-		String exitCareConcept = Context.getAdministrationService()
-				.getGlobalProperty(ConfigurableGlobalProperties.CAREEXITREASON_CONCEPTID);
-		Integer exitCareConceptId = exitCareConcept != null ? Integer.parseInt(exitCareConcept) : null;
+	@Override
+	public Program getHIVProgram() {
+		String program = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.HIV_PROGRAMID);
+		Integer programId = program != null ? Integer.parseInt(program) : null;
 
-		return exitCareConceptId != null ? Context.getConceptService().getConcept(exitCareConceptId) : null;
+		return programId != null ? Context.getProgramWorkflowService().getProgram(programId) : null;
+	}
+
+	@Override
+	public Concept getViralLoadsConcept() {
+		return getConceptByGpCode(ConfigurableGlobalProperties.VIRALLOAD_CONCEPTID);
+	}
+
+	@Override
+	public Concept getCD4CountConcept() {
+		return getConceptByGpCode(ConfigurableGlobalProperties.CD4COUNT_CONCEPTID);
+	}
+
+	@Override
+	public Concept getReasonForExitingCareConcept() {
+		return getConceptByGpCode(ConfigurableGlobalProperties.CAREEXITREASON_CONCEPTID);
+	}
+
+	@Override
+	public Concept getARVDrugsConceptSet() {
+		return getConceptByGpCode(ConfigurableGlobalProperties.ARVDRUGS_CONCEPTSETID);
 	}
 
 	@Override
@@ -928,14 +948,13 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return orderers.toArray(new Object[orderers.size()]);
 	}
 
-	@Override
-	public Integer getTotalViralLoadTestsEver() {
+	private Integer getConceptObsEverCount(Concept concept) {
 		String sql;
 		Integer count = 0;
 
-		if (getViralLoadsConcept() != null) {
+		if (concept != null) {
 			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
-					+ " where voided=false and concept_id = " + getViralLoadsConcept().getConceptId()
+					+ " where voided=false and concept_id = " + concept.getConceptId()
 					+ " and person_id in(select distinct patient_id from patient)";
 			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 					.intValue();
@@ -991,14 +1010,13 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		}
 	}
 
-	@Override
-	public Integer getTotalViralLoadTestsLastSixMonths() {
+	private Integer getConceptObsLastSixMonthsCount(Concept concept) {
 		String sql;
 		Integer count = 0;
 
-		if (getViralLoadsConcept() != null) {
+		if (concept != null) {
 			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
-					+ " where voided=false and concept_id = " + getViralLoadsConcept().getConceptId()
+					+ " where voided=false and concept_id = " + concept.getConceptId()
 					+ " and person_id in(select distinct patient_id from patient) and obs_datetime > DATE_SUB(now(), INTERVAL 6 MONTH)";
 			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 					.intValue();
@@ -1007,13 +1025,42 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	@Override
+	public Integer getTotalViralLoadTestsEver() {
+		return getConceptObsEverCount(getViralLoadsConcept());
+	}
+
+	@Override
+	public Integer getTotalViralLoadTestsLastSixMonths() {
+		return getConceptObsLastSixMonthsCount(getViralLoadsConcept());
+	}
+
+	@Override
 	public Integer getTotalViralLoadTestsLastYear() {
+		return getConceptObsLastYearCount(getViralLoadsConcept());
+	}
+
+	@Override
+	public Integer getTotalCD4CountTestsEver() {
+		return getConceptObsEverCount(getCD4CountConcept());
+	}
+
+	@Override
+	public Integer getTotalCD4CountTestsLastSixMonths() {
+		return getConceptObsLastSixMonthsCount(getCD4CountConcept());
+	}
+
+	@Override
+	public Integer getTotalCD4CountTestsLastYear() {
+		return getConceptObsLastYearCount(getCD4CountConcept());
+	}
+
+	private Integer getConceptObsLastYearCount(Concept concept) {
 		String sql;
 		Integer count = 0;
 
-		if (getViralLoadsConcept() != null) {
+		if (concept != null) {
 			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
-					+ " where voided=false and concept_id = " + getViralLoadsConcept().getConceptId()
+					+ " where voided=false and concept_id = " + concept.getConceptId()
 					+ " and person_id in(select distinct patient_id from patient) and obs_datetime > DATE_SUB(now(), INTERVAL 12 MONTH)";
 			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 					.intValue();
@@ -1023,7 +1070,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalVisits() {
-		String sql = "select count(*) from encounter where encounter_type in (2,4)";
+		String sql = "select count(*) from encounter where encounter_type in (" + Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFVISITS) + ")";
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -1032,7 +1080,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalActivePatients() {
-		String sql = "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id = 1811 and program_id = 2 and ord.concept_id in (select distinct concept_id from concept_set where concept_set = 1085)";
+		String sql = "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id = "
+				+ getReasonForExitingCareConcept().getConceptId() + "  and program_id = "
+				+ getHIVProgram().getProgramId()
+				+ " and ord.concept_id in (select distinct concept_id from concept_set where concept_set = "
+				+ getARVDrugsConceptSet().getConceptId() + ")";
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -1074,7 +1126,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalNewPatients() {
-		String sql = "select count(*) from encounter where encounter_type in (1,3)";
+		String sql = "select count(*) from encounter where encounter_type in (" + Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFPATIENTSNEW) + ")";
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 

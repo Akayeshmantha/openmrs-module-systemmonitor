@@ -125,5 +125,32 @@
 			Clinic's/Site's Opening Days
 		</description>
 	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.numberOfSecondsAtOpenMRSStartup</property>
+		<defaultValue>1467311830</defaultValue>
+		<description>
+			Keeps records of the current number of seconds when OpenMRS is starting
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.cd4CountConceptIp</property>
+		<defaultValue>5497</defaultValue>
+		<description>Supports configuring CD4 COUNT Concept</description>
+	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.antiretroviralDrugsConceptSetId</property>
+		<defaultValue>1085</defaultValue>
+		<description>Supports configuring ANTIRETROVIRAL DRUGS Concept Set</description>
+	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.numberOfVisitsMetricEncounterTypeIds</property>
+		<defaultValue>2,4</defaultValue>
+		<description>USed to set encounter type ids for Rwanda EMT total visits indicator</description>
+	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.numberOfTotalNewPatientsMetricEncounterTypeIds</property>
+		<defaultValue>1,3</defaultValue>
+		<description>USed to set encounter type ids for Rwanda EMT total new patients indicator</description>
+	</globalProperty>
 
 </module>

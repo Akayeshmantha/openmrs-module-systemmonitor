@@ -26,8 +26,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.openmrs.Concept;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Person;
+import org.openmrs.Program;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.Module;
@@ -621,20 +623,23 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	public GlobalProperty getCurrentConfiguredDHISPassword() {
 		return Context.getAdministrationService().getGlobalPropertyObject(ConfigurableGlobalProperties.DHIS_PASSWORD);
 	}
-	
+
 	@Override
 	public GlobalProperty getConfiguredOpeningHour() {
-		return Context.getAdministrationService().getGlobalPropertyObject(ConfigurableGlobalProperties.CONFIGS_OPENNINGHOUR);
+		return Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.CONFIGS_OPENNINGHOUR);
 	}
-	
+
 	@Override
 	public GlobalProperty getConfiguredClosingHour() {
-		return Context.getAdministrationService().getGlobalPropertyObject(ConfigurableGlobalProperties.CONFIGS_CLOSINGHOUR);
+		return Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.CONFIGS_CLOSINGHOUR);
 	}
-	
+
 	@Override
 	public GlobalProperty getConfiguredOpeningDays() {
-		return Context.getAdministrationService().getGlobalPropertyObject(ConfigurableGlobalProperties.CONFIGS_OPENNINGDAYS);
+		return Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.CONFIGS_OPENNINGDAYS);
 	}
 
 	@Override
@@ -836,5 +841,64 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				writeToFile(returnedJSON.toString(), dhisDataFile);
 			}
 		}
+	}
+
+	private Long getNumberOfSecondsAtOpenMRSStartup() {
+		return Long.parseLong(Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.NUMBER_OF_SECS_AT_STARTUP));
+	}
+
+	@Override
+	public Long getOpenMRSSystemUpTime() {
+		return ((System.currentTimeMillis() / 1000) - getNumberOfSecondsAtOpenMRSStartup()) / 60;
+	}
+
+	@Override
+	public void updateNumberOfSecondsAtOpenMRSStartup(Long startTime) {
+		GlobalProperty numberOfSecondsAtOpenMRSStartupGp = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.NUMBER_OF_SECS_AT_STARTUP);
+
+		numberOfSecondsAtOpenMRSStartupGp.setPropertyValue(Long.toString(startTime));
+		Context.getAdministrationService().saveGlobalProperty(numberOfSecondsAtOpenMRSStartupGp);
+	}
+
+	@Override
+	public Integer getTotalCD4CountTestsEver() {
+		return dao.getTotalCD4CountTestsEver();
+	}
+
+	@Override
+	public Integer getTotalCD4CountTestsLastSixMonths() {
+		return dao.getTotalCD4CountTestsLastSixMonths();
+	}
+
+	@Override
+	public Integer getTotalCD4CountTestsLastYear() {
+		return dao.getTotalCD4CountTestsLastYear();
+	}
+
+	@Override
+	public Program getHIVProgram() {
+		return dao.getHIVProgram();
+	}
+
+	@Override
+	public Concept getReasonForExitingCareConcept() {
+		return dao.getReasonForExitingCareConcept();
+	}
+
+	@Override
+	public Concept getCD4CountConcept() {
+		return dao.getCD4CountConcept();
+	}
+
+	@Override
+	public Concept getViralLoadsConcept() {
+		return dao.getViralLoadsConcept();
+	}
+
+	@Override
+	public Concept getARVDrugsConceptSet() {
+		return dao.getARVDrugsConceptSet();
 	}
 }

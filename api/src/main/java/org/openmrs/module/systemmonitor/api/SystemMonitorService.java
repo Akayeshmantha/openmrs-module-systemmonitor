@@ -15,8 +15,10 @@ package org.openmrs.module.systemmonitor.api;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.openmrs.Concept;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Person;
+import org.openmrs.Program;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -279,4 +281,29 @@ public interface SystemMonitorService extends OpenmrsService {
 	GlobalProperty getConfiguredClosingHour();
 
 	GlobalProperty getConfiguredOpeningDays();
+
+	/**
+	 * Calculates and fetches OpenMRS Server uptime in minutes
+	 * 
+	 * @return
+	 */
+	Long getOpenMRSSystemUpTime();
+
+	void updateNumberOfSecondsAtOpenMRSStartup(Long startTime);
+
+	Integer getTotalCD4CountTestsEver();
+
+	Integer getTotalCD4CountTestsLastSixMonths();
+
+	Integer getTotalCD4CountTestsLastYear();
+
+	Program getHIVProgram();
+
+	Concept getReasonForExitingCareConcept();
+
+	Concept getCD4CountConcept();
+
+	Concept getViralLoadsConcept();
+	
+	Concept getARVDrugsConceptSet();
 }

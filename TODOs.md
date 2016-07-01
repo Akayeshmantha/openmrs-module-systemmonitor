@@ -18,3 +18,6 @@ ______________________________________________
 * Fix System uptime push % datatype conflict
 * reloadConfigurations api method, saves gps and reloads dhismetadata if site is changed or dhis account
 * if user changes configurations of dhis instance mainly url, after getting metadata from server, confirm that it matches with the embedded mappings file
+* Add CD4 Counts indicator that works like for Viral Loads
+* Support sending none sent data afterwards
+* Again do sever logging of pushing to dhis 

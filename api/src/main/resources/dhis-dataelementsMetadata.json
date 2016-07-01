@@ -2,7 +2,7 @@
   "pager": {
     "page": 1,
     "pageCount": 1,
-    "total": 40,
+    "total": 45,
     "pageSize": 50
   },
   "dataElements": [
@@ -91,6 +91,13 @@
       "href": "http://82.196.9.250:8080/api/dataElements/OBJQIpvppBt"
     },
     {
+      "lastUpdated": "2016-07-01T08:46:37.465+0000",
+      "created": "2016-07-01T04:52:08.802+0000",
+      "name": "OpenMRS Uptime (minutes)",
+      "id": "WdPwtuNKhcd",
+      "href": "http://82.196.9.250:8080/api/dataElements/WdPwtuNKhcd"
+    },
+    {
       "lastUpdated": "2016-05-16T08:34:04.818+0000",
       "created": "2016-05-16T08:34:04.808+0000",
       "name": "OpenMRS Version",
@@ -117,6 +124,27 @@
       "name": "Operating System Version",
       "id": "l76OuWQxBYa",
       "href": "http://82.196.9.250:8080/api/dataElements/l76OuWQxBYa"
+    },
+    {
+      "lastUpdated": "2016-07-01T05:09:58.632+0000",
+      "created": "2016-06-30T19:50:28.943+0000",
+      "name": "Patient CD4 Count Test Results - All",
+      "id": "UEfoD5rcZbC",
+      "href": "http://82.196.9.250:8080/api/dataElements/UEfoD5rcZbC"
+    },
+    {
+      "lastUpdated": "2016-07-01T05:10:20.261+0000",
+      "created": "2016-06-30T19:50:56.520+0000",
+      "name": "Patient  CD4 Count  Test Results - Last 6 Months",
+      "id": "d3XqMIFIoz6",
+      "href": "http://82.196.9.250:8080/api/dataElements/d3XqMIFIoz6"
+    },
+    {
+      "lastUpdated": "2016-07-01T05:10:10.452+0000",
+      "created": "2016-06-30T19:51:19.308+0000",
+      "name": "Patient  CD4 Count  Test Results - Last Year",
+      "id": "GHq0YsrAsaf",
+      "href": "http://82.196.9.250:8080/api/dataElements/GHq0YsrAsaf"
     },
     {
       "lastUpdated": "2016-05-01T17:52:05.525+0000",
@@ -166,6 +194,13 @@
       "name": "Server's Real Location",
       "id": "hKJXqpumYZ6",
       "href": "http://82.196.9.250:8080/api/dataElements/hKJXqpumYZ6"
+    },
+    {
+      "lastUpdated": "2016-07-01T08:47:03.629+0000",
+      "created": "2016-07-01T04:51:28.393+0000",
+      "name": "Server Uptime Since Boot (minutes)",
+      "id": "RiyIySUEl1W",
+      "href": "http://82.196.9.250:8080/api/dataElements/RiyIySUEl1W"
     },
     {
       "lastUpdated": "2016-05-16T12:26:00.679+0000",
