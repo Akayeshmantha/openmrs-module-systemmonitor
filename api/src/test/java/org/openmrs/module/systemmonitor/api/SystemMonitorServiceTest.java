@@ -188,7 +188,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 		System.out.println("Installed Modules: " + systemMonitorService.getInstalledModules().toString());
 		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
-		System.out.println("DHIS Generated ValueSet :\n" + emt.generatedDHISDataValueSetJSONString().toString());
+		System.out.println("DHIS Generated ValueSet :\n" + emt.generatedDHISDataValueSetJSON().toString());
 		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 	}
 

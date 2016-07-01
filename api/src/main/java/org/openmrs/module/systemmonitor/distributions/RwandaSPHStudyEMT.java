@@ -13,7 +13,7 @@ import org.openmrs.module.systemmonitor.export.DHISGenerateDataValueSetSchemas;
  */
 public class RwandaSPHStudyEMT {
 
-	public JSONObject generatedDHISDataValueSetJSONString() {
+	public JSONObject generatedDHISDataValueSetJSON() {
 		return DHISGenerateDataValueSetSchemas.generateRwandaSPHEMTDHISDataValueSets();
 	}
 }

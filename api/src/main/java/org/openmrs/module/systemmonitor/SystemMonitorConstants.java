@@ -15,6 +15,10 @@ public class SystemMonitorConstants {
 
 	public static String SYSTEMMONITOR_DIRECTORYNAME = "SystemMonitor";
 
+	public static String SYSTEMMONITOR_DATA_DIRECTORYNAME = "Data";
+
+	public static String SYSTEMMONITOR_LOGS_DIRECTORYNAME = "Logs";
+
 	public static String SYSTEMMONITOR_MAPPING_FILENAME = "mapping-to-dhis.txt";
 
 	public static String SYSTEMMONITOR_DATAELEMENTSMETADATA_FILENAME = "dhis-dataelementsMetadata.json";
@@ -36,6 +40,13 @@ public class SystemMonitorConstants {
 	public static String SYSTEMMONITOR_DIRECTORYPATH = OpenmrsUtil.getApplicationDataDirectory() + File.separator
 			+ SYSTEMMONITOR_DIRECTORYNAME;
 
+	public static String SYSTEMMONITOR_DATA_DIRECTORYPATH = OpenmrsUtil.getApplicationDataDirectory() + File.separator
+			+ SYSTEMMONITOR_DIRECTORYNAME + File.separator + SYSTEMMONITOR_DATA_DIRECTORYNAME;
+
+	public static String SYSTEMMONITOR_LOGS_DIRECTORYPATH = OpenmrsUtil.getApplicationDataDirectory() + File.separator
+			+ SYSTEMMONITOR_DIRECTORYNAME + File.separator + SYSTEMMONITOR_LOGS_DIRECTORYNAME;
+
+	
 	public static File MODULE_REPOSITORY = ModuleUtil.getModuleRepository();
 
 	public static File SYSTEMMONITOR_DIRECTORY = OpenmrsUtil

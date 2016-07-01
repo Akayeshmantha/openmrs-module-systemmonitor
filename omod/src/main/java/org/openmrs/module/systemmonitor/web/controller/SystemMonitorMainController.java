@@ -36,7 +36,7 @@ public class SystemMonitorMainController {
 	public void dhisDataValuesViewer(ModelMap model) {
 		RwandaSPHStudyEMT emt = new RwandaSPHStudyEMT();
 
-		model.addAttribute("data", emt.generatedDHISDataValueSetJSONString());
+		model.addAttribute("data", emt.generatedDHISDataValueSetJSON());
 	}
 
 	@RequestMapping(value = "/module/systemmonitor/pushToDHIS", method = RequestMethod.GET)
@@ -69,5 +69,13 @@ public class SystemMonitorMainController {
 			request.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR, e);
 		}
 		model.addAttribute("configurations", configs);
+	}
+
+	@RequestMapping(value = "/module/systemmonitor/localReport", method = RequestMethod.GET)
+	public void renderLocalReport(ModelMap model) {
+		RwandaSPHStudyEMT emt = new RwandaSPHStudyEMT();
+
+		model.addAttribute("reportData",
+				emt.generatedDHISDataValueSetJSON().getJSONObject("allData").getJSONArray("dataValues"));
 	}
 }

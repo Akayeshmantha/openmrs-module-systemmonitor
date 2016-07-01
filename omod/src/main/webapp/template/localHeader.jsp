@@ -22,6 +22,12 @@
 		href="${pageContext.request.contextPath}/module/systemmonitor/configurations.form"><spring:message
 				code="systemmonitor.configurations" /></a>
 	</li>
+	<li
+		<c:if test='<%= request.getRequestURI().contains("/localReport") %>'>class="active"</c:if>>
+		<a
+		href="${pageContext.request.contextPath}/module/systemmonitor/localReport.form"><spring:message
+				code="systemmonitor.localReport" /></a>
+	</li>
 	<!-- Add further links here -->
 </ul>
 <h2>
