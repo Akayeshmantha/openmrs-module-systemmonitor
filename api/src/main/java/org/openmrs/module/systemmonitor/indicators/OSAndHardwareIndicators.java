@@ -2,6 +2,7 @@ package org.openmrs.module.systemmonitor.indicators;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -117,7 +118,7 @@ public class OSAndHardwareIndicators {
 		return null;
 	}
 
-	public static String getIpAddress() {
+	public static String getIpAddress() throws SocketException, UnknownHostException {
 		try {
 			@SuppressWarnings("static-access")
 			String publicIp = new CurlEmulator().sendNormalHtmlGET("http://ipinfo.io/ip");
@@ -125,12 +126,10 @@ public class OSAndHardwareIndicators {
 					: InetAddress.getLocalHost().getHostAddress();
 
 			return finalIP;
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return InetAddress.getLocalHost().getHostAddress();
 	}
 
 	public static JSONArray getNetworkInformation() {

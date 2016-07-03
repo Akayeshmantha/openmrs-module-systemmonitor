@@ -1,6 +1,7 @@
 package org.openmrs.module.systemmonitor.export;
 
 import java.io.File;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -57,6 +58,8 @@ public class DHISGenerateDataValueSetSchemas {
 
 		Integer uptime = OSAndHardwareIndicators.PROCESSOR_SYSTEM_UPTIME.intValue();
 
+		String processor = OSAndHardwareIndicators.PROCESSOR_NAME;
+
 		Integer openmrsUptime = systemMonitorService.getOpenMRSSystemUpTime().intValue();
 
 		Integer previousWeekUptime = null;
@@ -70,7 +73,7 @@ public class DHISGenerateDataValueSetSchemas {
 		Long totalMemory = OSAndHardwareIndicators.MEMORY_TOTAL;
 
 		Long openmrsUptimePercentage = null;
-		
+
 		String operatingSystem = SystemPropertiesIndicators.OS_NAME + ", Family: " + OSAndHardwareIndicators.OS_FAMILY
 				+ ", Manufacturer: " + OSAndHardwareIndicators.OS_MANUFACTURER + ", Version Name: "
 				+ OSAndHardwareIndicators.OS_VERSION_NAME + ", Version Number: "
@@ -109,8 +112,15 @@ public class DHISGenerateDataValueSetSchemas {
 
 		String tempDirectory = SystemPropertiesIndicators.TEMP_FOLDER;
 
-		JSONObject serverRealLocation = CurlEmulator
-				.get(SystemMonitorConstants.IP_INFO_URL + OSAndHardwareIndicators.getIpAddress(), null, null);
+		JSONObject serverRealLocation = null;
+		try {
+			serverRealLocation = CurlEmulator
+					.get(SystemMonitorConstants.IP_INFO_URL + OSAndHardwareIndicators.getIpAddress(), null, null);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
 
 		Integer encounterTotal = systemMonitorService.rwandaPIHEMTGetTotalEncounters();
 
@@ -316,6 +326,10 @@ public class DHISGenerateDataValueSetSchemas {
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_patientsCD4CountTestResults_LastYear")
 					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
 					+ "\", \"value\": " + cd4CountTestResultsLastYear + "}";
+			String processorDataElement = "{ \"dataElement\": \""
+					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_processor") + "\", \"period\": \""
+					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
+					+ processor + "}";
 
 			JSONObject systemRealLocationDataElementJSON = new JSONObject();
 			JSONObject installedModulesDataElementJSON = new JSONObject();
@@ -325,7 +339,8 @@ public class DHISGenerateDataValueSetSchemas {
 			systemRealLocationDataElementJSON.put("dataElement",
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemRealLocation"));
 			systemRealLocationDataElementJSON.put("period", dFormat.format(today));
-			systemRealLocationDataElementJSON.put("value", serverRealLocation);
+			systemRealLocationDataElementJSON.put("value",
+					serverRealLocation != null ? serverRealLocation : "No Internet Connection");
 			systemRealLocationDataElementJSON.put("orgUnit", dhisOrganizationUnitUid);
 			installedModulesDataElementJSON.put("dataElement",
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_installedModules"));
@@ -335,7 +350,8 @@ public class DHISGenerateDataValueSetSchemas {
 			systemRealLocationDataElementJSON2.put("dataElement",
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemRealLocation"));
 			systemRealLocationDataElementJSON2.put("period", dFormat.format(today));
-			systemRealLocationDataElementJSON2.put("value", convertJSONToCleanString(serverRealLocation, null));
+			systemRealLocationDataElementJSON2.put("value", serverRealLocation != null
+					? convertJSONToCleanString(serverRealLocation, null) : "No Internet Connection");
 			systemRealLocationDataElementJSON2.put("orgUnit", dhisOrganizationUnitUid);
 			installedModulesDataElementJSON2.put("orgUnit", dhisOrganizationUnitUid);
 			installedModulesDataElementJSON2.put("dataElement",
@@ -344,7 +360,13 @@ public class DHISGenerateDataValueSetSchemas {
 			installedModulesDataElementJSON2.put("value",
 					convertJSONToCleanString(null, systemMonitorService.getInstalledModules()));
 			jsonDataValueSets.put(new JSONObject(systemIdDataElement));
+			jsonDataValueSets.put(new JSONObject(processorDataElement));
+			jsonDataValueSets.put(new JSONObject(upTimeDataElement));
+			jsonDataValueSets.put(new JSONObject(totalMemoryDataElement));
+			jsonDataValueSets.put(new JSONObject(usedMemoryDataElement));
+			jsonDataValueSets.put(new JSONObject(freeMemoryDataElement));
 			jsonDataValueSets.put(new JSONObject(openMRSAppNameDataElement));
+			jsonDataValueSets.put(new JSONObject(openmrsUpTimeDataElement));
 			jsonDataValueSets.put(new JSONObject(primaryClinicDaysDataElement));
 			jsonDataValueSets.put(new JSONObject(primaryClinicHoursDataElement));
 			jsonDataValueSets.put(new JSONObject(encounterDataElement));
@@ -356,16 +378,9 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(new JSONObject(viralLoadTestResults_everDataElement));
 			jsonDataValueSets.put(new JSONObject(viralLoadTestResults_last6MonthsDataElement));
 			jsonDataValueSets.put(new JSONObject(viralLoadTestResults_lastYearDataElement));
-			jsonDataValueSets.put(new JSONObject(systemStartupsDataElement));
-			jsonDataValueSets.put(new JSONObject(upTimeThisWeekDataElement));
-			jsonDataValueSets.put(new JSONObject(upTimeLastWeekDataElement));
-			jsonDataValueSets.put(new JSONObject(upTimeLastMonthDataElement));
-			jsonDataValueSets.put(new JSONObject(upTimeDataElement));
-			jsonDataValueSets.put(new JSONObject(openmrsUpTimeDataElement));
-			jsonDataValueSets.put(new JSONObject(freeMemoryDataElement));
-			jsonDataValueSets.put(new JSONObject(totalMemoryDataElement));
-			jsonDataValueSets.put(new JSONObject(totalOpenMRSUptimeDataElement));
-			jsonDataValueSets.put(new JSONObject(usedMemoryDataElement));
+			jsonDataValueSets.put(new JSONObject(cd4CountTestResults_everDataElement));
+			jsonDataValueSets.put(new JSONObject(cd4CountTestResults_last6MonthsDataElement));
+			jsonDataValueSets.put(new JSONObject(cd4CountTestResults_lastYearDataElement));
 			jsonDataValueSets.put(new JSONObject(systemInfo_operatingSystem));
 			jsonDataValueSets.put(new JSONObject(systemInfo_operatingSystemArch));
 			jsonDataValueSets.put(new JSONObject(systemInfo_operatingSystemVersion));
@@ -382,10 +397,12 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(new JSONObject(systemInfo_javaRuntimeVersion));
 			jsonDataValueSets.put(new JSONObject(systemInfo_systemDateTime));
 			jsonDataValueSets.put(new JSONObject(systemInfo_fileSystemEncoding));
-			jsonDataValueSets.put(new JSONObject(cd4CountTestResults_everDataElement));
-			jsonDataValueSets.put(new JSONObject(cd4CountTestResults_last6MonthsDataElement));
-			jsonDataValueSets.put(new JSONObject(cd4CountTestResults_lastYearDataElement));
 			jsonDataValueSets.put(new JSONObject(systemInfo_openMRSVersion));
+			jsonDataValueSets.put(new JSONObject(systemStartupsDataElement));
+			jsonDataValueSets.put(new JSONObject(upTimeThisWeekDataElement));
+			jsonDataValueSets.put(new JSONObject(upTimeLastWeekDataElement));
+			jsonDataValueSets.put(new JSONObject(upTimeLastMonthDataElement));
+			jsonDataValueSets.put(new JSONObject(totalOpenMRSUptimeDataElement));
 			jsonToBePushed = new JSONArray(jsonDataValueSets.toString());
 			jsonToBePushed.put(systemRealLocationDataElementJSON2);
 			jsonToBePushed.put(installedModulesDataElementJSON2);

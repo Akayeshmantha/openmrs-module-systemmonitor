@@ -14,11 +14,14 @@
 package org.openmrs.module.systemmonitor.api.impl;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -688,17 +691,113 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 						? Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)
 								+ SystemMonitorConstants.DHIS_API_DATAVALUES_URL
 						: null;
+		JSONObject response = null;
+		File backupFile = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFILE;
 
 		if (StringUtils.isNotBlank(dhisPostUrl) && StringUtils.isNotBlank(dhisPassword)
 				&& StringUtils.isNotBlank(dhisUserName) && dataToBePushed != null) {
-			try {// TODO if no connection or error occurs when pushing, backup
-					// the data and push on next trial
-				return CurlEmulator.post(dhisPostUrl, dataToBePushed, dhisUserName, dhisPassword);
+			try {
+				response = CurlEmulator.post(dhisPostUrl, dataToBePushed, dhisUserName, dhisPassword);
+				if (response != null) {
+					logCurlEmulatorPostResponse(response.toString());
+					if (backupFile.exists()) {
+						backupFile.delete();
+					}
+					pushPreviouslyFailedDataWhenOutOfInternet();
+				} else {
+					backupSystemMonitorDataToPush(dataToBePushed);
+				}
+
 			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			} catch (SocketException e) {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return response;
+	}
+
+	private void pushPreviouslyFailedDataWhenOutOfInternet() {
+		File dataDir = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
+		String dhisUserName = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
+		String dhisPassword = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_PASSWORD);
+		String dhisPostUrl = (Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)) != null
+						? Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)
+								+ SystemMonitorConstants.DHIS_API_DATAVALUES_URL
+						: null;
+		JSONObject response = null;
+		if (dataDir.exists() && dataDir.isDirectory() && dataDir.listFiles().length > 0) {
+			for (int i = 0; i < dataDir.listFiles().length; i++) {
+				File backup = dataDir.listFiles()[i];
+
+				if (backup.getPath().endsWith(".json")) {
+					JSONObject data = new JSONObject(readFileToString(backup));
+
+					try {
+						response = CurlEmulator.post(dhisPostUrl, data, dhisUserName, dhisPassword);
+						if (response != null) {
+							logCurlEmulatorPostResponse(response.toString());
+							backup.delete();
+						}
+
+					} catch (UnknownHostException e) {
+						e.printStackTrace();
+					} catch (SocketException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void backupSystemMonitorDataToPush(JSONObject dhisValues) {
+		if (dhisValues != null && dhisValues.length() > 0) {
+			File backupFolder = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
+			File backupFile = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFILE;
+
+			try {
+				if (!backupFolder.exists()) {
+					backupFolder.mkdirs();
+				}
+				if (!backupFile.exists()) {
+					backupFile.createNewFile();
+				}
+
+				FileWriter fileWritter = new FileWriter(backupFile);
+				BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+				bufferWritter.write(dhisValues.toString());
+				bufferWritter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void logCurlEmulatorPostResponse(String response) {
+		if (response != null && response.length() > 0) {
+			File logsFolder = SystemMonitorConstants.SYSTEMMONITOR_LOGSFOLDER;
+			File logsFile = SystemMonitorConstants.SYSTEMMONITOR_LOGSFILE;
+
+			try {
+				if (!logsFolder.exists()) {
+					logsFolder.mkdirs();
+				}
+				if (!logsFile.exists()) {
+					logsFile.createNewFile();
+				}
+
+				FileWriter fileWritter = new FileWriter(logsFile, true);
+				BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+				bufferWritter.write(new Date().toString() + "\n" + response + "\n\n");
+				bufferWritter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -709,7 +808,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		JSONObject jsonDataElements;
 
 		if (StringUtils.isNotBlank(indicatorUid) && dataElementsFile != null && dataElementsFile.exists()) {
-			jsonDataElementsString = readFileToString(indicatorUid, dataElementsFile, jsonDataElementsString);
+			jsonDataElementsString = readFileToString(dataElementsFile);
 			if (StringUtils.isNotBlank(jsonDataElementsString)) {
 				jsonDataElements = new JSONObject(jsonDataElementsString);
 				if (jsonDataElements != null && jsonDataElements.getJSONArray("dataElements") != null) {
@@ -736,7 +835,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		JSONObject jsonOrgUnits;
 
 		if (StringUtils.isNotBlank(orgUnitId) && orgUnitsMetadataFile != null && orgUnitsMetadataFile.exists()) {
-			jsonOrgUnitsString = readFileToString(orgUnitId, orgUnitsMetadataFile, jsonOrgUnitsString);
+			jsonOrgUnitsString = readFileToString(orgUnitsMetadataFile);
 			if (StringUtils.isNotBlank(jsonOrgUnitsString)) {
 				jsonOrgUnits = new JSONObject(jsonOrgUnitsString);
 
@@ -748,15 +847,16 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		return orgUnitObj;
 	}
 
-	private String readFileToString(String objectUid, File mappingFile, String jsonDataElementsString) {
-		if (StringUtils.isNotBlank(objectUid) && mappingFile != null && mappingFile.isFile()) {
+	private String readFileToString(File file) {
+		String string = "";
+		if (file != null && file.isFile()) {
 			BufferedReader br = null;
 
 			try {
 				String line;
-				br = new BufferedReader(new FileReader(mappingFile));
+				br = new BufferedReader(new FileReader(file));
 				while ((line = br.readLine()) != null) {
-					jsonDataElementsString += line + "\n";
+					string += line + "\n";
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -769,20 +869,24 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				}
 			}
 		}
-		return jsonDataElementsString;
+		return string;
 	}
 
 	@Override
 	public void updateLocallyStoredDHISMetadata() {
-		updateDataElementsFromDHISConfiguredRemoteInstance();
-		updateOrgUnitsFromDHISConfiguredRemoteInstance();
+		try {
+			updateDataElementsFromDHISConfiguredRemoteInstance();
+			updateOrgUnitsFromDHISConfiguredRemoteInstance();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void updateDataElementsFromDHISConfiguredRemoteInstance() {
+	private void updateDataElementsFromDHISConfiguredRemoteInstance() throws UnknownHostException {
 		updateDHISDataElementsOrOrgUnits(true);
 	}
 
-	private void updateOrgUnitsFromDHISConfiguredRemoteInstance() {
+	private void updateOrgUnitsFromDHISConfiguredRemoteInstance() throws UnknownHostException {
 		updateDHISDataElementsOrOrgUnits(false);
 	}
 
@@ -804,7 +908,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		}
 	}
 
-	private void updateDHISDataElementsOrOrgUnits(boolean isDataelementUpdateIfTrueOrOrgUnitUpdateIfFalse) {
+	private void updateDHISDataElementsOrOrgUnits(boolean isDataelementUpdateIfTrueOrOrgUnitUpdateIfFalse)
+			throws UnknownHostException {
 		String dhisUserName = Context.getAdministrationService()
 				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
 		String dhisPassword = Context.getAdministrationService()
@@ -835,10 +940,16 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		}
 		if (StringUtils.isNotBlank(dhisGetUrl) && StringUtils.isNotBlank(dhisPassword)
 				&& StringUtils.isNotBlank(dhisUserName)) {
-			JSONObject returnedJSON = CurlEmulator.get(dhisGetUrl, dhisUserName, dhisPassword);
+			JSONObject returnedJSON;
+			try {
+				returnedJSON = CurlEmulator.get(dhisGetUrl, dhisUserName, dhisPassword);
 
-			if (returnedJSON != null) {
-				writeToFile(returnedJSON.toString(), dhisDataFile);
+				if (returnedJSON != null) {
+					writeToFile(returnedJSON.toString(), dhisDataFile);
+				}
+			} catch (UnknownHostException e) {
+			} catch (SocketException e) {
+				e.printStackTrace();
 			}
 		}
 	}

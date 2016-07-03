@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.SocketException;
 import java.net.URL;
 import java.net.UnknownHostException;
 
@@ -33,7 +34,7 @@ public class CurlEmulator {
 	 * 
 	 * @return json response from the url
 	 */
-	public static JSONObject get(String urlString, String username, String password) {
+	public static JSONObject get(String urlString, String username, String password) throws UnknownHostException, SocketException {
 		if (StringUtils.isNotBlank(urlString) && !urlString.endsWith("null")) {
 			try {
 				Client client = Client.create();
@@ -49,6 +50,7 @@ public class CurlEmulator {
 				}
 
 				return new JSONObject(response.getEntity(String.class));
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -69,7 +71,7 @@ public class CurlEmulator {
 	 * @return serverReponse, text response message from the server
 	 */
 	public static JSONObject post(String urlString, JSONObject data, String username, String password)
-			throws UnknownHostException {
+			throws UnknownHostException, SocketException {
 		JSONObject serverResponse = null;
 
 		if (StringUtils.isNotBlank(urlString) || !urlString.endsWith("null")) {
@@ -100,24 +102,30 @@ public class CurlEmulator {
 		return serverResponse;
 	}
 
-	public static String sendNormalHtmlGET(String url) throws IOException, UnknownHostException {
+	public static String sendNormalHtmlGET(String url) throws IOException, UnknownHostException, SocketException {
 		if (StringUtils.isNotBlank(url) || !url.endsWith("null")) {
 			URL obj = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 			con.setRequestMethod("GET");
-			// con.setRequestProperty("User-Agent", USER_AGENT);
-			int responseCode = con.getResponseCode();
-			if (responseCode == HttpURLConnection.HTTP_OK) { // success
-				BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-				String inputLine;
-				StringBuffer response = new StringBuffer();
+			try {
+				// con.setRequestProperty("User-Agent", USER_AGENT);
+				int responseCode = con.getResponseCode();
+				if (responseCode == HttpURLConnection.HTTP_OK) { // success
+					BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+					String inputLine;
+					StringBuffer response = new StringBuffer();
 
-				while ((inputLine = in.readLine()) != null) {
-					response.append(inputLine);
+					while ((inputLine = in.readLine()) != null) {
+						response.append(inputLine);
+					}
+					in.close();
+
+					return response.toString();
 				}
-				in.close();
-
-				return response.toString();
+			} catch (UnknownHostException e) {//
+				return null;
+			} catch (SocketException e1) {// Network is unreachable
+				return null;
 			}
 		}
 		return null;

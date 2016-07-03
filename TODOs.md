@@ -21,3 +21,4 @@ ______________________________________________
 * Add CD4 Counts indicator that works like for Viral Loads
 * Support sending none sent data afterwards
 * Again do sever logging of pushing to dhis 
+* Add maintanace task that runs to delete all old logs and data depending on a range of time agreed by design team

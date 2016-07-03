@@ -16,6 +16,8 @@ package org.openmrs.module.systemmonitor.api;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
@@ -198,7 +200,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 	}
 
 	@Test
-	public void testGetIp() {
+	public void testGetIp() throws SocketException, UnknownHostException {
 		System.out.println("IP ADDR: " + OSAndHardwareIndicators.getIpAddress());
 	}
 

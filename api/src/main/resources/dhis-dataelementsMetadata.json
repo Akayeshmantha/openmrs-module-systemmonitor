@@ -2,7 +2,7 @@
   "pager": {
     "page": 1,
     "pageCount": 1,
-    "total": 45,
+    "total": 46,
     "pageSize": 50
   },
   "dataElements": [
@@ -91,9 +91,9 @@
       "href": "http://82.196.9.250:8080/api/dataElements/OBJQIpvppBt"
     },
     {
-      "lastUpdated": "2016-07-01T08:46:37.465+0000",
+      "lastUpdated": "2016-07-03T08:02:42.856+0000",
       "created": "2016-07-01T04:52:08.802+0000",
-      "name": "OpenMRS Uptime (minutes)",
+      "name": "OpenMRS Uptime Since Boot (minutes)",
       "id": "WdPwtuNKhcd",
       "href": "http://82.196.9.250:8080/api/dataElements/WdPwtuNKhcd"
     },
@@ -182,6 +182,13 @@
       "href": "http://82.196.9.250:8080/api/dataElements/VDEnb2bEQH3"
     },
     {
+      "lastUpdated": "2016-07-03T08:22:16.698+0000",
+      "created": "2016-07-03T08:22:16.679+0000",
+      "name": "Processor",
+      "id": "xr3kif2Vuzu",
+      "href": "http://82.196.9.250:8080/api/dataElements/xr3kif2Vuzu"
+    },
+    {
       "lastUpdated": "2016-02-22T09:57:43.364+0000",
       "created": "2016-02-22T09:57:43.346+0000",
       "name": "Server Id",
@@ -196,9 +203,9 @@
       "href": "http://82.196.9.250:8080/api/dataElements/hKJXqpumYZ6"
     },
     {
-      "lastUpdated": "2016-07-01T08:47:03.629+0000",
+      "lastUpdated": "2016-07-03T08:00:23.659+0000",
       "created": "2016-07-01T04:51:28.393+0000",
-      "name": "Server Uptime Since Boot (minutes)",
+      "name": "Server Uptime (minutes)",
       "id": "RiyIySUEl1W",
       "href": "http://82.196.9.250:8080/api/dataElements/RiyIySUEl1W"
     },

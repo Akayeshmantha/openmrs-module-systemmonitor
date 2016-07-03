@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -72,7 +73,7 @@ public class TestOSHILibrary {
 	}
 
 	@Test
-	public void test_systemNetwork() throws IOException {
+	public void test_systemNetwork() throws IOException, UnknownHostException {
 		SystemInfo si = new SystemInfo();
 
 		for (NetworkIF net : si.getHardware().getNetworkIFs()) {

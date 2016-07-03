@@ -1,7 +1,10 @@
 package org.openmrs.module.systemmonitor;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.Module;
@@ -18,6 +21,10 @@ public class SystemMonitorConstants {
 	public static String SYSTEMMONITOR_DATA_DIRECTORYNAME = "Data";
 
 	public static String SYSTEMMONITOR_LOGS_DIRECTORYNAME = "Logs";
+
+	public static String SYSTEMMONITOR_DATA_PREFIX = "dhis-data-";
+
+	public static String SYSTEMMONITOR_LOGS_PREFIX = "dhis-push-";
 
 	public static String SYSTEMMONITOR_MAPPING_FILENAME = "mapping-to-dhis.txt";
 
@@ -46,7 +53,6 @@ public class SystemMonitorConstants {
 	public static String SYSTEMMONITOR_LOGS_DIRECTORYPATH = OpenmrsUtil.getApplicationDataDirectory() + File.separator
 			+ SYSTEMMONITOR_DIRECTORYNAME + File.separator + SYSTEMMONITOR_LOGS_DIRECTORYNAME;
 
-	
 	public static File MODULE_REPOSITORY = ModuleUtil.getModuleRepository();
 
 	public static File SYSTEMMONITOR_DIRECTORY = OpenmrsUtil
@@ -73,4 +79,17 @@ public class SystemMonitorConstants {
 
 	public static String CLINIC_CLOSING_HOUR = Context.getAdministrationService()
 			.getGlobalProperty(ConfigurableGlobalProperties.CONFIGS_CLOSINGHOUR);
+
+	public static File SYSTEMMONITOR_LOGSFOLDER = new File(SystemMonitorConstants.SYSTEMMONITOR_LOGS_DIRECTORYPATH);
+
+	public static File SYSTEMMONITOR_LOGSFILE = new File(SystemMonitorConstants.SYSTEMMONITOR_LOGS_DIRECTORYPATH
+			+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_LOGS_PREFIX
+			+ new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".log");
+
+	public static File SYSTEMMONITOR_BACKUPFOLDER = new File(SystemMonitorConstants.SYSTEMMONITOR_DATA_DIRECTORYPATH);
+
+	public static File SYSTEMMONITOR_BACKUPFILE = new File(SystemMonitorConstants.SYSTEMMONITOR_DATA_DIRECTORYPATH
+			+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_DATA_PREFIX
+			+ new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".json");
+
 }

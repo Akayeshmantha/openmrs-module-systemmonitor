@@ -306,4 +306,6 @@ public interface SystemMonitorService extends OpenmrsService {
 	Concept getViralLoadsConcept();
 	
 	Concept getARVDrugsConceptSet();
+
+	void backupSystemMonitorDataToPush(JSONObject dhisValues);
 }
