@@ -22,3 +22,5 @@ ______________________________________________
 - [x] Support sending none sent data afterwards
 - [x] Again do server logging of pushing to dhis 
 - [ ] Add maintanace task that runs to delete all old logs and data depending on a range of time agreed by design team
+- [ ] branch off support for openmrs platform 1.6.x or lower versions
+- [ ] design a model to suppport seconds, minutes, hour periods for any configurable indicators memory indicators enadled by default

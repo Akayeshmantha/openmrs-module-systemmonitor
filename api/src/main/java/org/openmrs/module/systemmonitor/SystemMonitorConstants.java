@@ -2,7 +2,6 @@ package org.openmrs.module.systemmonitor;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
