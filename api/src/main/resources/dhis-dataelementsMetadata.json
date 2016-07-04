@@ -91,9 +91,9 @@
       "href": "http://82.196.9.250:8080/api/dataElements/OBJQIpvppBt"
     },
     {
-      "lastUpdated": "2016-07-03T08:02:42.856+0000",
+      "lastUpdated": "2016-07-03T21:40:53.466+0000",
       "created": "2016-07-01T04:52:08.802+0000",
-      "name": "OpenMRS Uptime Since Boot (minutes)",
+      "name": "OpenMRS Uptime (minutes)",
       "id": "WdPwtuNKhcd",
       "href": "http://82.196.9.250:8080/api/dataElements/WdPwtuNKhcd"
     },
