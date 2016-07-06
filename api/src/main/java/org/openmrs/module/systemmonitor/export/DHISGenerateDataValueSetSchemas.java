@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.systemmonitor.SystemMonitorConstants;
@@ -463,13 +464,20 @@ public class DHISGenerateDataValueSetSchemas {
 
 	private static String convertJSONToCleanString(JSONObject locationsJson, JSONArray modulesJson) {
 		String string = null;
+		String region = "";
 
 		if (locationsJson != null && modulesJson == null) {// is Location
-			string = "Region: " + locationsJson.getString("region") + "; Hostname: "
-					+ locationsJson.getString("hostname") + "; ISP: " + locationsJson.getString("org") + "; Country: "
-					+ locationsJson.getString("country") + "; City: " + locationsJson.getString("city")
-					+ "; IP Address: " + locationsJson.getString("ip") + "; Location(Latitude,Longitude): "
-					+ locationsJson.getString("loc");
+			try {
+				region = "Region: " + locationsJson.getString("region") + "; ";
+			} catch (JSONException e) {
+				if (e.getMessage().indexOf("region") > 0) {
+					region = "";
+				}
+			}
+			string = region + "Hostname: " + locationsJson.getString("hostname") + "; ISP: "
+					+ locationsJson.getString("org") + "; Country: " + locationsJson.getString("country") + "; City: "
+					+ locationsJson.getString("city") + "; IP Address: " + locationsJson.getString("ip")
+					+ "; Location(Latitude,Longitude): " + locationsJson.getString("loc");
 		} else if (modulesJson != null && locationsJson == null) {// is
 																	// modules
 			string = "";
