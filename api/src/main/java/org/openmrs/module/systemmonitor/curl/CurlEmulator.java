@@ -34,11 +34,13 @@ public class CurlEmulator {
 	 * 
 	 * @return json response from the url
 	 */
-	public static JSONObject get(String urlString, String username, String password) throws UnknownHostException, SocketException {
+	public static JSONObject get(String urlString, String username, String password)
+			throws UnknownHostException, SocketException {
+		urlString = removeLinesAndSpacesCharactersFromString(urlString);
+
 		if (StringUtils.isNotBlank(urlString) && !urlString.endsWith("null")) {
 			try {
 				Client client = Client.create();
-
 				if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
 					client.addFilter(new HTTPBasicAuthFilter(username, password));
 				}
@@ -73,6 +75,7 @@ public class CurlEmulator {
 	public static JSONObject post(String urlString, JSONObject data, String username, String password)
 			throws UnknownHostException, SocketException {
 		JSONObject serverResponse = null;
+		urlString = removeLinesAndSpacesCharactersFromString(urlString);
 
 		if (StringUtils.isNotBlank(urlString) || !urlString.endsWith("null")) {
 			try {
@@ -103,6 +106,8 @@ public class CurlEmulator {
 	}
 
 	public static String sendNormalHtmlGET(String url) throws IOException, UnknownHostException, SocketException {
+		url = removeLinesAndSpacesCharactersFromString(url);
+		
 		if (StringUtils.isNotBlank(url) || !url.endsWith("null")) {
 			URL obj = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -129,5 +134,9 @@ public class CurlEmulator {
 			}
 		}
 		return null;
+	}
+
+	private static String removeLinesAndSpacesCharactersFromString(String string) {
+		return string.replace("\t", "").replace("\n", "");
 	}
 }
