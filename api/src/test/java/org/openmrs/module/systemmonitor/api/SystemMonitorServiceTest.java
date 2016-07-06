@@ -30,6 +30,7 @@ import org.openmrs.Encounter;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.PatientService;
+import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleConstants;
 import org.openmrs.module.ModuleUtil;
@@ -48,7 +49,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 
 	EncounterService encounterService;
 	PatientService patientService;
-	//VisitService visitService;
+	VisitService visitService;
 	LocationService locationService;
 	Calendar today;
 	private SystemMonitorService systemMonitorService;
@@ -67,7 +68,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 	public void init() {
 		encounterService = Context.getEncounterService();
 		patientService = Context.getPatientService();
-		//visitService = Context.getVisitService();
+		visitService = Context.getVisitService();
 		locationService = Context.getLocationService();
 		today = Calendar.getInstance(Context.getLocale());
 		systemMonitorService = Context.getService(SystemMonitorService.class);
@@ -107,7 +108,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 		enc.setEncounterType(encounterService.getEncounterType(1));
 		enc.setEncounterDatetime(new Date());
 		enc.setPatient(patientService.getAllPatients().get(patientService.getAllPatients().size() - 1));
-		//enc.addProvider(encounterService.getEncounterRole(1), Context.getProviderService().getProvider(1));
+		enc.addProvider(encounterService.getEncounterRole(1), Context.getProviderService().getProvider(1));
 		if (dateCreated != null)
 			enc.setDateCreated(dateCreated);
 		if (dateUpdated != null)

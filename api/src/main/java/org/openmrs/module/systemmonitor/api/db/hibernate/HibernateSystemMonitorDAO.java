@@ -41,7 +41,9 @@ import org.openmrs.Patient;
 import org.openmrs.PatientProgram;
 import org.openmrs.Person;
 import org.openmrs.Program;
+import org.openmrs.Provider;
 import org.openmrs.User;
+import org.openmrs.Visit;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
@@ -399,42 +401,42 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer getTotalVisitsToday(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountToday(includeRetired, Visit.class);
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisitsThisWeek(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Visit.class);
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisitsLastWeek(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Visit.class);
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisitsThisMonth(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Visit.class);
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisitsLastMonth(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Visit.class);
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisitsThisYear(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountThisYear(includeRetired, Visit.class);
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisitsLastYear(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountLastYear(includeRetired, Visit.class);
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisits(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObject(includeRetired, Visit.class);
+		return fetchTotalOpenMRSObject(includeRetired, Visit.class);
 	}
 
 	@Override
@@ -639,50 +641,50 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer getTotalProvidersLastYear(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountLastYear(includeRetired, Provider.class);
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProvidersToday(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountToday(includeRetired, Provider.class);
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProvidersThisWeek(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Provider.class);
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProvidersLastWeek(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Provider.class);
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProvidersLastMonth(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Provider.class);
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProviders(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObject(includeRetired, Provider.class);
+		return fetchTotalOpenMRSObject(includeRetired, Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProvidersThisMonth(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Provider.class);
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProvidersThisYear(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountThisYear(includeRetired, Provider.class);
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Provider.class);
 	}
 
 	private String getObjectTableNameFromClass(@SuppressWarnings("rawtypes") Class clazz) {
 		String tableName = "";
 
-		/*if (clazz.equals(Provider.class)) {
+		if (clazz.equals(Provider.class)) {
 			tableName = "provider";
-		} else*/ if (clazz.equals(User.class)) {
+		} else if (clazz.equals(User.class)) {
 			tableName = "users";
 		} else if (clazz.equals(Location.class)) {
 			tableName = "location";
@@ -694,9 +696,9 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 			tableName = "patient";
 		} else if (clazz.equals(Order.class)) {
 			tableName = "orders";
-		} /*else if (clazz.equals(Visit.class)) {
+		} else if (clazz.equals(Visit.class)) {
 			tableName = "visit";
-		}*/ else if (clazz.equals(Obs.class)) {
+		} else if (clazz.equals(Obs.class)) {
 			tableName = "obs";
 		} else if (clazz.equals(Encounter.class)) {
 			tableName = "encounter";
@@ -746,7 +748,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		String voidedOrRetiredParameterName = "voided";
 
 		// metadata voided is named retired instead
-		if (/*clazz.equals(Provider.class) || */clazz.equals(User.class) || clazz.equals(Location.class)
+		if (clazz.equals(Provider.class) || clazz.equals(User.class) || clazz.equals(Location.class)
 				|| clazz.equals(Form.class) || clazz.equals(Concept.class)) {
 			voidedOrRetiredParameterName = "retired";
 		}
@@ -881,7 +883,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	private Person[] getAllPersonsWithOrders() {
 		List<Person> allPersonsWithOrders = new ArrayList<Person>();
 		List<Order> allOrders = getSessionFactory().getCurrentSession().createCriteria(Order.class).list();
-		//List<Provider> allProviders = Context.getProviderService().getAllProviders();
+		List<Provider> allProviders = Context.getProviderService().getAllProviders();
 		List<User> allUsers = getSessionFactory().getCurrentSession().createCriteria(User.class).list();
 
 		for (int i = 0; i < allOrders.size(); i++) {
@@ -898,7 +900,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 							allPersonsWithOrders.add(person);
 					}
 				}
-			} /*else if (o != null && o.getOrderer().getClass().equals(Provider.class)) {
+			} else if (o != null && o.getOrderer().getClass().equals(Provider.class)) {
 				for (int j = 0; j < allProviders.size(); j++) {
 					Provider p = allProviders.get(j);
 
@@ -909,7 +911,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 							allPersonsWithOrders.add(person);
 					}
 				}
-			}*/
+			}
 		}
 
 		return allPersonsWithOrders.toArray(new Person[allPersonsWithOrders.size()]);
@@ -917,7 +919,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@SuppressWarnings({ "unchecked", "unused" })
 	private Object[] getAllOrderers() {
-		//List<Provider> allProviders = Context.getProviderService().getAllProviders();
+		List<Provider> allProviders = Context.getProviderService().getAllProviders();
 		List<Order> allOrders = getSessionFactory().getCurrentSession().createCriteria(Order.class).list();
 		List<User> allUsers = getSessionFactory().getCurrentSession().createCriteria(User.class).list();
 		List<Object> orderers = new ArrayList<Object>();
@@ -933,7 +935,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 						orderers.add(u);
 					}
 				}
-			} /*else if (o != null && o.getOrderer().getClass().equals(Provider.class)) {
+			} else if (o != null && o.getOrderer().getClass().equals(Provider.class)) {
 				for (int j = 0; j < allProviders.size(); j++) {
 					Provider p = allProviders.get(j);
 
@@ -941,7 +943,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 						orderers.add(p);
 					}
 				}
-			}*/
+			}
 		}
 		return orderers.toArray(new Object[orderers.size()]);
 	}
@@ -998,11 +1000,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 			SessionImpl s = (SessionImpl) c.getSession();
 			SessionFactoryImplementor factory = (SessionFactoryImplementor) s.getSessionFactory();
 			String[] implementors = factory.getImplementors(c.getEntityOrClassName());
-			//CriteriaLoader loader = new CriteriaLoader((OuterJoinLoadable) factory.getEntityPersister(implementors[0]),
-					//factory, c, implementors[0], s.getLoadQueryInfluencers());
-			//Field f = OuterJoinLoader.class.getDeclaredField("sql");
-			//f.setAccessible(true);
-			return null;//(String) f.get(loader);
+			CriteriaLoader loader = new CriteriaLoader((OuterJoinLoadable) factory.getEntityPersister(implementors[0]),
+					factory, c, implementors[0], s.getLoadQueryInfluencers());
+			Field f = OuterJoinLoader.class.getDeclaredField("sql");
+			f.setAccessible(true);
+			return (String) f.get(loader);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
