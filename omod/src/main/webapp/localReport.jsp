@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<openmrs:htmlInclude file="/moduleResources/systemmonitor/jquery.js" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 
@@ -21,7 +22,7 @@
 	var jsonData = ${reportData};
 	var reportTableData = "";
 
-	jQuery(function() {
+	$(function() {
 		for ( var i in jsonData) {
 			if (jsonData[i].dataElementName === "Installed Modules") {
 				var insiderTableData = "<table><tr><th>Name</th><th>Version</th><th>Author</th></tr>";
@@ -59,8 +60,8 @@
 			}
 		}
 	
-		jQuery('#renderReport tr:last').after(reportTableData);
-		jQuery("#date").html("Date: <b>" + new Date() + "</b>");
+		$('#renderReport tr:last').after(reportTableData);
+		$("#date").html("Date: <b>" + new Date() + "</b>");
 	});
 	
 	function printLatestReport(){
@@ -68,10 +69,10 @@
 		var restorepage = document.body.innerHTML;
 		var printcontent = document.getElementById("renderedReport").innerHTML;
 		document.body.innerHTML = reActivateTableCss + printcontent;
-		jQuery("#print-report").hide();
+		$("#print-report").hide();
 		window.print();
 		document.body.innerHTML = restorepage;
-		jQuery("#print-report").show();
+		$("#print-report").show();
 	}
 </script>
 
