@@ -125,6 +125,8 @@ public class DHISGenerateDataValueSetSchemas {
 
 		Integer encounterTotal = systemMonitorService.rwandaPIHEMTGetTotalEncounters();
 
+		Integer encountersYesterday = systemMonitorService.rwandaPIHEMTGetTotalEncountersForYesterday();
+
 		Integer obsTotal = systemMonitorService.rwandaPIHEMTGetTotalObservations();
 
 		Integer totalUsers = systemMonitorService.rwandaPIHEMTGetTotalUsers();
@@ -175,6 +177,10 @@ public class DHISGenerateDataValueSetSchemas {
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_totalEncounters") + "\", \"period\": \""
 					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
 					+ encounterTotal + "}";
+			String newEncountersDataElement = "{ \"dataElement\": \""
+					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_newEncounters") + "\", \"period\": \""
+					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
+					+ encountersYesterday + "}";
 			String obsDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_totalObservations") + "\", \"period\": \""
 					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
@@ -371,6 +377,7 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(new JSONObject(primaryClinicDaysDataElement));
 			jsonDataValueSets.put(new JSONObject(primaryClinicHoursDataElement));
 			jsonDataValueSets.put(new JSONObject(encounterDataElement));
+			jsonDataValueSets.put(new JSONObject(newEncountersDataElement));
 			jsonDataValueSets.put(new JSONObject(obsDataElement));
 			jsonDataValueSets.put(new JSONObject(userDataElement));
 			jsonDataValueSets.put(new JSONObject(patientActiveDataElement));

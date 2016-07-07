@@ -23,6 +23,10 @@ import org.openmrs.module.systemmonitor.api.SystemMonitorService;
  */
 public interface SystemMonitorDAO {
 
+	String getYesterdayStartDate();
+
+	String getYesterdayEndDate();
+
 	String getThisWeekEndDate();
 
 	String getThisWeekStartDate();
@@ -250,4 +254,6 @@ public interface SystemMonitorDAO {
 	Concept getViralLoadsConcept();
 
 	Concept getARVDrugsConceptSet();
+
+	Integer rwandaPIHEMTGetTotalEncountersForYesterday();
 }

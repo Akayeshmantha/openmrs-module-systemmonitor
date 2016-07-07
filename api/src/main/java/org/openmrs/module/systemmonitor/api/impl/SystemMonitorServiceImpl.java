@@ -69,6 +69,16 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	@Override
+	public String getYesterdayStartDate() {
+		return dao.getYesterdayStartDate();
+	}
+
+	@Override
+	public String getYesterdayEndDate() {
+		return dao.getYesterdayEndDate();
+	}
+
+	@Override
 	public String getThisWeekEndDate() {
 		return dao.getThisWeekEndDate();
 	}
@@ -566,6 +576,11 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	@Override
 	public Integer rwandaPIHEMTGetTotalEncounters() {
 		return dao.rwandaPIHEMTGetTotalEncounters();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalEncountersForYesterday() {
+		return dao.rwandaPIHEMTGetTotalEncountersForYesterday();
 	}
 
 	@Override

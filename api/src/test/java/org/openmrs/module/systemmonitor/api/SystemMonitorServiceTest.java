@@ -85,6 +85,8 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 	public void testThisAndLastDayWeekMonthYearDateCalculations() {
 		System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 		System.out.println("Today: " + (systemMonitorService.getToday()));
+		System.out.println("Start of Yesterday: " + (systemMonitorService.getYesterdayStartDate()));
+		System.out.println("End of Yesterday: " + (systemMonitorService.getYesterdayEndDate()));
 		System.out.println("Start of this Week: " + (systemMonitorService.getThisWeekStartDate()));
 		System.out.println("End of this week: " + (systemMonitorService.getThisWeekEndDate()));
 		System.out.println("Start of last week: " + (systemMonitorService.getLastWeekStartDate()));

@@ -119,6 +119,26 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	@Override
+	public String getYesterdayStartDate() {
+		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		calendar.add(Calendar.DATE, -1);
+		resetDateTimes(calendar);
+
+		return sdf.format(calendar.getTime());
+	}
+
+	@Override
+	public String getYesterdayEndDate() {
+		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		resetDateTimes(calendar);
+		calendar.add(Calendar.MILLISECOND, -1);
+
+		return sdf.format(calendar.getTime());
+	}
+
+	@Override
 	public String getThisWeekStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 
@@ -755,6 +775,19 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return voidedOrRetiredParameterName;
 	}
 
+	private Integer fetchTotalOpenMRSObjectCountYesterday(Boolean includeRetired,
+														 @SuppressWarnings("rawtypes") Class clazz) {
+		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
+				+ getYesterdayStartDate() + "' and '" + getYesterdayEndDate() + "') or (date_created between '"
+				+ getYesterdayStartDate() + "' and '" + getYesterdayEndDate() + "'))";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
+
+		return count;
+	}
+
 	private Integer fetchTotalOpenMRSObjectCountThisYear(Boolean includeRetired,
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
@@ -1132,5 +1165,10 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				.intValue();
 
 		return count;
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalEncountersForYesterday() {
+		return fetchTotalOpenMRSObjectCountYesterday(false, Encounter.class);
 	}
 }
