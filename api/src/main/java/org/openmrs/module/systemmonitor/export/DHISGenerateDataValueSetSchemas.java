@@ -376,6 +376,7 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(new JSONObject(primaryClinicDaysDataElement));
 			jsonDataValueSets.put(new JSONObject(primaryClinicHoursDataElement));
 			jsonDataValueSets.put(new JSONObject(encounterDataElement));
+			jsonDataValueSets.put(new JSONObject(newEncountersDataElement));
 			jsonDataValueSets.put(new JSONObject(obsDataElement));
 			jsonDataValueSets.put(new JSONObject(userDataElement));
 			jsonDataValueSets.put(new JSONObject(patientActiveDataElement));
