@@ -55,6 +55,7 @@ DATA-ELEMENT_patientsCD4CountTestResults_LastYear=GHq0YsrAsaf
 DATA-ELEMENT_serverUptimeSecs=RiyIySUEl1W
 DATA-ELEMENT_openmrsUptimeSecs=WdPwtuNKhcd
 DATA-ELEMENT_processor=xr3kif2Vuzu
+DATA-ELEMENT_newEncounters=oUoKdxhelRG
 ------------------------------------------------------------------------------------
 
 

@@ -124,6 +124,8 @@ public class DHISGenerateDataValueSetSchemas {
 
 		Integer encounterTotal = systemMonitorService.rwandaPIHEMTGetTotalEncounters();
 
+		Integer encountersYesterday = systemMonitorService.rwandaPIHEMTGetTotalEncountersForYesterday();
+
 		Integer obsTotal = systemMonitorService.rwandaPIHEMTGetTotalObservations();
 
 		Integer totalUsers = systemMonitorService.rwandaPIHEMTGetTotalUsers();
@@ -174,6 +176,10 @@ public class DHISGenerateDataValueSetSchemas {
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_totalEncounters") + "\", \"period\": \""
 					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
 					+ encounterTotal + "}";
+			String newEncountersDataElement = "{ \"dataElement\": \""
+					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_newEncounters") + "\", \"period\": \""
+					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
+					+ encountersYesterday + "}";
 			String obsDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_totalObservations") + "\", \"period\": \""
 					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "

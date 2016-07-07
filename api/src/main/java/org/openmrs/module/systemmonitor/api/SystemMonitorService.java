@@ -36,6 +36,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface SystemMonitorService extends OpenmrsService {
 
+	String getYesterdayStartDate();
+
+	String getYesterdayEndDate();
+
 	String getThisWeekEndDate();
 
 	String getThisWeekStartDate();
@@ -235,6 +239,8 @@ public interface SystemMonitorService extends OpenmrsService {
 	Integer rwandaPIHEMTGetTotalNewPatients();
 
 	Integer rwandaPIHEMTGetTotalEncounters();
+
+	Integer rwandaPIHEMTGetTotalEncountersForYesterday();
 
 	Integer rwandaPIHEMTGetTotalObservations();
 
