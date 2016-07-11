@@ -152,5 +152,25 @@
 		<defaultValue>1,3</defaultValue>
 		<description>USed to set encounter type ids for Rwanda EMT total new patients indicator</description>
 	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.adultInitialEncounterTypeId</property>
+		<defaultValue>1</defaultValue>
+		<description>Encounter Type ID for Adults Initial Encounters</description>
+	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.adultReturnEncounterTypeId</property>
+		<defaultValue>2</defaultValue>
+		<description>Encounter Type ID for Adults Return Encounters</description>
+	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.pedsInitialEncounterTypeId</property>
+		<defaultValue>3</defaultValue>
+		<description>Encounter Type ID for Paediatrics Initial Encounters</description>
+	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.pedsReturnEncounterTypeId</property>
+		<defaultValue>4</defaultValue>
+		<description>Encounter Type ID for Paediatrics Return Encounters</description>
+	</globalProperty>
 
 </module>

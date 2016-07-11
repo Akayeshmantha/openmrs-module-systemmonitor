@@ -256,4 +256,20 @@ public interface SystemMonitorDAO {
 	Concept getARVDrugsConceptSet();
 
 	Integer rwandaPIHEMTGetTotalEncountersForYesterday();
+
+	Integer rwandaPIHEMTGetTotalObservationsForYesterday();
+
+	Integer rwandaPIHEMTGetTotalUsersForYesterday();
+
+	Integer getTotalViralLoadTestsForYesterday();
+
+	Integer getTotalCD4CountTestsForYesterday();
+
+	Integer rwandaPIHEMTGetTotalAdultInitialEncountersForYesterday();
+
+	Integer rwandaPIHEMTGetTotalAdultReturnEncountersForYesterday();
+
+	Integer rwandaPIHEMTGetTotalPedsInitialEncountersForYesterday();
+
+	Integer rwandaPIHEMTGetTotalPedsReturnEncountersForYesterday();
 }

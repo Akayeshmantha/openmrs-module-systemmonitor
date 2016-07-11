@@ -2,8 +2,8 @@
   "pager": {
     "page": 1,
     "pageCount": 1,
-    "total": 46,
-    "pageSize": 50
+    "total": 55,
+    "pageSize": 100
   },
   "dataElements": [
     {
@@ -68,6 +68,55 @@
       "name": "JVM Version",
       "id": "RgJN8fbRRuW",
       "href": "http://82.196.9.250:8080/api/dataElements/RgJN8fbRRuW"
+    },
+    {
+      "lastUpdated": "2016-07-11T09:01:58.020+0000",
+      "created": "2016-07-11T09:01:58.001+0000",
+      "name": "New Adult Initial Encounters",
+      "id": "HkctO4QQgte",
+      "href": "http://82.196.9.250:8080/api/dataElements/HkctO4QQgte"
+    },
+    {
+      "lastUpdated": "2016-07-11T09:03:50.706+0000",
+      "created": "2016-07-11T09:03:50.692+0000",
+      "name": "New Adult Return Encounters",
+      "id": "aHYdS1cNuam",
+      "href": "http://82.196.9.250:8080/api/dataElements/aHYdS1cNuam"
+    },
+    {
+      "lastUpdated": "2016-07-06T16:33:19.157+0000",
+      "created": "2016-07-06T16:33:19.037+0000",
+      "name": "New Encounters",
+      "id": "oUoKdxhelRG",
+      "href": "http://82.196.9.250:8080/api/dataElements/oUoKdxhelRG"
+    },
+    {
+      "lastUpdated": "2016-07-11T09:00:14.663+0000",
+      "created": "2016-07-11T09:00:14.506+0000",
+      "name": "New Observations",
+      "id": "BHXAiiCvX5K",
+      "href": "http://82.196.9.250:8080/api/dataElements/BHXAiiCvX5K"
+    },
+    {
+      "lastUpdated": "2016-07-11T09:05:03.048+0000",
+      "created": "2016-07-11T09:05:03.038+0000",
+      "name": "New Paediatrics Initial Encounters",
+      "id": "UidOuL65vMw",
+      "href": "http://82.196.9.250:8080/api/dataElements/UidOuL65vMw"
+    },
+    {
+      "lastUpdated": "2016-07-11T09:05:33.198+0000",
+      "created": "2016-07-11T09:05:33.184+0000",
+      "name": "New Paediatrics Return Encounters",
+      "id": "CdlLkU6tqSX",
+      "href": "http://82.196.9.250:8080/api/dataElements/CdlLkU6tqSX"
+    },
+    {
+      "lastUpdated": "2016-07-11T09:00:44.495+0000",
+      "created": "2016-07-11T09:00:44.485+0000",
+      "name": "New Users",
+      "id": "luKfl7hZZek",
+      "href": "http://82.196.9.250:8080/api/dataElements/luKfl7hZZek"
     },
     {
       "lastUpdated": "2016-02-21T11:59:54.669+0000",
@@ -147,6 +196,13 @@
       "href": "http://82.196.9.250:8080/api/dataElements/GHq0YsrAsaf"
     },
     {
+      "lastUpdated": "2016-07-11T09:06:52.743+0000",
+      "created": "2016-07-11T09:06:52.731+0000",
+      "name": "Patient CD4 Count Test Results - New",
+      "id": "QoIyYyc7Z36",
+      "href": "http://82.196.9.250:8080/api/dataElements/QoIyYyc7Z36"
+    },
+    {
       "lastUpdated": "2016-05-01T17:52:05.525+0000",
       "created": "2016-05-01T17:52:05.436+0000",
       "name": "Patient Viral Load Test Results - All",
@@ -166,6 +222,13 @@
       "name": "Patient Viral Load Test Results - Last Year",
       "id": "D30SnV0TGws",
       "href": "http://82.196.9.250:8080/api/dataElements/D30SnV0TGws"
+    },
+    {
+      "lastUpdated": "2016-07-11T09:07:21.978+0000",
+      "created": "2016-07-11T09:07:21.967+0000",
+      "name": "Patient Viral Load Test Results - New",
+      "id": "uaUc1zJbaEC",
+      "href": "http://82.196.9.250:8080/api/dataElements/uaUc1zJbaEC"
     },
     {
       "lastUpdated": "2016-02-22T10:00:21.933+0000",

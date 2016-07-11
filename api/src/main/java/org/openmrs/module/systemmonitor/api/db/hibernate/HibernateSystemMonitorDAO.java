@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -33,6 +34,7 @@ import org.hibernate.loader.criteria.CriteriaLoader;
 import org.hibernate.persister.entity.OuterJoinLoadable;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
 import org.openmrs.Form;
 import org.openmrs.Location;
 import org.openmrs.Obs;
@@ -730,8 +732,14 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
 		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
-				+ voidedOrRetiredParameterName + "=" + includeRetired + " and (date_changed >= '" + getToday()
-				+ "' or date_created >= '" + getToday() + "')";
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ( ";
+
+		if (!clazz.equals(Obs.class)) {
+			sql += "date_changed >= '" + getToday() + "' or ";
+		}
+
+		sql += "date_created >= '" + getToday() + "')";
+
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -742,9 +750,15 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
 		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
-				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
-				+ getThisWeekStartDate() + "' and '" + getThisWeekEndDate() + "') or (date_created between '"
-				+ getThisWeekStartDate() + "' and '" + getThisWeekEndDate() + "'))";
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
+				+ getThisWeekStartDate() + "' and '" + getThisWeekEndDate() + "')";
+
+		if (!clazz.equals(Obs.class)) {
+			sql += " or (date_changed between '" + getThisWeekStartDate() + "' and '" + getThisWeekEndDate() + "'))";
+		} else {
+			sql += ")";
+		}
+
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -755,9 +769,15 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
 		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
-				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
-				+ getThisMonthStartDate() + "' and '" + getThisMonthEndDate() + "') or (date_created between '"
-				+ getThisMonthStartDate() + "' and '" + getThisMonthEndDate() + "'))";
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
+				+ getThisMonthStartDate() + "' and '" + getThisMonthEndDate() + "')";
+
+		if (!clazz.equals(Obs.class)) {
+			sql += " or (date_changed between '" + getThisMonthStartDate() + "' and '" + getThisMonthEndDate() + "'))";
+		} else {
+			sql += ")";
+		}
+
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -776,12 +796,31 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountYesterday(Boolean includeRetired,
-														 @SuppressWarnings("rawtypes") Class clazz) {
+			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
 		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
+				+ getYesterdayStartDate() + "' and '" + getYesterdayEndDate() + "')";
+
+		if (!clazz.equals(Obs.class)) {
+			sql += " or (date_changed between '" + getYesterdayStartDate() + "' and '" + getYesterdayEndDate() + "'))";
+		} else {
+			sql += ")";
+		}
+
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
+
+		return count;
+	}
+
+	private Integer fetchTotalOpenMRSEncounterCountYesterdayByType(Boolean includeRetired, EncounterType type) {
+		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(Encounter.class);
+		String sql = "select count(*) from " + getObjectTableNameFromClass(Encounter.class) + " where "
 				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
 				+ getYesterdayStartDate() + "' and '" + getYesterdayEndDate() + "') or (date_created between '"
-				+ getYesterdayStartDate() + "' and '" + getYesterdayEndDate() + "'))";
+				+ getYesterdayStartDate() + "' and '" + getYesterdayEndDate() + "')) and encounter_type = "
+				+ type.getEncounterTypeId();
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -792,9 +831,15 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
 		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
-				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
-				+ getThisYearStartDate() + "' and '" + getThisYearEndDate() + "') or (date_created between '"
-				+ getThisYearStartDate() + "' and '" + getThisYearEndDate() + "'))";
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
+				+ getThisYearStartDate() + "' and '" + getThisYearEndDate() + "')";
+
+		if (!clazz.equals(Obs.class)) {
+			sql += " or (date_changed between '" + getThisYearStartDate() + "' and '" + getThisYearEndDate() + "'))";
+		} else {
+			sql += ")";
+		}
+
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -805,9 +850,15 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
 		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
-				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
-				+ getLastWeekStartDate() + "' and '" + getLastWeekEndDate() + "') or (date_created between '"
-				+ getLastWeekStartDate() + "' and '" + getLastWeekEndDate() + "'))";
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
+				+ getLastWeekStartDate() + "' and '" + getLastWeekEndDate() + "')";
+
+		if (!clazz.equals(Obs.class)) {
+			sql += " or (date_changed between '" + getLastWeekStartDate() + "' and '" + getLastWeekEndDate() + "'))";
+		} else {
+			sql += ")";
+		}
+
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -818,9 +869,15 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
 		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
-				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
-				+ getLastMonthStartDate() + "' and '" + getLastMonthEndDate() + "') or (date_created between '"
-				+ getLastMonthStartDate() + "' and '" + getLastMonthEndDate() + "'))";
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
+				+ getLastMonthStartDate() + "' and '" + getLastMonthEndDate() + "')";
+
+		if (!clazz.equals(Obs.class)) {
+			sql += " or (date_changed between '" + getLastMonthStartDate() + "' and '" + getLastMonthEndDate() + "'))";
+		} else {
+			sql += ")";
+		}
+
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -841,9 +898,15 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 			@SuppressWarnings("rawtypes") Class clazz) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
 		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
-				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
-				+ getLastYearStartDate() + "' and '" + getLastYearEndDate() + "') or (date_created between '"
-				+ getLastYearStartDate() + "' and '" + getLastYearEndDate() + "'))";
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
+				+ getLastYearStartDate() + "' and '" + getLastYearEndDate() + "')";
+
+		if (!clazz.equals(Obs.class)) {
+			sql += " or (date_changed between '" + getLastYearStartDate() + "' and '" + getLastYearEndDate() + "'))";
+		} else {
+			sql += ")";
+		}
+
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -1057,6 +1120,21 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return count;
 	}
 
+	private Integer getConceptObsForYesterday(Concept concept) {
+		String sql;
+		Integer count = 0;
+
+		if (concept != null) {
+			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
+					+ " where voided=false and concept_id = " + concept.getConceptId()
+					+ " and person_id in(select distinct patient_id from patient) and obs_datetime between '"
+					+ getYesterdayStartDate() + "' and '" + getYesterdayEndDate() + "'";
+			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+					.intValue();
+		}
+		return count;
+	}
+
 	@Override
 	public Integer getTotalViralLoadTestsEver() {
 		return getConceptObsEverCount(getViralLoadsConcept());
@@ -1170,5 +1248,75 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public Integer rwandaPIHEMTGetTotalEncountersForYesterday() {
 		return fetchTotalOpenMRSObjectCountYesterday(false, Encounter.class);
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalObservationsForYesterday() {
+		return fetchTotalOpenMRSObjectCountYesterday(false, Obs.class);
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalUsersForYesterday() {
+		return fetchTotalOpenMRSObjectCountYesterday(false, User.class);
+	}
+
+	@Override
+	public Integer getTotalViralLoadTestsForYesterday() {
+		return getConceptObsForYesterday(getViralLoadsConcept());
+	}
+
+	@Override
+	public Integer getTotalCD4CountTestsForYesterday() {
+		return getConceptObsForYesterday(getCD4CountConcept());
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalAdultInitialEncountersForYesterday() {
+		EncounterType encType = getEncounterTypeByName("ADULTINITIAL") != null ? getEncounterTypeByName("ADULTINITIAL")
+				: getEncounterTypeByGpCode(ConfigurableGlobalProperties.ENC_TYPE_ADULTINITIAL_TYPEID);
+
+		return fetchTotalOpenMRSEncounterCountYesterdayByType(false, encType);
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalAdultReturnEncountersForYesterday() {
+		EncounterType encType = getEncounterTypeByName("ADULTRETURN") != null ? getEncounterTypeByName("ADULTRETURN")
+				: getEncounterTypeByGpCode(ConfigurableGlobalProperties.ENC_TYPE_ADULTRETURN_TYPEID);
+
+		return fetchTotalOpenMRSEncounterCountYesterdayByType(false, encType);
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalPedsInitialEncountersForYesterday() {
+		EncounterType encType = getEncounterTypeByName("PEDSINITIAL") != null ? getEncounterTypeByName("PEDSINITIAL")
+				: getEncounterTypeByGpCode(ConfigurableGlobalProperties.ENC_TYPE_PEDSINITIAL_TYPEID);
+
+		return fetchTotalOpenMRSEncounterCountYesterdayByType(false, encType);
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalPedsReturnEncountersForYesterday() {
+		EncounterType encType = getEncounterTypeByName("PEDSRETURN") != null ? getEncounterTypeByName("PEDSRETURN")
+				: getEncounterTypeByGpCode(ConfigurableGlobalProperties.ENC_TYPE_PEDSRETURN_TYPEID);
+
+		return fetchTotalOpenMRSEncounterCountYesterdayByType(false, encType);
+	}
+
+	private EncounterType getEncounterTypeByName(String encounterTypeName) {
+		EncounterType type = null;
+
+		if (StringUtils.isNotBlank(encounterTypeName)
+				&& Context.getEncounterService().getEncounterType(encounterTypeName) != null) {
+			type = Context.getEncounterService().getEncounterType(encounterTypeName);
+		}
+
+		return type;
+	}
+
+	private EncounterType getEncounterTypeByGpCode(String globalPropertyCode) {
+		String encType = Context.getAdministrationService().getGlobalProperty(globalPropertyCode);
+		Integer encTypeId = encType != null ? Integer.parseInt(encType) : null;
+
+		return encTypeId != null ? Context.getEncounterService().getEncounterType(encTypeId) : null;
 	}
 }

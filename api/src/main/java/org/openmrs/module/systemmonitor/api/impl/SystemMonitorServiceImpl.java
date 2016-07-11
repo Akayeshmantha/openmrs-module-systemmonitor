@@ -939,7 +939,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 					.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)) != null
 							? Context.getAdministrationService()
 									.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)
-									+ SystemMonitorConstants.DHIS_API_DATAELEMENTS_URL
+									+ SystemMonitorConstants.DHIS_API_DATAELEMENTS_URL + "?pageSize=100"
 							: null;
 			dhisDataFile = SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE;
 		} else {
@@ -1026,5 +1026,45 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	@Override
 	public Concept getARVDrugsConceptSet() {
 		return dao.getARVDrugsConceptSet();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalObservationsForYesterday() {
+		return dao.rwandaPIHEMTGetTotalObservationsForYesterday();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalUsersForYesterday() {
+		return dao.rwandaPIHEMTGetTotalUsersForYesterday();
+	}
+
+	@Override
+	public Integer getTotalViralLoadTestsForYesterday() {
+		return dao.getTotalViralLoadTestsForYesterday();
+	}
+
+	@Override
+	public Integer getTotalCD4CountTestsForYesterday() {
+		return dao.getTotalCD4CountTestsForYesterday();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalAdultInitialEncountersForYesterday() {
+		return dao.rwandaPIHEMTGetTotalAdultInitialEncountersForYesterday();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalAdultReturnEncountersForYesterday() {
+		return dao.rwandaPIHEMTGetTotalAdultReturnEncountersForYesterday();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalPedsInitialEncountersForYesterday() {
+		return dao.rwandaPIHEMTGetTotalPedsInitialEncountersForYesterday();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalPedsReturnEncountersForYesterday() {
+		return dao.rwandaPIHEMTGetTotalPedsReturnEncountersForYesterday();
 	}
 }

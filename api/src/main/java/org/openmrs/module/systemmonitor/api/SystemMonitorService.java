@@ -310,8 +310,24 @@ public interface SystemMonitorService extends OpenmrsService {
 	Concept getCD4CountConcept();
 
 	Concept getViralLoadsConcept();
-	
+
 	Concept getARVDrugsConceptSet();
 
 	void backupSystemMonitorDataToPush(JSONObject dhisValues);
+
+	Integer rwandaPIHEMTGetTotalObservationsForYesterday();
+
+	Integer rwandaPIHEMTGetTotalUsersForYesterday();
+
+	Integer getTotalViralLoadTestsForYesterday();
+
+	Integer getTotalCD4CountTestsForYesterday();
+
+	Integer rwandaPIHEMTGetTotalAdultInitialEncountersForYesterday();
+
+	Integer rwandaPIHEMTGetTotalAdultReturnEncountersForYesterday();
+
+	Integer rwandaPIHEMTGetTotalPedsInitialEncountersForYesterday();
+
+	Integer rwandaPIHEMTGetTotalPedsReturnEncountersForYesterday();
 }

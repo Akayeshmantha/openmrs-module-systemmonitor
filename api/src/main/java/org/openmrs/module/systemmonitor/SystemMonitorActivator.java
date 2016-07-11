@@ -15,7 +15,6 @@ package org.openmrs.module.systemmonitor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleActivator;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;

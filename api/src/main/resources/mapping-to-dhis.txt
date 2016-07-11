@@ -56,6 +56,14 @@ DATA-ELEMENT_serverUptimeSecs=RiyIySUEl1W
 DATA-ELEMENT_openmrsUptimeSecs=WdPwtuNKhcd
 DATA-ELEMENT_processor=xr3kif2Vuzu
 DATA-ELEMENT_newEncounters=oUoKdxhelRG
+DATA-ELEMENT_newObservations=BHXAiiCvX5K
+DATA-ELEMENT_newUsers=luKfl7hZZek
+DATA-ELEMENT_newEncounters_adultinitial=HkctO4QQgte
+DATA-ELEMENT_newEncounters_adultreturn=aHYdS1cNuam
+DATA-ELEMENT_newEncounters_predsinitial=UidOuL65vMw
+DATA-ELEMENT_newEncounters_pedsreturn=CdlLkU6tqSX
+DATA-ELEMENT_patientsCD4CountTestResults_new=QoIyYyc7Z36
+DATA-ELEMENT_patientsViralLoadTestResults_new=uaUc1zJbaEC
 ------------------------------------------------------------------------------------
 
 
