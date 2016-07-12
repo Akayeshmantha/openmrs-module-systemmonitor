@@ -65,7 +65,7 @@ public class DHISGenerateDataValueSetSchemas {
 
 		Integer uptime = OSAndHardwareIndicators.PROCESSOR_SYSTEM_UPTIME.intValue();
 
-		String processor = OSAndHardwareIndicators.PROCESSOR_NAME;
+		String processor = OSAndHardwareIndicators.getProcessorName();
 
 		Integer openmrsUptime = systemMonitorService.getOpenMRSSystemUpTime().intValue();
 
@@ -358,8 +358,10 @@ public class DHISGenerateDataValueSetSchemas {
 					+ "\", \"value\": " + cd4CountTestResultsLastYear + "}";
 			String processorDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_processor") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ processor + "}";
+					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": \""
+					+ processor + "\"}";
+			
+			System.out.println("processorDataElement::::::::::::::::<" + processor + ">:::::::::::::::::::::::");
 
 			JSONObject systemRealLocationDataElementJSON = new JSONObject();
 			JSONObject installedModulesDataElementJSON = new JSONObject();

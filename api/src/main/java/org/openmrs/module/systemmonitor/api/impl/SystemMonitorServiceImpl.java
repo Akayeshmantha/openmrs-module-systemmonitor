@@ -973,7 +973,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		return Long.parseLong(Context.getAdministrationService()
 				.getGlobalProperty(ConfigurableGlobalProperties.NUMBER_OF_SECS_AT_STARTUP));
 	}
-
+	
 	@Override
 	public Long getOpenMRSSystemUpTime() {
 		return ((System.currentTimeMillis() / 1000) - getNumberOfSecondsAtOpenMRSStartup()) / 60;

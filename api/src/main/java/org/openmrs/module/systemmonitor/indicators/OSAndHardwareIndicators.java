@@ -1,6 +1,8 @@
 package org.openmrs.module.systemmonitor.indicators;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -38,7 +40,7 @@ public class OSAndHardwareIndicators {
 
 	private static PowerSource[] psArr = si.getHardware().getPowerSources();
 
-	public static String PROCESSOR_NAME = p.getName();
+	public static String PROCESSOR_NAME = getProcessorName();
 
 	public static String PROCESSOR_VENDOR = p.getVendor();
 
@@ -195,5 +197,35 @@ public class OSAndHardwareIndicators {
 			}
 		}
 		return json;
+	}
+
+	public static String getProcessorName() {
+		if ("Linux".equals(System.getProperties().getProperty("os.name")) && StringUtils.isBlank(p.getName())) {
+			String[] cmds = { "/bin/sh", "-c", "cat /proc/cpuinfo | grep 'name' | uniq" };
+
+			return executeCommand(cmds).replace("model name", "").replace(": ", "").replace(">", "");
+		} else {
+			return p.getName();
+		}
+	}
+
+	private static String executeCommand(String[] commands) {
+		StringBuffer output = new StringBuffer();
+
+		Process p;
+		try {
+			p = Runtime.getRuntime().exec(commands);
+			p.waitFor();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line = "";
+			while ((line = reader.readLine()) != null) {
+				output.append(line + ">");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return output.toString().replace("\n", "").replace("\t", "");
+
 	}
 }
