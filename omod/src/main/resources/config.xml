@@ -172,5 +172,10 @@
 		<defaultValue>4</defaultValue>
 		<description>Encounter Type ID for Paediatrics Return Encounters</description>
 	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.backupFolderPathOrName</property>
+		<defaultValue>backups</defaultValue>
+		<description>Database/OpenMRS backup folder location/path or folder name in data directory</description>
+	</globalProperty>
 
 </module>

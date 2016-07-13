@@ -38,4 +38,6 @@ public class ConfigurableGlobalProperties {
 	public static String ENC_TYPE_PEDSINITIAL_TYPEID = "systemmonitor.pedsInitialEncounterTypeId";
 	
 	public static String ENC_TYPE_PEDSRETURN_TYPEID = "systemmonitor.pedsReturnEncounterTypeId";
+	
+	public static String BACKUP_FOLDERPATHORNAME = "systemmonitor.backupFolderPathOrName";
 }

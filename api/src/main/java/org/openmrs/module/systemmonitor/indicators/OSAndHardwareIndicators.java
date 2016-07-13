@@ -40,7 +40,7 @@ public class OSAndHardwareIndicators {
 
 	private static PowerSource[] psArr = si.getHardware().getPowerSources();
 
-	public static String PROCESSOR_NAME = getProcessorName();
+	public static String PROCESSOR_NAME = getLinuxProcessorName();
 
 	public static String PROCESSOR_VENDOR = p.getVendor();
 
@@ -55,32 +55,32 @@ public class OSAndHardwareIndicators {
 	public static Integer PROCESSOR_THREAD_COUNT = p.getThreadCount();
 
 	/**
-	 * in Megabytes(MB)
+	 * Total Physical Memory (RAM) in Megabytes(MB)
 	 */
 	public static Long MEMORY_TOTAL = memory.getTotal() / 1048576;
 
 	/**
-	 * in Megabytes(MB)
+	 * Available Physical Memory (RAM) in Megabytes(MB)
 	 */
 	public static Long MEMORY_AVAILABLE = memory.getAvailable() / 1048576;
 
 	/**
-	 * in Megabytes(MB)
+	 * Used Physical Memory (RAM) in Megabytes(MB)
 	 */
 	public static Long MEMORY_USED = (memory.getTotal() - memory.getAvailable()) / 1048576;
 
 	/**
-	 * in Megabytes(MB)
+	 * Total Swap memory in Megabytes(MB)
 	 */
 	public static Long MEMORY_SWAP_TOTAL = memory.getSwapTotal() / 1048576;
 
 	/**
-	 * in Megabytes(MB)
+	 * Used Swap Memory in Megabytes(MB)
 	 */
 	public static Long MEMORY_SWAP_USED = memory.getSwapUsed() / 1048576;
 
 	/**
-	 * in Megabytes(MB)
+	 * Free Swap Memory in Megabytes(MB)
 	 */
 	public static Long MEMORY_SWAP_FREE = (memory.getSwapTotal() - memory.getSwapUsed()) / 1048576;
 
@@ -90,7 +90,7 @@ public class OSAndHardwareIndicators {
 	public static Double CPU_VOLTAGE = s.getCpuVoltage();
 
 	/**
-	 * Temperature in Degrees celsius (°C)
+	 * CPU Temperature in Degrees celsius (°C)
 	 */
 	public static Double CPU_TEMPERATURE = s.getCpuTemperature();
 
@@ -199,7 +199,7 @@ public class OSAndHardwareIndicators {
 		return json;
 	}
 
-	public static String getProcessorName() {
+	public static String getLinuxProcessorName() {
 		if ("Linux".equals(System.getProperties().getProperty("os.name")) && StringUtils.isBlank(p.getName())) {
 			String[] cmds = { "/bin/sh", "-c", "cat /proc/cpuinfo | grep 'name' | uniq" };
 

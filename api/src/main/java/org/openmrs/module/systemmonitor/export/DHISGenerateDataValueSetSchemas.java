@@ -40,12 +40,6 @@ public class DHISGenerateDataValueSetSchemas {
 		JSONArray jsonToBePushed;
 		JSONArray jsonDataValueSets = new JSONArray();
 		SystemMonitorService systemMonitorService = Context.getService(SystemMonitorService.class);
-		Date yesterdate = today;//hack to avoid unreachable NPE
-		try {
-			yesterdate = dFormat.parse(systemMonitorService.getYesterdayStartDate());
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		}
 		String systemId = OSAndHardwareIndicators.getHostName() + "-" + (OSAndHardwareIndicators.getMacAddress() != null
 				? OSAndHardwareIndicators.getMacAddress().replace(":", "") : "");
 
@@ -65,7 +59,7 @@ public class DHISGenerateDataValueSetSchemas {
 
 		Integer uptime = OSAndHardwareIndicators.PROCESSOR_SYSTEM_UPTIME.intValue();
 
-		String processor = OSAndHardwareIndicators.getProcessorName();
+		String processor = OSAndHardwareIndicators.getLinuxProcessorName();
 
 		Integer openmrsUptime = systemMonitorService.getOpenMRSSystemUpTime().intValue();
 
@@ -171,6 +165,9 @@ public class DHISGenerateDataValueSetSchemas {
 		Integer newPatientsCD4CountsTestResults = systemMonitorService.getTotalCD4CountTestsForYesterday();
 
 		Integer newPatientViralLoadTestResults = systemMonitorService.getTotalViralLoadTestsForYesterday();
+
+		String dateForLastBackUp = systemMonitorService.getLastBackUpDate() != null
+				? systemMonitorService.getLastBackUpDate().toString() : "";
 
 		if (StringUtils.isBlank(dhisOrganizationUnitUid)) {
 			dhisOrganizationUnitUid = "";
@@ -360,8 +357,6 @@ public class DHISGenerateDataValueSetSchemas {
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_processor") + "\", \"period\": \""
 					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": \""
 					+ processor + "\"}";
-			
-			System.out.println("processorDataElement::::::::::::::::<" + processor + ">:::::::::::::::::::::::");
 
 			JSONObject systemRealLocationDataElementJSON = new JSONObject();
 			JSONObject installedModulesDataElementJSON = new JSONObject();
@@ -401,24 +396,26 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(new JSONObject(openmrsUpTimeDataElement));
 			jsonDataValueSets.put(new JSONObject(primaryClinicDaysDataElement));
 			jsonDataValueSets.put(new JSONObject(primaryClinicHoursDataElement));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_dataForLastBackup", dateForLastBackUp,
+					dFormat.format(today), dhisOrganizationUnitUid));
 			jsonDataValueSets.put(new JSONObject(encounterDataElement));
 			jsonDataValueSets.put(new JSONObject(newEncountersDataElement));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newObservations", newObs,
-					dFormat.format(yesterdate), dhisOrganizationUnitUid));
+					dFormat.format(today), dhisOrganizationUnitUid));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newUsers", newUsers,
-					dFormat.format(yesterdate), dhisOrganizationUnitUid));
+					dFormat.format(today), dhisOrganizationUnitUid));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_adultinitial",
-					newAdultInitialEncounters, dFormat.format(yesterdate), dhisOrganizationUnitUid));
+					newAdultInitialEncounters, dFormat.format(today), dhisOrganizationUnitUid));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_adultreturn",
-					newAdultReturnEncounters, dFormat.format(yesterdate), dhisOrganizationUnitUid));
+					newAdultReturnEncounters, dFormat.format(today), dhisOrganizationUnitUid));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_predsinitial",
-					newPedsInitialEncounters, dFormat.format(yesterdate), dhisOrganizationUnitUid));
+					newPedsInitialEncounters, dFormat.format(today), dhisOrganizationUnitUid));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_pedsreturn",
-					newPedsReturnEncounters, dFormat.format(yesterdate), dhisOrganizationUnitUid));
+					newPedsReturnEncounters, dFormat.format(today), dhisOrganizationUnitUid));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_patientsCD4CountTestResults_new",
-					newPatientsCD4CountsTestResults, dFormat.format(yesterdate), dhisOrganizationUnitUid));
+					newPatientsCD4CountsTestResults, dFormat.format(today), dhisOrganizationUnitUid));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_patientsViralLoadTestResults_new",
-					newPatientViralLoadTestResults, dFormat.format(yesterdate), dhisOrganizationUnitUid));
+					newPatientViralLoadTestResults, dFormat.format(today), dhisOrganizationUnitUid));
 			jsonDataValueSets.put(new JSONObject(obsDataElement));
 			jsonDataValueSets.put(new JSONObject(userDataElement));
 			jsonDataValueSets.put(new JSONObject(patientActiveDataElement));
@@ -452,7 +449,7 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(new JSONObject(upTimeLastWeekDataElement));
 			jsonDataValueSets.put(new JSONObject(upTimeLastMonthDataElement));
 			jsonDataValueSets.put(new JSONObject(totalOpenMRSUptimeDataElement));
-			
+
 			jsonToBePushed = new JSONArray(jsonDataValueSets.toString());
 			jsonToBePushed.put(systemRealLocationDataElementJSON2);
 			jsonToBePushed.put(installedModulesDataElementJSON2);

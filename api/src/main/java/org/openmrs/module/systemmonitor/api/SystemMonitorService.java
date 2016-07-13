@@ -13,6 +13,9 @@
  */
 package org.openmrs.module.systemmonitor.api;
 
+import java.io.File;
+import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openmrs.Concept;
@@ -330,4 +333,8 @@ public interface SystemMonitorService extends OpenmrsService {
 	Integer rwandaPIHEMTGetTotalPedsInitialEncountersForYesterday();
 
 	Integer rwandaPIHEMTGetTotalPedsReturnEncountersForYesterday();
+
+	Date getLastBackUpDate();
+
+	File getLatestModifiedFile(File[] files);
 }

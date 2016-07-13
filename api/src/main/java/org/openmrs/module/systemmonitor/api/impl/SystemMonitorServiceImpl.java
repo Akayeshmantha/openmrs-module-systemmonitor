@@ -21,7 +21,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +45,7 @@ import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
 import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 import org.openmrs.module.systemmonitor.export.DHISGenerateDataValueSetSchemas;
 import org.openmrs.module.systemmonitor.mapping.DHISMapping;
+import org.openmrs.util.OpenmrsUtil;
 
 /**
  * It is a default implementation of {@link SystemMonitorService}.
@@ -973,7 +976,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		return Long.parseLong(Context.getAdministrationService()
 				.getGlobalProperty(ConfigurableGlobalProperties.NUMBER_OF_SECS_AT_STARTUP));
 	}
-	
+
 	@Override
 	public Long getOpenMRSSystemUpTime() {
 		return ((System.currentTimeMillis() / 1000) - getNumberOfSecondsAtOpenMRSStartup()) / 60;
@@ -1067,4 +1070,59 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	public Integer rwandaPIHEMTGetTotalPedsReturnEncountersForYesterday() {
 		return dao.rwandaPIHEMTGetTotalPedsReturnEncountersForYesterday();
 	}
+
+	@Override
+	public Date getLastBackUpDate() {
+		Date lastBackUpDate = null;
+		String backupFolderPathOrName = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.BACKUP_FOLDERPATHORNAME);
+		File backUpDirectory = new File(backupFolderPathOrName);
+
+		if (!backUpDirectory.isAbsolute()) {
+			backUpDirectory = OpenmrsUtil.getDirectoryInApplicationDataDirectory(backupFolderPathOrName);
+		}
+		if (backUpDirectory.exists() && backUpDirectory.isDirectory() && backUpDirectory.listFiles().length > 0) {
+			File dbBackup = getLatestModifiedFile(filterOnlySqlFilesInDirectory(backUpDirectory));
+
+			if (dbBackup != null) {
+				lastBackUpDate = new Date(dbBackup.lastModified());
+			}
+		}
+
+		return lastBackUpDate;
+	}
+
+	/* TODO this in the future should use CustomFileExtensionFilter */
+	private File[] filterOnlySqlFilesInDirectory(File directory) {
+		List<File> filteredFiles = new ArrayList<File>();
+
+		for (File file : directory.listFiles()) {
+			if (file.getName().endsWith(".sql")) {
+				filteredFiles.add(file);
+			}
+		}
+
+		return filteredFiles.toArray(new File[filteredFiles.size()]);
+	}
+
+	/**
+	 * @param files,
+	 *            array of files to compare to retrieve last modified among them
+	 * @return lastModfied file
+	 */
+	@Override
+	public File getLatestModifiedFile(File[] files) {
+		if (files == null || files.length == 0) {
+			return null;
+		}
+
+		File lastModifiedFile = files[0];
+		for (int i = 1; i < files.length; i++) {
+			if (lastModifiedFile.lastModified() < files[i].lastModified()) {
+				lastModifiedFile = files[i];
+			}
+		}
+		return lastModifiedFile;
+	}
+
 }
