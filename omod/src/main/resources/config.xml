@@ -177,5 +177,10 @@
 		<defaultValue>backups</defaultValue>
 		<description>Database/OpenMRS backup folder location/path or folder name in data directory</description>
 	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.numberOfMonthsBeforeDeletingLogsAndData</property>
+		<defaultValue>12</defaultValue>
+		<description>The number of months (30 days each month) the system should keep the logged data and DHIS data before auto-deleting it</description>
+	</globalProperty>
 
 </module>

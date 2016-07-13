@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -1123,6 +1124,40 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 			}
 		}
 		return lastModifiedFile;
+	}
+
+	@Override
+	public void cleanOldLocallyStoredLogsAndDHISData() {
+		Integer monthsToStoreLogsAndData = Integer.parseInt(Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.MONTHS_TO_STORE_LOGSANDDATA));
+
+		deleteFileWhoseLastModifedRangesOutsideNMonths(monthsToStoreLogsAndData,
+				SystemMonitorConstants.SYSTEMMONITOR_LOGSFOLDER.listFiles());
+		deleteFileWhoseLastModifedRangesOutsideNMonths(monthsToStoreLogsAndData,
+				SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER.listFiles());
+	}
+
+	private void deleteFileWhoseLastModifedRangesOutsideNMonths(Integer numberOfMonths, File[] files) {
+		if (files != null && numberOfMonths != null) {
+			for (File file : files) {
+				if (!checkIfDateIsInNMonthsRange(numberOfMonths, new Date(file.lastModified()))) {
+					file.delete();
+				}
+			}
+		}
+	}
+
+	private boolean checkIfDateIsInNMonthsRange(Integer nMonths, Date date) {
+		if (nMonths != null && nMonths > 0) {
+			Calendar today = Calendar.getInstance(Context.getLocale());
+			Calendar nMonthsAgo = Calendar.getInstance(Context.getLocale());
+
+			nMonthsAgo.add(Calendar.YEAR, -nMonths / 12);
+
+			return date.after(nMonthsAgo.getTime()) && date.before(today.getTime());
+		}
+
+		return true;
 	}
 
 }

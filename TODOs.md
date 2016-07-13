@@ -26,4 +26,4 @@ ______________________________________________
 - [ ] Design a model to suppport seconds, minutes, hour periods for any configurable indicators memory indicators enadled by default
 - [ ] Generate daily pdfs from the module and may be store them on the file system and maybe email these to configured emails
 - [ ] Add support to export dhisdataelements into a configured dhis instance
-- [ ] Ay be all Dates indicators should be sent to DHIS as as Date datatype 
+- [ ] May be all Dates indicators should be sent to DHIS as as Date datatype 

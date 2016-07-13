@@ -20,24 +20,26 @@ public class ConfigurableGlobalProperties {
 	public static String CONFIGS_OPENNINGDAYS = "systemmonitor.configurations.openingDays";
 
 	public static String CONFIGS_CLOSINGHOUR = "systemmonitor.configurations.closingHour";
-	
+
 	public static String NUMBER_OF_SECS_AT_STARTUP = "systemmonitor.numberOfSecondsAtOpenMRSStartup";
-	
+
 	public static String CD4COUNT_CONCEPTID = "systemmonitor.cd4CountConceptIp";
-	
+
 	public static String ARVDRUGS_CONCEPTSETID = "systemmonitor.antiretroviralDrugsConceptSetId";
-	
+
 	public static String METRIC_ENC_TYPEIDS_NUMBEROFPATIENTSNEW = "systemmonitor.numberOfTotalNewPatientsMetricEncounterTypeIds";
-	
+
 	public static String METRIC_ENC_TYPEIDS_NUMBEROFVISITS = "systemmonitor.numberOfVisitsMetricEncounterTypeIds";
-	
+
 	public static String ENC_TYPE_ADULTINITIAL_TYPEID = "systemmonitor.adultInitialEncounterTypeId";
-	
+
 	public static String ENC_TYPE_ADULTRETURN_TYPEID = "systemmonitor.adultReturnEncounterTypeId";
-	
+
 	public static String ENC_TYPE_PEDSINITIAL_TYPEID = "systemmonitor.pedsInitialEncounterTypeId";
-	
+
 	public static String ENC_TYPE_PEDSRETURN_TYPEID = "systemmonitor.pedsReturnEncounterTypeId";
-	
+
 	public static String BACKUP_FOLDERPATHORNAME = "systemmonitor.backupFolderPathOrName";
+	
+	public static String MONTHS_TO_STORE_LOGSANDDATA = "systemmonitor.numberOfMonthsBeforeDeletingLogsAndData";
 }

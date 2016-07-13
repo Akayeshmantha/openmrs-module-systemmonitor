@@ -337,4 +337,6 @@ public interface SystemMonitorService extends OpenmrsService {
 	Date getLastBackUpDate();
 
 	File getLatestModifiedFile(File[] files);
+
+	void cleanOldLocallyStoredLogsAndDHISData();
 }
