@@ -27,3 +27,5 @@ ______________________________________________
 - [ ] Generate daily pdfs from the module and may be store them on the file system and maybe email these to configured emails
 - [ ] Add support to export dhisdataelements into a configured dhis instance
 - [ ] May be all Dates indicators should be sent to DHIS as as Date datatype 
+- [ ] Update configuration page to support editing added global properties from last time
+- [ ] Improve local printable report as well as dhis datavalues schema

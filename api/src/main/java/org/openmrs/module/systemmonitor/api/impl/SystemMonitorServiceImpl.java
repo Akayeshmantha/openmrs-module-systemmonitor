@@ -1082,7 +1082,9 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		if (!backUpDirectory.isAbsolute()) {
 			backUpDirectory = OpenmrsUtil.getDirectoryInApplicationDataDirectory(backupFolderPathOrName);
 		}
-		if (backUpDirectory.exists() && backUpDirectory.isDirectory() && backUpDirectory.listFiles().length > 0) {
+		if (!backUpDirectory.exists())
+			backUpDirectory.mkdirs();
+		if (backUpDirectory.isDirectory() && backUpDirectory.listFiles().length > 0) {
 			File dbBackup = getLatestModifiedFile(filterOnlySqlFilesInDirectory(backUpDirectory));
 
 			if (dbBackup != null) {

@@ -63,6 +63,7 @@ public class SystemMonitorMainController {
 
 		try {
 			configs.updateAndPersistConfigurableGPs(request);
+			Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
 			request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR,
 					"systemmonitor.configurations.save.success");
 		} catch (Exception e) {
