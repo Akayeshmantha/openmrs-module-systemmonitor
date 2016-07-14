@@ -12,6 +12,8 @@
 
 <br />
 <div id="date"></div>
+<p><spring:message code="systemmonitor.report.site" />: <b>${orgUnit}</b></p>
+
 
 <style type="text/css">
 	#renderReport, td {
@@ -35,8 +37,7 @@
 				}
 	
 				insiderTableData += "</table>";
-				reportTableData += "<tr><td>" + jsonData[i].orgUnitName + "</td><td>"
-						+ jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
+				reportTableData += "<tr><td>" + jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
 						+ "</td><td>" + insiderTableData + "</td></tr>";
 			} else if (jsonData[i].dataElementName === "Server's Real Location") {
 				var insiderTableData = "<table><tr><th>Country</th><td>"
@@ -50,12 +51,10 @@
 						+ "</tr><tr><th>ISP</th><td>" + jsonData[i].value.org
 						+ "</td></tr></table>";
 	
-				reportTableData += "<tr><td>" + jsonData[i].orgUnitName + "</td><td>"
-						+ jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
+				reportTableData += "<tr><td>" + jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
 						+ "</td><td>" + insiderTableData + "</td></tr>";
 			} else {
-				reportTableData += "<tr><td>" + jsonData[i].orgUnitName + "</td><td>"
-						+ jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
+				reportTableData += "<tr><td>" + jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
 						+ "</td><td>" + jsonData[i].value
 						+ "</td></tr>";
 			}
@@ -69,6 +68,7 @@
 		var reActivateTableCss = '<style type="text/css">#renderReport, td {border: 1px solid #15719a;}</style>'
 		var restorepage = document.body.innerHTML;
 		var printcontent = document.getElementById("renderedReport").innerHTML;
+		
 		document.body.innerHTML = reActivateTableCss + printcontent;
 		jQuery("#print-report").hide();
 		window.print();
@@ -77,13 +77,11 @@
 	}
 </script>
 
-
 <input id="print-report" type="button" value='<spring:message code="systemmonitor.report.print" />' style="float:right" onclick="printLatestReport();"/>
 <br /><br />
 
 <table id="renderReport">
 	<tr>
-		<th><spring:message code="systemmonitor.report.site" /></th>
 		<th><spring:message code="systemmonitor.report.period" /></th>
 		<th><spring:message code="systemmonitor.report.indicator" /></th>
 		<th><spring:message code="systemmonitor.report.value" /></th>

@@ -40,6 +40,18 @@ public class ConfigureGPs {
 
 	private GlobalProperty schedulerPasswordGp;
 
+	private GlobalProperty adultInitialEncounterTypeIdGp;
+
+	private GlobalProperty adultReturnEncounterTypeIdGp;
+
+	private GlobalProperty pedsInitialEncounterTypeIdGp;
+
+	private GlobalProperty pedsReturnEncounterTypeIdGp;
+
+	private GlobalProperty backupFolderPathOrNameGp;
+
+	private GlobalProperty numberOfMonthsBeforeDeletingLogsAndDataGp;
+
 	/* DON'T DELETE this field, it's used at client side */
 	private boolean mustSetScheduler;
 
@@ -81,6 +93,18 @@ public class ConfigureGPs {
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFVISITS);
 		numberOfTotalNewPatientsMetricEncounterTypeIdsGp = Context.getAdministrationService()
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFPATIENTSNEW);
+		adultInitialEncounterTypeIdGp = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.ENC_TYPE_ADULTINITIAL_TYPEID);
+		adultReturnEncounterTypeIdGp = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.ENC_TYPE_ADULTRETURN_TYPEID);
+		pedsInitialEncounterTypeIdGp = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.ENC_TYPE_PEDSINITIAL_TYPEID);
+		pedsReturnEncounterTypeIdGp = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.ENC_TYPE_PEDSRETURN_TYPEID);
+		backupFolderPathOrNameGp = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.BACKUP_FOLDERPATHORNAME);
+		numberOfMonthsBeforeDeletingLogsAndDataGp = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.MONTHS_TO_STORE_LOGSANDDATA);
 
 		if (mustConfigureSchedulerAccount()) {
 			schedulerUsernameGp = Context.getAdministrationService().getGlobalPropertyObject("scheduler.username");
@@ -115,6 +139,13 @@ public class ConfigureGPs {
 				.setPropertyValue(request.getParameter("numberOfVisitsMetricEncounterTypeIds"));
 		numberOfTotalNewPatientsMetricEncounterTypeIdsGp
 				.setPropertyValue(request.getParameter("numberOfTotalNewPatientsMetricEncounterTypeIds"));
+		adultInitialEncounterTypeIdGp.setPropertyValue(request.getParameter("adultInitialEncounterTypeId"));
+		adultReturnEncounterTypeIdGp.setPropertyValue(request.getParameter("adultReturnEncounterTypeId"));
+		pedsInitialEncounterTypeIdGp.setPropertyValue(request.getParameter("pedsInitialEncounterTypeId"));
+		pedsReturnEncounterTypeIdGp.setPropertyValue(request.getParameter("pedsReturnEncounterTypeId"));
+		backupFolderPathOrNameGp.setPropertyValue(request.getParameter("backupFolderPathOrName"));
+		numberOfMonthsBeforeDeletingLogsAndDataGp
+				.setPropertyValue(request.getParameter("numberOfMonthsBeforeDeletingLogsAndData"));
 
 		if (mustConfigureSchedulerAccount()) {
 			gps.add(schedulerUsernameGp);
@@ -134,6 +165,12 @@ public class ConfigureGPs {
 		gps.add(arvDrugsConceptSetGp);
 		gps.add(numberOfVisitsMetricEncounterTypeIdsGp);
 		gps.add(numberOfTotalNewPatientsMetricEncounterTypeIdsGp);
+		gps.add(adultInitialEncounterTypeIdGp);
+		gps.add(adultReturnEncounterTypeIdGp);
+		gps.add(pedsInitialEncounterTypeIdGp);
+		gps.add(pedsReturnEncounterTypeIdGp);
+		gps.add(backupFolderPathOrNameGp);
+		gps.add(numberOfMonthsBeforeDeletingLogsAndDataGp);
 
 		Context.getAdministrationService().saveGlobalProperties(gps);
 	}
@@ -204,6 +241,30 @@ public class ConfigureGPs {
 
 	public GlobalProperty getNumberOfVisitsMetricEncounterTypeIdsGp() {
 		return numberOfVisitsMetricEncounterTypeIdsGp;
+	}
+
+	public GlobalProperty getAdultInitialEncounterTypeIdGp() {
+		return adultInitialEncounterTypeIdGp;
+	}
+
+	public GlobalProperty getAdultReturnEncounterTypeIdGp() {
+		return adultReturnEncounterTypeIdGp;
+	}
+
+	public GlobalProperty getPedsInitialEncounterTypeIdGp() {
+		return pedsInitialEncounterTypeIdGp;
+	}
+
+	public GlobalProperty getPedsReturnEncounterTypeIdGp() {
+		return pedsReturnEncounterTypeIdGp;
+	}
+
+	public GlobalProperty getBackupFolderPathOrNameGp() {
+		return backupFolderPathOrNameGp;
+	}
+
+	public GlobalProperty getNumberOfMonthsBeforeDeletingLogsAndDataGp() {
+		return numberOfMonthsBeforeDeletingLogsAndDataGp;
 	}
 
 }

@@ -16,16 +16,17 @@ ______________________________________________
 - [ ] Create a scheduled task none daily indicators and data failed to be pushed because of no internet connection
 - [x] Create a scheduled task to keep updating both the stored dataelements and organisation units
 - [ ] Fix System uptime push % datatype conflict
-- [ ] reloadConfigurations api method, saves gps and reloads dhismetadata if site is changed or dhis account
-- [ ] if user changes configurations of dhis instance mainly url, after getting metadata from server, confirm that it matches with the embedded mappings file
+- [x] ReloadConfigurations api method, saves gps and reloads dhismetadata if site is changed or dhis account
+- [ ] If user changes configurations of dhis instance mainly url, after getting metadata from server, confirm that it matches with the embedded mappings file
 - [x] Add CD4 Counts indicator that works like for Viral Loads
 - [x] Support sending none sent data afterwards
 - [x] Again do server logging of pushing to dhis 
-- [ ] Add maintanace task that runs to delete all old logs and data depending on a range of time agreed by design team
+- [x] Add maintanace task that runs to delete all old logs and data depending on a range of time agreed by design team
 - [ ] Branch off support for openmrs platform 1.6.x or lower versions
 - [ ] Design a model to suppport seconds, minutes, hour periods for any configurable indicators memory indicators enadled by default
 - [ ] Generate daily pdfs from the module and may be store them on the file system and maybe email these to configured emails
 - [ ] Add support to export dhisdataelements into a configured dhis instance
 - [ ] May be all Dates indicators should be sent to DHIS as as Date datatype 
-- [ ] Update configuration page to support editing added global properties from last time
-- [ ] Improve local printable report as well as dhis datavalues schema
+- [x] Update configuration page to support editing added global properties from last time
+- [x] Improve local printable report as well as dhis datavalues schema
+- [ ] May be we can model a way to match the SiteID to see if it is the right site being configured, may be around openmrs locations etc if reliable

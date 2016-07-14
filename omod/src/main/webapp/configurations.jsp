@@ -109,7 +109,48 @@
 				name="dhisPassword" /></td>
 			<td>${configurations.dhisPasswordGp.description}</td>
 		</tr>
-
+		<tr>
+			<td>${configurations.adultInitialEncounterTypeIdGp.property}</td>
+			<td><input type="text"
+				value="${configurations.adultInitialEncounterTypeIdGp.propertyValue}"
+				name="adultInitialEncounterTypeId" /></td>
+			<td>${configurations.adultInitialEncounterTypeIdGp.description}</td>
+		</tr>
+		<tr>
+			<td>${configurations.adultReturnEncounterTypeIdGp.property}</td>
+			<td><input type="text"
+				value="${configurations.adultReturnEncounterTypeIdGp.propertyValue}"
+				name="adultReturnEncounterTypeId" /></td>
+			<td>${configurations.adultReturnEncounterTypeIdGp.description}</td>
+		</tr>
+		<tr>
+			<td>${configurations.pedsInitialEncounterTypeIdGp.property}</td>
+			<td><input type="text"
+				value="${configurations.pedsInitialEncounterTypeIdGp.propertyValue}"
+				name="pedsInitialEncounterTypeId" /></td>
+			<td>${configurations.pedsInitialEncounterTypeIdGp.description}</td>
+		</tr>
+		<tr>
+			<td>${configurations.pedsReturnEncounterTypeIdGp.property}</td>
+			<td><input type="text"
+				value="${configurations.pedsReturnEncounterTypeIdGp.propertyValue}"
+				name="pedsReturnEncounterTypeId" /></td>
+			<td>${configurations.pedsReturnEncounterTypeIdGp.description}</td>
+		</tr>
+		<tr>
+			<td>${configurations.backupFolderPathOrNameGp.property}</td>
+			<td><input type="text"
+				value="${configurations.backupFolderPathOrNameGp.propertyValue}"
+				name="backupFolderPathOrName" /></td>
+			<td>${configurations.backupFolderPathOrNameGp.description}</td>
+		</tr>
+		<tr>
+			<td>${configurations.numberOfMonthsBeforeDeletingLogsAndDataGp.property}</td>
+			<td><input type="text"
+				value="${configurations.numberOfMonthsBeforeDeletingLogsAndDataGp.propertyValue}"
+				name="numberOfMonthsBeforeDeletingLogsAndData" /></td>
+			<td>${configurations.numberOfMonthsBeforeDeletingLogsAndDataGp.description}</td>
+		</tr>
 		<tr>
 			<td><spring:message code="systemmonitor.opening.days" /></td>
 			<td><input type="text" name="openingDays"

@@ -906,11 +906,11 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	private void updateDataElementsFromDHISConfiguredRemoteInstance() throws UnknownHostException {
-		updateDHISDataElementsOrOrgUnits(true);
+		updateDHISDataElementsOrOrgUnit(true);
 	}
 
 	private void updateOrgUnitsFromDHISConfiguredRemoteInstance() throws UnknownHostException {
-		updateDHISDataElementsOrOrgUnits(false);
+		updateDHISDataElementsOrOrgUnit(false);
 	}
 
 	private void writeToFile(String textToOverwriteTheFile, File file) {
@@ -931,7 +931,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		}
 	}
 
-	private void updateDHISDataElementsOrOrgUnits(boolean isDataelementUpdateIfTrueOrOrgUnitUpdateIfFalse)
+	private void updateDHISDataElementsOrOrgUnit(boolean isDataelementUpdateIfTrueOrOrgUnitUpdateIfFalse)
 			throws UnknownHostException {
 		String dhisUserName = Context.getAdministrationService()
 				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
@@ -1192,8 +1192,22 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	@Override
 	public String getDHISLastMonthPeriod() {
 		Calendar lastMonthFromToday = Calendar.getInstance(Context.getLocale());
-		
+
 		lastMonthFromToday.add(Calendar.MONTH, -1);
 		return new SimpleDateFormat("yyyyMM").format(lastMonthFromToday.getTime());
+	}
+
+	@Override
+	public String getDHISConfiguredOrgUnitName() {
+		String orgUnitId = DHISMapping.getDHISMappedObjectValue(getCurrentConfiguredDHISOrgUnit().getPropertyValue());
+
+		if (StringUtils.isNotBlank(orgUnitId)) {
+			JSONObject orgUnit = getDHISOrgUnit(orgUnitId);
+
+			if (orgUnit != null) {
+				return orgUnit.getString("name");
+			}
+		}
+		return null;
 	}
 }

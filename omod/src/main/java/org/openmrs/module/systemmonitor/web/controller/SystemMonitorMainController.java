@@ -76,6 +76,7 @@ public class SystemMonitorMainController {
 	public void renderLocalReport(ModelMap model) {
 		RwandaSPHStudyEMT emt = new RwandaSPHStudyEMT();
 
+		model.addAttribute("orgUnit", Context.getService(SystemMonitorService.class).getDHISConfiguredOrgUnitName());
 		model.addAttribute("reportData",
 				emt.generatedDHISDataValueSetJSON().getJSONObject("allData").getJSONArray("dataValues"));
 	}
