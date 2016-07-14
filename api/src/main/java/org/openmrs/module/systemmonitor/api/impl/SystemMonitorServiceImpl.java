@@ -21,6 +21,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -624,8 +625,11 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				.getResource(SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILENAME).getFile());
 
 		try {
-			FileUtils.copyFile(mappingsFile, SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE);
-			FileUtils.copyFile(dataElementsFile, SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);
+			if (!SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE.exists())
+				FileUtils.copyFile(mappingsFile, SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE);
+
+			if (!SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE.exists())
+				FileUtils.copyFile(dataElementsFile, SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -1162,4 +1166,34 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		return true;
 	}
 
+	@Override
+	public Integer rwandaPIHEMTGetTotalNewPatientsForYesterday() {
+		return dao.rwandaPIHEMTGetTotalNewPatientsForYesterday();
+	}
+
+	@Override
+	public Integer rwandaPIHEMTGetTotalActivePatientsForYesterday() {
+		return dao.rwandaPIHEMTGetTotalActivePatientsForYesterday();
+	}
+
+	@Override
+	public String getDHISTodayPeriod() {
+		return new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance(Context.getLocale()).getTime());
+	}
+
+	@Override
+	public String getDHISYesterdayPeriod() {
+		Calendar yesterdayFromToday = Calendar.getInstance(Context.getLocale());
+
+		yesterdayFromToday.add(Calendar.DAY_OF_YEAR, -1);
+		return new SimpleDateFormat("yyyyMMdd").format(yesterdayFromToday.getTime());
+	}
+
+	@Override
+	public String getDHISLastMonthPeriod() {
+		Calendar lastMonthFromToday = Calendar.getInstance(Context.getLocale());
+		
+		lastMonthFromToday.add(Calendar.MONTH, -1);
+		return new SimpleDateFormat("yyyyMM").format(lastMonthFromToday.getTime());
+	}
 }

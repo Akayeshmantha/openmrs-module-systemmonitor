@@ -40,6 +40,7 @@ public class ConfigureGPs {
 
 	private GlobalProperty schedulerPasswordGp;
 
+	/* DON'T DELETE this field, it's used at client side */
 	private boolean mustSetScheduler;
 
 	private GlobalProperty arvDrugsConceptSetGp;

@@ -3,10 +3,7 @@ package org.openmrs.module.systemmonitor.export;
 import java.io.File;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
@@ -30,9 +27,6 @@ public class DHISGenerateDataValueSetSchemas {
 	 * @throws UnknownHostException
 	 */
 	public static JSONObject generateRwandaSPHEMTDHISDataValueSets() {
-		Calendar cal = Calendar.getInstance();
-		Date today = new Date();
-		SimpleDateFormat dFormat = new SimpleDateFormat("yyyyMMdd");
 		File mappingsFile = SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE;
 		JSONObject jsonObj = new JSONObject();
 		JSONObject jsonObj2 = new JSONObject();
@@ -166,6 +160,10 @@ public class DHISGenerateDataValueSetSchemas {
 
 		Integer newPatientViralLoadTestResults = systemMonitorService.getTotalViralLoadTestsForYesterday();
 
+		Integer newTotalPatientNew = systemMonitorService.rwandaPIHEMTGetTotalNewPatientsForYesterday();
+
+		Integer newTotalPatientActive = systemMonitorService.rwandaPIHEMTGetTotalActivePatientsForYesterday();
+
 		String dateForLastBackUp = systemMonitorService.getLastBackUpDate() != null
 				? systemMonitorService.getLastBackUpDate().toString() : "";
 
@@ -175,188 +173,186 @@ public class DHISGenerateDataValueSetSchemas {
 		// TODO restructure or refactor this file as;
 		// http://dhis2.github.io/dhis2-docs/master/en/developer/html/dhis2_developer_manual_full.html#d6543e3472
 		if (mappingsFile.exists() && mappingsFile.isFile()) {
-			cal.setTime(today);// TODO must it be hard coded to one day range
-								// alone!!! or we use start and end dates
 			String systemIdDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemId") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": \""
-					+ systemId + "\"}";
+					+ systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": \"" + systemId + "\"}";
 			String primaryClinicDaysDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_primaryCareDays") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": \""
-					+ clinicDays + "\"}";
+					+ systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": \"" + clinicDays + "\"}";
 			String primaryClinicHoursDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_primaryCareHours") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": \""
-					+ clinicHours + "\"}";
+					+ systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": \"" + clinicHours + "\"}";
 			String openMRSAppNameDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_openmrsAppName") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": \""
-					+ openmrsAPPName + "\"}";
+					+ systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": \"" + openmrsAPPName + "\"}";
 			String encounterDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_totalEncounters") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ encounterTotal + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + encounterTotal + "}";
 			String newEncountersDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_newEncounters") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ encountersYesterday + "}";
+					+ systemMonitorService.getDHISYesterdayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + encountersYesterday + "}";
 			String obsDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_totalObservations") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ obsTotal + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + obsTotal + "}";
 			String userDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_totalUsers") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ totalUsers + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + totalUsers + "}";
 			String patientActiveDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_totalPatientsActive") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ totalPatientActive + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + totalPatientActive + "}";
 			String patientNewDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_totalPatientsNew") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ totalPatientNew + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + totalPatientNew + "}";
 			String visitsDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_totalVisits") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ totalVisits + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + totalVisits + "}";
 			String systemStartupsDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemStartupCounts") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ startupCounts + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + startupCounts + "}";
 			String upTimeThisWeekDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemUptime-thisWeek") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ thisWeekUptime + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + thisWeekUptime + "}";
 			String upTimeDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_serverUptimeSecs") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ uptime + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + uptime + "}";
 			String openmrsUpTimeDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_openmrsUptimeSecs") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ openmrsUptime + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + openmrsUptime + "}";
 			String upTimeLastWeekDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemUptime-lastWeek") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ previousWeekUptime + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + previousWeekUptime + "}";
 			String upTimeLastMonthDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemUptime-lastMonth") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ previousMonthUptime + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + previousMonthUptime + "}";
 			String freeMemoryDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_freeMemory") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ freeMemory + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + freeMemory + "}";
 			String totalMemoryDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_totalMemory") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ totalMemory + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + totalMemory + "}";
 			String usedMemoryDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_usedMemory") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ usedMemory + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + usedMemory + "}";
 			String totalOpenMRSUptimeDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_openmrsUptime") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": "
-					+ openmrsUptimePercentage + "}";
+					+ systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": " + openmrsUptimePercentage + "}";
 			String viralLoadTestResults_everDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_patientsViralLoadTestResults_ever")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": " + viralLoadTestResultsEver + "}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": " + viralLoadTestResultsEver + "}";
 			String viralLoadTestResults_last6MonthsDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_patientsViralLoadTestResults_last6Months")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": " + viralLoadTestResultsLastSixMonths + "}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": " + viralLoadTestResultsLastSixMonths + "}";
 			String viralLoadTestResults_lastYearDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_patientsViralLoadTestResults_LastYear")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": " + viralLoadTestResultsLastYear + "}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": " + viralLoadTestResultsLastYear + "}";
 			String systemInfo_operatingSystem = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_operatingSystemName")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": \"" + operatingSystem + "\"}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": \"" + operatingSystem + "\"}";
 			String systemInfo_operatingSystemArch = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_operatingSystemArch")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": \"" + operatingSystemArch + "\"}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": \"" + operatingSystemArch + "\"}";
 			String systemInfo_operatingSystemVersion = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_operatingSystemVersion")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": \"" + operatingSystemVersion + "\"}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": \"" + operatingSystemVersion + "\"}";
 			String systemInfo_javaVersion = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_javaVersion") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": \""
-					+ javaVersion + "\"}";
+					+ systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": \"" + javaVersion + "\"}";
 			String systemInfo_javaVendor = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_javaVendor") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": \""
-					+ javaVendor + "\"}";
+					+ systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": \"" + javaVendor + "\"}";
 			String systemInfo_jvmVersion = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_jvmVersion") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": \""
-					+ jvmVersion + "\"}";
+					+ systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": \"" + jvmVersion + "\"}";
 			String systemInfo_jvmVendor = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_jvmVendor") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": \""
-					+ jvmVendor + "\"}";
+					+ systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": \"" + jvmVendor + "\"}";
 			String systemInfo_javaRuntimeName = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_javaRuntimeName")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": \"" + javaRuntimeName + "\"}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": \"" + javaRuntimeName + "\"}";
 			String systemInfo_javaRuntimeVersion = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_javaRuntimeVersion")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": \"" + javaRuntimeVersion + "\"}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": \"" + javaRuntimeVersion + "\"}";
 			String systemInfo_userName = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_userName") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": \""
-					+ userName + "\"}";
+					+ systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": \"" + userName + "\"}";
 			String systemInfo_systemLanguage = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_systemLanguage")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": \"" + systemLanguage + "\"}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": \"" + systemLanguage + "\"}";
 			String systemInfo_systemTimezone = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_systemTimezone")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": \"" + systemTimezone + "\"}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": \"" + systemTimezone + "\"}";
 			String systemInfo_systemDateTime = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_systemDateTime")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": \"" + systemDateTime + "\"}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": \"" + systemDateTime + "\"}";
 			String systemInfo_fileSystemEncoding = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_fileSystemEncoding")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": \"" + fileSystemEncoding + "\"}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": \"" + fileSystemEncoding + "\"}";
 			String systemInfo_userDirectory = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_userDirectory")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": \"" + userDirectory + "\"}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": \"" + userDirectory + "\"}";
 			String systemInfo_tempDirectory = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_tempDirectory")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": \"" + tempDirectory + "\"}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": \"" + tempDirectory + "\"}";
 			String systemInfo_openMRSVersion = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_openMRSVersion")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": \"" + openmrsVersion + "\"}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": \"" + openmrsVersion + "\"}";
 			String cd4CountTestResults_everDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_patientsCD4CountTestResults_ever")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": " + cd4CountTestResultsEver + "}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": " + cd4CountTestResultsEver + "}";
 			String cd4CountTestResults_last6MonthsDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_patientsCD4CountTestResults_last6Months")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": " + cd4CountTestResultsLastSixMonths + "}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": " + cd4CountTestResultsLastSixMonths + "}";
 			String cd4CountTestResults_lastYearDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_patientsCD4CountTestResults_LastYear")
-					+ "\", \"period\": \"" + dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
-					+ "\", \"value\": " + cd4CountTestResultsLastYear + "}";
+					+ "\", \"period\": \"" + systemMonitorService.getDHISTodayPeriod() + "\", \"orgUnit\": \""
+					+ dhisOrganizationUnitUid + "\", \"value\": " + cd4CountTestResultsLastYear + "}";
 			String processorDataElement = "{ \"dataElement\": \""
 					+ DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_processor") + "\", \"period\": \""
-					+ dFormat.format(today) + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid + "\", \"value\": \""
-					+ processor + "\"}";
+					+ systemMonitorService.getDHISLastMonthPeriod() + "\", \"orgUnit\": \"" + dhisOrganizationUnitUid
+					+ "\", \"value\": \"" + processor + "\"}";
 
 			JSONObject systemRealLocationDataElementJSON = new JSONObject();
 			JSONObject installedModulesDataElementJSON = new JSONObject();
@@ -365,27 +361,65 @@ public class DHISGenerateDataValueSetSchemas {
 
 			systemRealLocationDataElementJSON.put("dataElement",
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemRealLocation"));
-			systemRealLocationDataElementJSON.put("period", dFormat.format(today));
+			systemRealLocationDataElementJSON.put("period", systemMonitorService.getDHISLastMonthPeriod());
 			systemRealLocationDataElementJSON.put("value",
 					serverRealLocation != null ? serverRealLocation : "No Internet Connection");
 			systemRealLocationDataElementJSON.put("orgUnit", dhisOrganizationUnitUid);
 			installedModulesDataElementJSON.put("dataElement",
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_installedModules"));
-			installedModulesDataElementJSON.put("period", dFormat.format(today));
+			installedModulesDataElementJSON.put("period", systemMonitorService.getDHISLastMonthPeriod());
 			installedModulesDataElementJSON.put("value", systemMonitorService.getInstalledModules());
 			installedModulesDataElementJSON.put("orgUnit", dhisOrganizationUnitUid);
 			systemRealLocationDataElementJSON2.put("dataElement",
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemRealLocation"));
-			systemRealLocationDataElementJSON2.put("period", dFormat.format(today));
+			systemRealLocationDataElementJSON2.put("period", systemMonitorService.getDHISLastMonthPeriod());
 			systemRealLocationDataElementJSON2.put("value", serverRealLocation != null
 					? convertJSONToCleanString(serverRealLocation, null) : "No Internet Connection");
 			systemRealLocationDataElementJSON2.put("orgUnit", dhisOrganizationUnitUid);
 			installedModulesDataElementJSON2.put("orgUnit", dhisOrganizationUnitUid);
 			installedModulesDataElementJSON2.put("dataElement",
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_installedModules"));
-			installedModulesDataElementJSON2.put("period", dFormat.format(today));
+			installedModulesDataElementJSON2.put("period", systemMonitorService.getDHISLastMonthPeriod());
 			installedModulesDataElementJSON2.put("value",
 					convertJSONToCleanString(null, systemMonitorService.getInstalledModules()));
+
+			jsonDataValueSets.put(new JSONObject(newEncountersDataElement));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newObservations", newObs,
+					systemMonitorService.getDHISYesterdayPeriod(), dhisOrganizationUnitUid));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newUsers", newUsers,
+					systemMonitorService.getDHISYesterdayPeriod(), dhisOrganizationUnitUid));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_adultinitial",
+					newAdultInitialEncounters, systemMonitorService.getDHISYesterdayPeriod(), dhisOrganizationUnitUid));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_adultreturn",
+					newAdultReturnEncounters, systemMonitorService.getDHISYesterdayPeriod(), dhisOrganizationUnitUid));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_predsinitial",
+					newPedsInitialEncounters, systemMonitorService.getDHISYesterdayPeriod(), dhisOrganizationUnitUid));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_pedsreturn",
+					newPedsReturnEncounters, systemMonitorService.getDHISYesterdayPeriod(), dhisOrganizationUnitUid));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newTotalPatientsNew", newTotalPatientNew,
+					systemMonitorService.getDHISYesterdayPeriod(), dhisOrganizationUnitUid));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newTotalPatientsActive",
+					newTotalPatientActive, systemMonitorService.getDHISYesterdayPeriod(), dhisOrganizationUnitUid));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_patientsCD4CountTestResults_new",
+					newPatientsCD4CountsTestResults, systemMonitorService.getDHISYesterdayPeriod(),
+					dhisOrganizationUnitUid));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_patientsViralLoadTestResults_new",
+					newPatientViralLoadTestResults, systemMonitorService.getDHISYesterdayPeriod(),
+					dhisOrganizationUnitUid));
+			jsonDataValueSets.put(new JSONObject(viralLoadTestResults_last6MonthsDataElement));
+			jsonDataValueSets.put(new JSONObject(cd4CountTestResults_last6MonthsDataElement));
+			jsonDataValueSets.put(new JSONObject(viralLoadTestResults_lastYearDataElement));
+			jsonDataValueSets.put(new JSONObject(cd4CountTestResults_lastYearDataElement));
+			jsonDataValueSets.put(new JSONObject(cd4CountTestResults_everDataElement));
+			jsonDataValueSets.put(new JSONObject(viralLoadTestResults_everDataElement));
+			jsonDataValueSets.put(new JSONObject(encounterDataElement));
+			jsonDataValueSets.put(new JSONObject(obsDataElement));
+			jsonDataValueSets.put(new JSONObject(userDataElement));
+			jsonDataValueSets.put(new JSONObject(patientActiveDataElement));
+			jsonDataValueSets.put(new JSONObject(patientNewDataElement));
+			jsonDataValueSets.put(new JSONObject(visitsDataElement));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_dataForLastBackup", dateForLastBackUp,
+					systemMonitorService.getDHISTodayPeriod(), dhisOrganizationUnitUid));
 			jsonDataValueSets.put(new JSONObject(systemIdDataElement));
 			jsonDataValueSets.put(new JSONObject(processorDataElement));
 			jsonDataValueSets.put(new JSONObject(upTimeDataElement));
@@ -396,37 +430,6 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(new JSONObject(openmrsUpTimeDataElement));
 			jsonDataValueSets.put(new JSONObject(primaryClinicDaysDataElement));
 			jsonDataValueSets.put(new JSONObject(primaryClinicHoursDataElement));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_dataForLastBackup", dateForLastBackUp,
-					dFormat.format(today), dhisOrganizationUnitUid));
-			jsonDataValueSets.put(new JSONObject(encounterDataElement));
-			jsonDataValueSets.put(new JSONObject(newEncountersDataElement));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newObservations", newObs,
-					dFormat.format(today), dhisOrganizationUnitUid));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newUsers", newUsers,
-					dFormat.format(today), dhisOrganizationUnitUid));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_adultinitial",
-					newAdultInitialEncounters, dFormat.format(today), dhisOrganizationUnitUid));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_adultreturn",
-					newAdultReturnEncounters, dFormat.format(today), dhisOrganizationUnitUid));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_predsinitial",
-					newPedsInitialEncounters, dFormat.format(today), dhisOrganizationUnitUid));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_pedsreturn",
-					newPedsReturnEncounters, dFormat.format(today), dhisOrganizationUnitUid));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_patientsCD4CountTestResults_new",
-					newPatientsCD4CountsTestResults, dFormat.format(today), dhisOrganizationUnitUid));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_patientsViralLoadTestResults_new",
-					newPatientViralLoadTestResults, dFormat.format(today), dhisOrganizationUnitUid));
-			jsonDataValueSets.put(new JSONObject(obsDataElement));
-			jsonDataValueSets.put(new JSONObject(userDataElement));
-			jsonDataValueSets.put(new JSONObject(patientActiveDataElement));
-			jsonDataValueSets.put(new JSONObject(patientNewDataElement));
-			jsonDataValueSets.put(new JSONObject(visitsDataElement));
-			jsonDataValueSets.put(new JSONObject(viralLoadTestResults_everDataElement));
-			jsonDataValueSets.put(new JSONObject(viralLoadTestResults_last6MonthsDataElement));
-			jsonDataValueSets.put(new JSONObject(viralLoadTestResults_lastYearDataElement));
-			jsonDataValueSets.put(new JSONObject(cd4CountTestResults_everDataElement));
-			jsonDataValueSets.put(new JSONObject(cd4CountTestResults_last6MonthsDataElement));
-			jsonDataValueSets.put(new JSONObject(cd4CountTestResults_lastYearDataElement));
 			jsonDataValueSets.put(new JSONObject(systemInfo_operatingSystem));
 			jsonDataValueSets.put(new JSONObject(systemInfo_operatingSystemArch));
 			jsonDataValueSets.put(new JSONObject(systemInfo_operatingSystemVersion));
@@ -444,11 +447,13 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(new JSONObject(systemInfo_systemDateTime));
 			jsonDataValueSets.put(new JSONObject(systemInfo_fileSystemEncoding));
 			jsonDataValueSets.put(new JSONObject(systemInfo_openMRSVersion));
-			jsonDataValueSets.put(new JSONObject(systemStartupsDataElement));
-			jsonDataValueSets.put(new JSONObject(upTimeThisWeekDataElement));
-			jsonDataValueSets.put(new JSONObject(upTimeLastWeekDataElement));
-			jsonDataValueSets.put(new JSONObject(upTimeLastMonthDataElement));
-			jsonDataValueSets.put(new JSONObject(totalOpenMRSUptimeDataElement));
+			// jsonDataValueSets.put(new JSONObject(systemStartupsDataElement));
+			// jsonDataValueSets.put(new JSONObject(upTimeThisWeekDataElement));
+			// jsonDataValueSets.put(new JSONObject(upTimeLastWeekDataElement));
+			// jsonDataValueSets.put(new
+			// JSONObject(upTimeLastMonthDataElement));
+			// jsonDataValueSets.put(new
+			// JSONObject(totalOpenMRSUptimeDataElement));
 
 			jsonToBePushed = new JSONArray(jsonDataValueSets.toString());
 			jsonToBePushed.put(systemRealLocationDataElementJSON2);
@@ -541,14 +546,13 @@ public class DHISGenerateDataValueSetSchemas {
 
 	private static JSONObject createBasicIndicatorJSONObject(String dhisDataElementMappingCode, Object value,
 			String period, String dhisOrganizationUnitUid) {
-		JSONObject json = null;
+		JSONObject json = new JSONObject();
 
 		if (StringUtils.isNotBlank(dhisDataElementMappingCode) && StringUtils.isNotBlank(period)
 				&& StringUtils.isNotBlank(dhisOrganizationUnitUid)) {
 
 			if (value == null)
 				value = "";
-			json = new JSONObject();
 			json.put("dataElement", DHISMapping.getDHISMappedObjectValue(dhisDataElementMappingCode));
 			json.put("period", period);
 			json.put("orgUnit", dhisOrganizationUnitUid);

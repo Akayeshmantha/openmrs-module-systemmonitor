@@ -48,7 +48,6 @@ public class SystemMonitorMainController {
 	public void pushToDHIS(ModelMap model) {
 		JSONObject response = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
 
-		System.out.println(response);
 		model.addAttribute("response", response);
 	}
 
@@ -64,6 +63,7 @@ public class SystemMonitorMainController {
 		try {
 			configs.updateAndPersistConfigurableGPs(request);
 			Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
+			Context.getService(SystemMonitorService.class).cleanOldLocallyStoredLogsAndDHISData();
 			request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR,
 					"systemmonitor.configurations.save.success");
 		} catch (Exception e) {

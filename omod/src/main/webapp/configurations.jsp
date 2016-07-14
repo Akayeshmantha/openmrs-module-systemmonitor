@@ -2,9 +2,13 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 
+<openmrs:require privilege="View Administration Functions" otherwise="/login.htm" redirect="configurations.form" />
+
 <h3>
 	<spring:message code="systemmonitor.configurations" />
 </h3>
+
+<p><spring:message code="systemmonitor.configurations.info" /></p>
 
 <form method="post">
 	<table>

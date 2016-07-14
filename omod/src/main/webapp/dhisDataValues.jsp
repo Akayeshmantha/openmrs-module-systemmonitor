@@ -2,6 +2,8 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 
+<openmrs:require privilege="View Administration Functions" otherwise="/login.htm" redirect="dhisDataValues.form" />
+
 <openmrs:htmlInclude file="/moduleResources/systemmonitor/renderjson.js" />
 
 <style type="text/css">

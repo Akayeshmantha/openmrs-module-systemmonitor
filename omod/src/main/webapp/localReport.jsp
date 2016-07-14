@@ -2,6 +2,8 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 
+<openmrs:require privilege="View Administration Functions" otherwise="/login.htm" redirect="localReport.form" />
+
 <div id="renderedReport">
 	
 <h3>

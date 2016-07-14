@@ -22,7 +22,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
-import org.hibernate.id.GUIDGenerator;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -39,8 +38,6 @@ import org.openmrs.module.systemmonitor.SystemMonitorConstants;
 import org.openmrs.module.systemmonitor.distributions.RwandaSPHStudyEMT;
 import org.openmrs.module.systemmonitor.indicators.OSAndHardwareIndicators;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
-
-import com.sun.jna.platform.win32.Guid.GUID;
 
 import junit.framework.Assert;
 

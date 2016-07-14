@@ -65,11 +65,13 @@ DATA-ELEMENT_newEncounters_pedsreturn=CdlLkU6tqSX
 DATA-ELEMENT_patientsCD4CountTestResults_new=QoIyYyc7Z36
 DATA-ELEMENT_patientsViralLoadTestResults_new=uaUc1zJbaEC
 DATA-ELEMENT_dataForLastBackup=v3Pww13i2r1
+DATA-ELEMENT_newTotalPatientsNew=JNsXijeCdIx
+DATA-ELEMENT_newTotalPatientsActive=GCC9L1LGFBH
 ------------------------------------------------------------------------------------
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## MAPPING DHIS ORGANISATION UNITS
+## MAPPING DHIS SUPPORTED ORGANISATION UNITS
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## fosaid=dhis2uID is the format each mapping must follow (fosaid is the unique server Id that needs to be mapped to an existing DHIS UID)
 ## This list is provided as part of the Study Sites/servers by the Rwanda SPU study team

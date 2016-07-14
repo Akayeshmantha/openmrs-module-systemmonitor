@@ -339,4 +339,20 @@ public interface SystemMonitorService extends OpenmrsService {
 	File getLatestModifiedFile(File[] files);
 
 	void cleanOldLocallyStoredLogsAndDHISData();
+
+	Integer rwandaPIHEMTGetTotalNewPatientsForYesterday();
+
+	Integer rwandaPIHEMTGetTotalActivePatientsForYesterday();
+
+	String getDHISTodayPeriod();
+
+	String getDHISYesterdayPeriod();
+
+	/**
+	 * TODO think of a better way of using this to may be capture current month
+	 * when monitoring and maybe push to dhis as last month
+	 * 
+	 * @return
+	 */
+	String getDHISLastMonthPeriod();
 }

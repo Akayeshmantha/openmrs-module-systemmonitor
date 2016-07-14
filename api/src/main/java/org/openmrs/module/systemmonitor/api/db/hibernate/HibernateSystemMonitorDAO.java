@@ -1202,6 +1202,20 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return count;
 	}
 
+	@Override
+	public Integer rwandaPIHEMTGetTotalActivePatientsForYesterday() {
+		String sql = "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id = "
+				+ getReasonForExitingCareConcept().getConceptId() + "  and program_id = "
+				+ getHIVProgram().getProgramId()
+				+ " and ord.concept_id in (select distinct concept_id from concept_set where concept_set = "
+				+ getARVDrugsConceptSet().getConceptId() + ") and (obs_datetime between '" + getYesterdayStartDate()
+				+ "' and '" + getYesterdayEndDate() + "')";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
+
+		return count;
+	}
+
 	private Person[] mergeGetAllPersonsEnrolledIntoProgramsAndGetAllPersonsWithOrders() {
 		List<Person> persons = new ArrayList<Person>();
 
@@ -1246,6 +1260,19 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	@Override
+	public Integer rwandaPIHEMTGetTotalNewPatientsForYesterday() {
+		String sql = "select count(*) from encounter where encounter_type in ("
+				+ Context.getAdministrationService()
+						.getGlobalProperty(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFPATIENTSNEW)
+				+ ") and ((date_created between '" + getYesterdayStartDate() + "' and '" + getYesterdayEndDate()
+				+ "') or (date_changed between '" + getYesterdayStartDate() + "' and '" + getYesterdayEndDate() + "'))";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
+
+		return count;
+	}
+
+	@Override
 	public Integer rwandaPIHEMTGetTotalEncountersForYesterday() {
 		return fetchTotalOpenMRSObjectCountYesterday(false, Encounter.class);
 	}
@@ -1268,6 +1295,10 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public Integer getTotalCD4CountTestsForYesterday() {
 		return getConceptObsForYesterday(getCD4CountConcept());
+	}
+
+	public Integer getTotalVisitsForYesterday() {
+		return fetchTotalOpenMRSObjectCountYesterday(false, Visit.class);
 	}
 
 	@Override

@@ -272,4 +272,8 @@ public interface SystemMonitorDAO {
 	Integer rwandaPIHEMTGetTotalPedsInitialEncountersForYesterday();
 
 	Integer rwandaPIHEMTGetTotalPedsReturnEncountersForYesterday();
+
+	Integer rwandaPIHEMTGetTotalNewPatientsForYesterday();
+
+	Integer rwandaPIHEMTGetTotalActivePatientsForYesterday();
 }

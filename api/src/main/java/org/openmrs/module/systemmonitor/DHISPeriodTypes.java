@@ -2,7 +2,6 @@ package org.openmrs.module.systemmonitor;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Implements some required DHIS periods by this System Monitor: <br />
