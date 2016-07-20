@@ -152,6 +152,11 @@
 			<td>${configurations.numberOfMonthsBeforeDeletingLogsAndDataGp.description}</td>
 		</tr>
 		<tr>
+			<td>${configurations.addedLocalDHISMappingsGp.property}</td>
+			<td><input type="text" value="${configurations.addedLocalDHISMappingsGp.propertyValue}" name="addedLocalDHISMappings" /></td>
+			<td>${configurations.addedLocalDHISMappingsGp.description}</td>
+		</tr>
+		<tr>
 			<td><spring:message code="systemmonitor.opening.days" /></td>
 			<td><input type="text" name="openingDays"
 				value="${configurations.openingDaysGp.propertyValue}" /></td>

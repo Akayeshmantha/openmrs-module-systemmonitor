@@ -625,13 +625,23 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				.getResource(SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILENAME).getFile());
 
 		try {
-			if (!SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE.exists())
+			if (!SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE.exists() || !addedLocalDHISMappings())
 				FileUtils.copyFile(mappingsFile, SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE);
 
-			if (!SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE.exists())
-				FileUtils.copyFile(dataElementsFile, SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);
+			FileUtils.copyFile(dataElementsFile, SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	private boolean addedLocalDHISMappings() {
+		String addedString = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.ADDED_LOCAL_DHISMAPPINGS);
+
+		if (StringUtils.isNotBlank(addedString) && addedString.equals("true")) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 

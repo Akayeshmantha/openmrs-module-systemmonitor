@@ -23,12 +23,12 @@ public class DHISMapping {
 		String objectMappedValue = null;
 
 		if (mappingFile.exists() && mappingFile.isFile() && StringUtils.isNotBlank(objectCode)) {
-			objectMappedValue = readMappingsFileLineByLine(objectCode, objectMappedValue);
+			objectMappedValue = readMappingsFileLineByLineAndOnbtainCodeValue(objectCode, objectMappedValue);
 		}
 		return objectMappedValue;
 	}
 
-	private static String readMappingsFileLineByLine(String objectCode, String objectMappedValue) {
+	private static String readMappingsFileLineByLineAndOnbtainCodeValue(String objectCode, String objectMappedValue) {
 		FileInputStream fis;
 		BufferedReader br;
 		try {
@@ -50,4 +50,5 @@ public class DHISMapping {
 		}
 		return objectMappedValue;
 	}
+
 }

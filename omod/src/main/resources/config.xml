@@ -12,22 +12,19 @@
 	<description>
 		${project.parent.description}
 	</description>
-	<updateURL>https://modules.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf
-	</updateURL>
+	<updateURL>https://modules.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf</updateURL>
 	<require_version>${openMRSVersion}</require_version>
 	<!-- / Module Properties -->
 
 
 	<!-- Module Activator -->
-	<activator>${project.parent.groupId}.${project.parent.artifactId}.SystemMonitorActivator
-	</activator>
+	<activator>${project.parent.groupId}.${project.parent.artifactId}.SystemMonitorActivator</activator>
 
 
 	<!-- Adds link to admin page -->
 	<extension>
 		<point>org.openmrs.admin.list</point>
-		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList
-		</class>
+		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
 	</extension>
 
 	<!-- Maps hibernate file's, if present -->
@@ -181,6 +178,11 @@
 		<property>systemmonitor.numberOfMonthsBeforeDeletingLogsAndData</property>
 		<defaultValue>12</defaultValue>
 		<description>The number of months (30 days each month) the system should keep the logged data and DHIS data before auto-deleting it</description>
+	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.addedLocalDHISMappings</property>
+		<defaultValue>false</defaultValue>
+		<description>Set to 'true' if you have added local DHIS Mappings not to be overwritten re-loading the module, but update the whole file every after upgrade manually</description>
 	</globalProperty>
 
 </module>

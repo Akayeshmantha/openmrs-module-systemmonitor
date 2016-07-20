@@ -61,6 +61,8 @@ public class ConfigureGPs {
 
 	private GlobalProperty numberOfTotalNewPatientsMetricEncounterTypeIdsGp;
 
+	private GlobalProperty addedLocalDHISMappingsGp;
+
 	public ConfigureGPs() {
 		initialiseGPsWithTheirCurrentValues();
 	}
@@ -105,6 +107,8 @@ public class ConfigureGPs {
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.BACKUP_FOLDERPATHORNAME);
 		numberOfMonthsBeforeDeletingLogsAndDataGp = Context.getAdministrationService()
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.MONTHS_TO_STORE_LOGSANDDATA);
+		addedLocalDHISMappingsGp = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.ADDED_LOCAL_DHISMAPPINGS);
 
 		if (mustConfigureSchedulerAccount()) {
 			schedulerUsernameGp = Context.getAdministrationService().getGlobalPropertyObject("scheduler.username");
@@ -146,6 +150,7 @@ public class ConfigureGPs {
 		backupFolderPathOrNameGp.setPropertyValue(request.getParameter("backupFolderPathOrName"));
 		numberOfMonthsBeforeDeletingLogsAndDataGp
 				.setPropertyValue(request.getParameter("numberOfMonthsBeforeDeletingLogsAndData"));
+		addedLocalDHISMappingsGp.setPropertyValue(request.getParameter("addedLocalDHISMappings"));
 
 		if (mustConfigureSchedulerAccount()) {
 			gps.add(schedulerUsernameGp);
@@ -171,6 +176,7 @@ public class ConfigureGPs {
 		gps.add(pedsReturnEncounterTypeIdGp);
 		gps.add(backupFolderPathOrNameGp);
 		gps.add(numberOfMonthsBeforeDeletingLogsAndDataGp);
+		gps.add(addedLocalDHISMappingsGp);
 
 		Context.getAdministrationService().saveGlobalProperties(gps);
 	}
@@ -265,6 +271,10 @@ public class ConfigureGPs {
 
 	public GlobalProperty getNumberOfMonthsBeforeDeletingLogsAndDataGp() {
 		return numberOfMonthsBeforeDeletingLogsAndDataGp;
+	}
+
+	public GlobalProperty getAddedLocalDHISMappingsGp() {
+		return addedLocalDHISMappingsGp;
 	}
 
 }

@@ -40,6 +40,8 @@ public class ConfigurableGlobalProperties {
 	public static String ENC_TYPE_PEDSRETURN_TYPEID = "systemmonitor.pedsReturnEncounterTypeId";
 
 	public static String BACKUP_FOLDERPATHORNAME = "systemmonitor.backupFolderPathOrName";
-	
+
 	public static String MONTHS_TO_STORE_LOGSANDDATA = "systemmonitor.numberOfMonthsBeforeDeletingLogsAndData";
+
+	public static String ADDED_LOCAL_DHISMAPPINGS = "systemmonitor.addedLocalDHISMappings";
 }
