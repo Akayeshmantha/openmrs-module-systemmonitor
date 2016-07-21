@@ -243,13 +243,13 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_processor", processor,
 					systemMonitorService.getDHISLastMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_serverUptimeSecs", uptime,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalMemory", totalMemory,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_usedMemory", usedMemory,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_freeMemory", freeMemory,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_openmrsAppName", openmrsAPPName,
 					systemMonitorService.getDHISLastMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_openmrsUptimeSecs", openmrsUptime,
