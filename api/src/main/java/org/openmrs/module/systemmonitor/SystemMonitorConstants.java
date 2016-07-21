@@ -25,7 +25,7 @@ public class SystemMonitorConstants {
 
 	public static String SYSTEMMONITOR_LOGS_PREFIX = "dhis-push-";
 
-	public static String SYSTEMMONITOR_MAPPING_FILENAME = "mapping-to-dhis.txt";
+	public static String SYSTEMMONITOR_MAPPING_FILENAME = "dhis-mappings.properties";
 
 	public static String SYSTEMMONITOR_DATAELEMENTSMETADATA_FILENAME = "dhis-dataelementsMetadata.json";
 

@@ -322,7 +322,6 @@ public class DHISGenerateDataValueSetSchemas {
 				if (allData.getJSONObject(i) != null) {
 					JSONObject json = new JSONObject();
 
-					System.out.println(allData.getJSONObject(i));
 					json.put("value", allData.getJSONObject(i).get("value"));
 					json.put("period", allData.getJSONObject(i).getString("period"));
 					json.put("dataElementId", allData.getJSONObject(i).getString("dataElement"));

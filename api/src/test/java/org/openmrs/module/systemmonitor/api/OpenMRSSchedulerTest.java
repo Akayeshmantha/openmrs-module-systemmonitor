@@ -1,14 +1,10 @@
 package org.openmrs.module.systemmonitor.api;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.Ignore;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 @Ignore
 public class OpenMRSSchedulerTest extends BaseModuleContextSensitiveTest {
-
-	private static Log log = LogFactory.getLog(OpenMRSSchedulerTest.class);
 
 	/*
 	 * This is registered in the module's activator through some method headed
@@ -16,10 +12,6 @@ public class OpenMRSSchedulerTest extends BaseModuleContextSensitiveTest {
 	 * description, Class<? extends Task> clazz, long interval) {
 	 */
 	public void test_openmrsScheduler() {
-		String name = "";
-		//Class<? extends Task> clazz = null;
-		Long interval = null;
-		String description = "";
 /*
 		try {
 			Context.addProxyPrivilege("Manage Scheduler");

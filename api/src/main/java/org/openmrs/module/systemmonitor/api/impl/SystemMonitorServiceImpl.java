@@ -16,6 +16,7 @@ package org.openmrs.module.systemmonitor.api.impl;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -46,6 +47,7 @@ import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
 import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 import org.openmrs.module.systemmonitor.export.DHISGenerateDataValueSetSchemas;
+import org.openmrs.module.systemmonitor.hacks.WindowsMappingsFileNotFoundHack;
 import org.openmrs.module.systemmonitor.mapping.DHISMapping;
 import org.openmrs.util.OpenmrsUtil;
 
@@ -626,8 +628,15 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 
 		try {
 			if (!SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE.exists()
-					|| (SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE.exists() && !addedLocalDHISMappings()))
-				FileUtils.copyFile(mappingsFile, SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE);
+					|| (SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE.exists() && !addedLocalDHISMappings())) {
+				try {
+					FileUtils.copyFile(mappingsFile, SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE);
+				} catch (FileNotFoundException e) {
+					if (e.getMessage().startsWith("Source")
+							|| e.getMessage().endsWith(SystemMonitorConstants.SYSTEMMONITOR_MAPPING_FILENAME))
+						WindowsMappingsFileNotFoundHack.addMappingsFileToSystemMonitorDataDirectory();
+				}
+			}
 
 			FileUtils.copyFile(dataElementsFile, SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);
 		} catch (IOException e) {

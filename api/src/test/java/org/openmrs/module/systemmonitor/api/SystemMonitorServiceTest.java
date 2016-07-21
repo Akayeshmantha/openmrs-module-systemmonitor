@@ -15,6 +15,7 @@ package org.openmrs.module.systemmonitor.api;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -22,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -119,6 +121,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 		return enc;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Ignore
 	public void test_totalOpenMRSObjectsCountingOrIndicators() {
 		Assert.assertEquals(Integer.valueOf(0), systemMonitorService.getTotalEncountersToday(false));
@@ -221,5 +224,15 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 		System.out.println(
 				"Current OpenMRS Version: " + SystemMonitorConstants.OPENMRS_VERSION + ", is it greater than 1.9? "
 						+ ModuleUtil.matchRequiredVersions(SystemMonitorConstants.OPENMRS_VERSION, "1.9"));
+	}
+
+	@Ignore
+	public void readMappingsFileToHackWindows() {
+		try {
+			String string = FileUtils.readFileToString(new File("/Users/k-joseph/.OpenMRS/MoHEMR-Upgraded/HIV/SystemMonitor/mapping-to-dhis.txt"));
+			System.out.println(string );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

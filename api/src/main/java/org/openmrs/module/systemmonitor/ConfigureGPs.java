@@ -53,6 +53,7 @@ public class ConfigureGPs {
 	private GlobalProperty numberOfMonthsBeforeDeletingLogsAndDataGp;
 
 	/* DON'T DELETE this field, it's used at client side */
+	@SuppressWarnings("unused")
 	private boolean mustSetScheduler;
 
 	private GlobalProperty arvDrugsConceptSetGp;
