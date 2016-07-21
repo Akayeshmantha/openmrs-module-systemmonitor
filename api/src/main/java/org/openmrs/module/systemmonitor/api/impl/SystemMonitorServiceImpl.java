@@ -625,7 +625,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				.getResource(SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILENAME).getFile());
 
 		try {
-			if (!SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE.exists() || !addedLocalDHISMappings())
+			if (!SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE.exists()
+					|| (SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE.exists() && !addedLocalDHISMappings()))
 				FileUtils.copyFile(mappingsFile, SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE);
 
 			FileUtils.copyFile(dataElementsFile, SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);

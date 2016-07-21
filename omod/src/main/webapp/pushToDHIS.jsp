@@ -5,7 +5,7 @@
 <openmrs:require privilege="View Administration Functions" otherwise="/login.htm" redirect="pushToDHIS.form" />
 
 <h3>
-	<spring:message code="systemmonitor.pusToDHIS" />
+	<spring:message code="systemmonitor.pushToDHIS" />
 </h3>
 
 <form method="post">
