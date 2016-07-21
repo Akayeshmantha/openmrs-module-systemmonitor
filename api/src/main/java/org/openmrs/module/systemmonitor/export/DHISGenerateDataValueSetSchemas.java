@@ -5,7 +5,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Calendar;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

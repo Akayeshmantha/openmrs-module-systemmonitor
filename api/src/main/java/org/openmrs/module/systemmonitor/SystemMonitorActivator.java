@@ -15,45 +15,30 @@ package org.openmrs.module.systemmonitor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.ModuleActivator;
-import org.openmrs.module.systemmonitor.api.SystemMonitorService;
+import org.openmrs.module.Activator;
+import org.openmrs.module.systemmonitor.api.impl.SystemMonitorServiceImpl;
 
 /**
  * This class contains the logic that is run every time this module is either
  * started or stopped.
  */
-public class SystemMonitorActivator implements ModuleActivator {
+public class SystemMonitorActivator implements Activator {
 
 	protected Log log = LogFactory.getLog(getClass());
 
 	@Override
-	public void contextRefreshed() {
-	}
-
-	@Override
-	public void started() {
-		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
-		Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
-		Context.getService(SystemMonitorService.class)
-				.updateNumberOfSecondsAtOpenMRSStartup(System.currentTimeMillis() / 1000);
-	}
-
-	@Override
-	public void stopped() {
-	}
-
-	@Override
-	public void willRefreshContext() {
-	}
-
-	@Override
-	public void willStart() {
-		log.info("Starting System Monitor Module");
-	}
-
-	@Override
-	public void willStop() {
+	public void shutdown() {
 		log.info("Shutting down System Monitor Module");
+	}
+
+	@Override
+	public void startup() {
+		log.info("Starting System Monitor Module");
+		
+		SystemMonitorServiceImpl serviceHack = new SystemMonitorServiceImpl();
+
+		serviceHack.transferDHISMappingsAndMetadataFileToDataDirectory();
+		serviceHack.updateLocallyStoredDHISMetadata();
+		serviceHack.updateNumberOfSecondsAtOpenMRSStartup(System.currentTimeMillis() / 1000);
 	}
 }
