@@ -9,23 +9,18 @@ import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.scheduler.SchedulerConstants;
 import org.openmrs.scheduler.tasks.AbstractTask;
 
-/**
- * This Task sends data to a configured remote task and is represented by
- * scheduler_task_config entry named: 'Push System Monitored Data to DHIS' meant
- * to run within a range of 4 hours starting from 08:00 everyday
- * 
- * @author k-joseph
- *
- */
-public class PushMonitoredDataTask extends AbstractTask {
+public class OnStartTask extends AbstractTask {
 
-	private Log log = LogFactory.getLog(getClass());
+	protected Log log = LogFactory.getLog(getClass());
 
 	@Override
 	public void execute() {
 		authenticateHack();
-		Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
-		Context.clearSession();
+		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
+		Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
+		Context.getService(SystemMonitorService.class)
+				.updateNumberOfSecondsAtOpenMRSStartup(System.currentTimeMillis() / 1000);
+		Context.closeSession();
 	}
 
 	protected void authenticateHack() {
@@ -44,5 +39,4 @@ public class PushMonitoredDataTask extends AbstractTask {
 			log.error("Error authenticating user", e);
 		}
 	}
-
 }
