@@ -48,6 +48,7 @@ public class AdminList extends AdministrationSectionExt {
 		map.put("/module/systemmonitor/pushToDHIS.form", "systemmonitor.pushToDHIS");
 		map.put("/module/systemmonitor/configurations.form", "systemmonitor.configurations");
 		map.put("/module/systemmonitor/localReport.form", "systemmonitor.localReport");
+		map.put("/module/systemmonitor/runAsSoonAsStarted.form", "systemmonitor.runAsSoonAsStarted");
 		return map;
 	}
 	

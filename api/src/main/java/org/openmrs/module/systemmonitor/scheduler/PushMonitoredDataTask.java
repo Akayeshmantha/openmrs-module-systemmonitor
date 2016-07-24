@@ -23,6 +23,7 @@ public class PushMonitoredDataTask extends AbstractTask {
 
 	@Override
 	public void execute() {
+		log.info("Executing " + getClass() + " background task");
 		authenticateHack();
 		Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
 		Context.clearSession();

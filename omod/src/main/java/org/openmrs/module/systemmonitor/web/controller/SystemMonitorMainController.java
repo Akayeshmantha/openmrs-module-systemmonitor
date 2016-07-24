@@ -80,4 +80,18 @@ public class SystemMonitorMainController {
 		model.addAttribute("reportData",
 				emt.generatedDHISDataValueSetJSON().getJSONObject("allData").getJSONArray("dataValues"));
 	}
+
+	@RequestMapping(value = "/module/systemmonitor/runAsSoonAsStarted", method = RequestMethod.GET)
+	public void renderAutoRun(ModelMap model) {
+
+	}
+
+	@RequestMapping(value = "/module/systemmonitor/runAsSoonAsStarted", method = RequestMethod.POST)
+	public void postAutoRun(ModelMap model, HttpServletRequest request) {
+		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
+		Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
+		Context.getService(SystemMonitorService.class)
+				.updateNumberOfSecondsAtOpenMRSStartup(System.currentTimeMillis() / 1000);
+		request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "systemmonitor.runAsSoonAsStarted.success");
+	}
 }

@@ -28,6 +28,12 @@
 		href="${pageContext.request.contextPath}/module/systemmonitor/localReport.form"><spring:message
 				code="systemmonitor.localReport" /></a>
 	</li>
+	<li
+		<c:if test='<%= request.getRequestURI().contains("/runAsSoonAsStarted") %>'>class="active"</c:if>>
+		<a
+		href="${pageContext.request.contextPath}/module/systemmonitor/runAsSoonAsStarted.form"><spring:message
+				code="systemmonitor.runAsSoonAsStarted" /></a>
+	</li>
 	<!-- Add further links here -->
 </ul>
 <h2>

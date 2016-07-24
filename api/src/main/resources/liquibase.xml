@@ -75,27 +75,4 @@
 			<column name="uuid" value="A54ABA4C-2999-4F20-A1B5-81E322F1DDF7" />
 		</insert>
 	</changeSet>
-	<changeSet id="2016July22-1626" author="k-joseph">
-		<preConditions onFail="MARK_RAN">
-			<sqlCheck expectedResult="0">SELECT COUNT(*) FROM
-				scheduler_task_config WHERE schedulable_class =
-				'org.openmrs.module.systemmonitor.scheduler.OnStartTask';
-			</sqlCheck>
-		</preConditions>
-		<comment>Add OnStartTask</comment>
-		<insert tableName="scheduler_task_config">
-			<column name="name" value="TestTask" />
-			<column name="schedulable_class"
-				value="org.openmrs.module.systemmonitor.scheduler.OnStartTask" />
-			<column name="description" value="OnStartTask, runs once in two years, just to make sure it runs on startup" />
-			<column name="start_time" value="2016-07-22 00:00:00" />
-			<column name="start_time_pattern" value="MM/dd/yyyy HH:mm:ss" />
-			<column name="repeat_interval" value="62208000" />
-			<column name="start_on_startup" value="1" />
-			<column name="started" value="1" />
-			<column name="created_by" value="1" />
-			<column name="date_created" value="2016-07-22 01:14:32" />
-			<column name="uuid" value="A54ABA4C-2999-4F20-A1B5-81E322F1AEF7" />
-		</insert>
-	</changeSet>
 </databaseChangeLog>

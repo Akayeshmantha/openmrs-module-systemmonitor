@@ -15,12 +15,7 @@ package org.openmrs.module.systemmonitor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.api.AdministrationService;
-import org.openmrs.api.context.Context;
-import org.openmrs.api.context.ContextAuthenticationException;
 import org.openmrs.module.Activator;
-import org.openmrs.module.systemmonitor.api.impl.SystemMonitorServiceImpl;
-import org.openmrs.scheduler.SchedulerConstants;
 
 /**
  * This class contains the logic that is run every time this module is either
@@ -38,29 +33,5 @@ public class SystemMonitorActivator implements Activator {
 	@Override
 	public void startup() {
 		log.info("Starting System Monitor Module");
-		SystemMonitorServiceImpl serviceHack = new SystemMonitorServiceImpl();
-
-		authenticateHack();
-		serviceHack.transferDHISMappingsAndMetadataFileToDataDirectory();
-		serviceHack.updateLocallyStoredDHISMetadata();
-		serviceHack.updateNumberOfSecondsAtOpenMRSStartup(System.currentTimeMillis() / 1000);
-		Context.closeSession();
-	}
-
-	protected void authenticateHack() {
-		try {
-			try {
-				Context.openSession();
-
-				AdministrationService adminService = Context.getAdministrationService();
-				Context.authenticate(adminService.getGlobalProperty(SchedulerConstants.SCHEDULER_USERNAME_PROPERTY),
-						adminService.getGlobalProperty(SchedulerConstants.SCHEDULER_PASSWORD_PROPERTY));
-			} catch (ContextAuthenticationException e) {
-				log.error("Error authenticating user", e);
-			}
-
-		} catch (ContextAuthenticationException e) {
-			log.error("Error authenticating user", e);
-		}
 	}
 }
