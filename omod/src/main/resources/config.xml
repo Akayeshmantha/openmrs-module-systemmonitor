@@ -79,8 +79,7 @@
 
 	<globalProperty>
 		<property>systemmonitor.DHISAPIROOTURL</property>
-		<defaultValue>http://82.196.9.250:8080/api
-		</defaultValue>
+		<defaultValue>http://82.196.9.250:8080/api</defaultValue>
 		<description>
 			DHIS2 Instance's Web API Root url/link
 		</description>

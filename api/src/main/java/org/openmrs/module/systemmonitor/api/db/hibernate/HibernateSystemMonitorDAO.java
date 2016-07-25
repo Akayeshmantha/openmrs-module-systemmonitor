@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.loader.OuterJoinLoader;
 import org.openmrs.Concept;
@@ -40,8 +41,11 @@ import org.openmrs.Person;
 import org.openmrs.Program;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
+import org.openmrs.api.db.DAOException;
 import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
+import org.openmrs.scheduler.TaskDefinition;
+import org.springframework.orm.ObjectRetrievalFailureException;
 
 /**
  * It is a default implementation of {@link SystemMonitorDAO}.
@@ -1342,5 +1346,19 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		Integer encTypeId = encType != null ? Integer.parseInt(encType) : null;
 
 		return encTypeId != null ? Context.getEncounterService().getEncounterType(encTypeId) : null;
+	}
+	
+	@Override
+	public TaskDefinition getTaskByClass(String taskClass) throws DAOException {
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(TaskDefinition.class).add(
+		    Expression.eq("taskClass", taskClass));
+		
+		TaskDefinition task = (TaskDefinition) crit.uniqueResult();
+		
+		if (task == null) {
+			log.warn("Task '" + taskClass + "' not found");
+			throw new ObjectRetrievalFailureException(TaskDefinition.class, taskClass);
+		}
+		return task;
 	}
 }

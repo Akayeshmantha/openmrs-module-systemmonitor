@@ -92,6 +92,7 @@ public class SystemMonitorMainController {
 		Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
 		Context.getService(SystemMonitorService.class)
 				.updateNumberOfSecondsAtOpenMRSStartup(System.currentTimeMillis() / 1000);
+		Context.getService(SystemMonitorService.class).rebootSystemMonitorTasks();
 		request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "systemmonitor.runAsSoonAsStarted.success");
 	}
 }

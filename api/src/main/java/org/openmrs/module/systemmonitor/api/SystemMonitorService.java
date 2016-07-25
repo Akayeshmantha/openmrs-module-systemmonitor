@@ -23,6 +23,8 @@ import org.openmrs.GlobalProperty;
 import org.openmrs.Person;
 import org.openmrs.Program;
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.api.db.DAOException;
+import org.openmrs.scheduler.TaskDefinition;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -357,4 +359,8 @@ public interface SystemMonitorService extends OpenmrsService {
 	String getDHISLastMonthPeriod();
 
 	String getDHISConfiguredOrgUnitName();
+
+	TaskDefinition getTaskByClass(String taskClass) throws DAOException;
+
+	void rebootSystemMonitorTasks();
 }

@@ -16,7 +16,9 @@ package org.openmrs.module.systemmonitor.api.db;
 import org.openmrs.Concept;
 import org.openmrs.Person;
 import org.openmrs.Program;
+import org.openmrs.api.db.DAOException;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
+import org.openmrs.scheduler.TaskDefinition;
 
 /**
  * Database methods for {@link SystemMonitorService}.
@@ -276,4 +278,6 @@ public interface SystemMonitorDAO {
 	Integer rwandaPIHEMTGetTotalNewPatientsForYesterday();
 
 	Integer rwandaPIHEMTGetTotalActivePatientsForYesterday();
+
+	TaskDefinition getTaskByClass(String taskClass) throws DAOException;
 }

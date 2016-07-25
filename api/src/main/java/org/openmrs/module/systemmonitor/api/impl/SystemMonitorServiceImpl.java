@@ -39,6 +39,7 @@ import org.openmrs.GlobalProperty;
 import org.openmrs.Person;
 import org.openmrs.Program;
 import org.openmrs.api.context.Context;
+import org.openmrs.api.db.DAOException;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.Module;
 import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
@@ -49,6 +50,8 @@ import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 import org.openmrs.module.systemmonitor.export.DHISGenerateDataValueSetSchemas;
 import org.openmrs.module.systemmonitor.hacks.WindowsMappingsFileNotFoundHack;
 import org.openmrs.module.systemmonitor.mapping.DHISMapping;
+import org.openmrs.scheduler.SchedulerException;
+import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.util.OpenmrsUtil;
 
 /**
@@ -1229,5 +1232,28 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void rebootSystemMonitorTasks() {
+		TaskDefinition localCleanerTask = getTaskByClass(SystemMonitorConstants.SCHEDULER_TASKCLASS_LOCALCLEANER);
+		TaskDefinition pushToDHISTask = getTaskByClass(SystemMonitorConstants.SCHEDULER_TASKCLASS_PUSH);
+		TaskDefinition updateLocalDHISMetadataTask = getTaskByClass(
+				SystemMonitorConstants.SCHEDULER_TASKCLASS_UPDATESHISMETADATA);
+		try {
+			if (localCleanerTask != null)
+				Context.getSchedulerService().scheduleTask(localCleanerTask);
+			if (pushToDHISTask != null)
+				Context.getSchedulerService().scheduleTask(pushToDHISTask);
+			if (updateLocalDHISMetadataTask != null)
+				Context.getSchedulerService().scheduleTask(updateLocalDHISMetadataTask);
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public TaskDefinition getTaskByClass(String taskClass) throws DAOException {
+		return dao.getTaskByClass(taskClass);
 	}
 }

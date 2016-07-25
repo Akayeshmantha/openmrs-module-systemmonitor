@@ -91,4 +91,9 @@ public class SystemMonitorConstants {
 			+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_DATA_PREFIX
 			+ new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".json");
 
+	public static String SCHEDULER_TASKCLASS_LOCALCLEANER = "org.openmrs.module.systemmonitor.scheduler.LocalLogsAndDHISDataCleanerTask";
+	
+	public static String SCHEDULER_TASKCLASS_PUSH = "org.openmrs.module.systemmonitor.scheduler.PushMonitoredDataTask";
+	
+	public static String SCHEDULER_TASKCLASS_UPDATESHISMETADATA = "org.openmrs.module.systemmonitor.scheduler.UpdateLocallyStoredDHISMetadataFromRemoteTask";
 }
