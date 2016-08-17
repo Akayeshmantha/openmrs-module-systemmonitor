@@ -30,3 +30,4 @@ ______________________________________________
 - [x] Update configuration page to support editing added global properties from last time
 - [x] Improve local printable report as well as dhis datavalues schema
 - [ ] May be we can model a way to match the SiteID to see if it is the right site being configured, may be around openmrs locations etc if reliable
+- [ ] Add disable/enable sending to dhis to preferences page

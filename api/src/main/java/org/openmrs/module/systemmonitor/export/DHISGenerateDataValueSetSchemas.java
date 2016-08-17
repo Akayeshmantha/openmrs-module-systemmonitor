@@ -50,7 +50,7 @@ public class DHISGenerateDataValueSetSchemas {
 
 		Integer uptime = OSAndHardwareIndicators.PROCESSOR_SYSTEM_UPTIME.intValue();
 
-		String processor = OSAndHardwareIndicators.getLinuxProcessorName();
+		String processor = OSAndHardwareIndicators.getProssesorNameSupportingLinuxAsWell();
 
 		Integer openmrsUptime = systemMonitorService.getOpenMRSSystemUpTime().intValue();
 

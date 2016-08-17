@@ -40,7 +40,7 @@ public class OSAndHardwareIndicators {
 
 	private static PowerSource[] psArr = si.getHardware().getPowerSources();
 
-	public static String PROCESSOR_NAME = getLinuxProcessorName();
+	public static String PROCESSOR_NAME = getProssesorNameSupportingLinuxAsWell();
 
 	public static String PROCESSOR_VENDOR = p.getVendor();
 
@@ -199,7 +199,7 @@ public class OSAndHardwareIndicators {
 		return json;
 	}
 
-	public static String getLinuxProcessorName() {
+	public static String getProssesorNameSupportingLinuxAsWell() {
 		if ("Linux".equals(System.getProperties().getProperty("os.name")) && StringUtils.isBlank(p.getName())) {
 			String[] cmds = { "/bin/sh", "-c", "cat /proc/cpuinfo | grep 'name' | uniq" };
 

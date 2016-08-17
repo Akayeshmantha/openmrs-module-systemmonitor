@@ -4,7 +4,7 @@
 
 <openmrs:require privilege="View Administration Functions" otherwise="/login.htm" redirect="dhisDataValues.form" />
 
-<openmrs:htmlInclude file="/moduleResources/systemmonitor/renderjson.js" />
+<openmrs:htmlInclude file="/moduleResources/systemmonitor/scripts/renderjson.js" />
 
 <style type="text/css">
 #renderDHISDataValueSets {

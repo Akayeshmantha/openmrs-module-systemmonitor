@@ -20,35 +20,38 @@ import org.openmrs.module.Extension;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
 
 /**
- * This class defines the links that will appear on the administration page under the
- * "systemmonitor.title" heading. 
+ * This class defines the links that will appear on the administration page
+ * under the "systemmonitor.title" heading.
  */
 public class AdminList extends AdministrationSectionExt {
-	
+
 	/**
 	 * @see AdministrationSectionExt#getMediaType()
 	 */
 	public Extension.MEDIA_TYPE getMediaType() {
 		return Extension.MEDIA_TYPE.html;
 	}
-	
+
 	/**
 	 * @see AdministrationSectionExt#getTitle()
 	 */
 	public String getTitle() {
 		return "systemmonitor.title";
 	}
-	
+
 	/**
 	 * @see AdministrationSectionExt#getLinks()
 	 */
 	public Map<String, String> getLinks() {
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+
 		map.put("/module/systemmonitor/dhisDataValues.form", "systemmonitor.dhisDataValues");
 		map.put("/module/systemmonitor/pushToDHIS.form", "systemmonitor.pushToDHIS");
 		map.put("/module/systemmonitor/configurations.form", "systemmonitor.configurations");
 		map.put("/module/systemmonitor/localReport.form", "systemmonitor.localReport");
+		map.put("/module/systemmonitor/activityMonitor.form", "systemmonitor.activityMonitor");
+
 		return map;
 	}
-	
+
 }
