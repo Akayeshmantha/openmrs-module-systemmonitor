@@ -66,8 +66,8 @@
 				systemLoad.maxValue = activityMonitorInfo.systemLoad + 1;
 				
 				jQuery("#cpu-label").text("System Load: " + activityMonitorInfo.systemLoad);
-				jQuery("#memory-label").text("Used Memory (MB): " + activityMonitorInfo.usedMemory/activityMonitorInfo.totalMemory * 100 + " %");
-				jQuery("#uptime-label").text("Uptime (OpenMRS/Server) : " + activityMonitorInfo.openmrsUpTime + "/" + activityMonitorInfo.processorUpTime + " minutes");
+				jQuery("#memory-label").text("Used Memory (MB): " + activityMonitorInfo.usedMemory + "/" + activityMonitorInfo.totalMemory + " = " + activityMonitorInfo.usedMemory/activityMonitorInfo.totalMemory * 100 + " %");
+				jQuery("#uptime-label").text("Uptime (OpenMRS/Server) : " + activityMonitorInfo.openmrsUpTime + "/" + activityMonitorInfo.processorUpTime + " minutes = " + activityMonitorInfo.openmrsUpTime/activityMonitorInfo.processorUpTime * 100);
 			}
 		});
 	}
