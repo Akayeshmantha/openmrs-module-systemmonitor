@@ -91,8 +91,8 @@ public class SystemMonitorConstants {
 			+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_DATA_PREFIX
 			+ new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".json");
 
-	public static String SYSTEMMONITOR_MEMORYDATABASEFILE_PATH = SYSTEMMONITOR_DIRECTORYPATH + File.separator
-			+ "fileDB.json";
+	public static String USED_MEMORY_FILE_NAME = "used-memory.txt";
 
-	public static File SYSTEMMONITOR_MEMORYDATABASEFILE = new File(SYSTEMMONITOR_MEMORYDATABASEFILE_PATH);
+	public static File SYSTEMMONITOR_MEMORYDATAFILE = new File(
+			SYSTEMMONITOR_DATA_DIRECTORYPATH + File.separator + USED_MEMORY_FILE_NAME);
 }

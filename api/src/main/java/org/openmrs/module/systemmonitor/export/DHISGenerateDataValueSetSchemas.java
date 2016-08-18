@@ -16,6 +16,7 @@ import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 import org.openmrs.module.systemmonitor.indicators.OSAndHardwareIndicators;
 import org.openmrs.module.systemmonitor.indicators.SystemPropertiesIndicators;
 import org.openmrs.module.systemmonitor.mapping.DHISMapping;
+import org.openmrs.module.systemmonitor.memory.MemoryAggregation;
 import org.openmrs.web.WebConstants;
 
 public class DHISGenerateDataValueSetSchemas {
@@ -54,11 +55,11 @@ public class DHISGenerateDataValueSetSchemas {
 
 		Integer openmrsUptime = systemMonitorService.getOpenMRSSystemUpTime().intValue();
 
-		Long freeMemory = OSAndHardwareIndicators.MEMORY_AVAILABLE;
-
-		Long usedMemory = OSAndHardwareIndicators.MEMORY_USED;
-
 		Long totalMemory = OSAndHardwareIndicators.MEMORY_TOTAL;
+
+		Long usedMemory = MemoryAggregation.getAggregatedUsedMemory();
+
+		Long freeMemory = totalMemory - usedMemory;
 
 		String operatingSystem = SystemPropertiesIndicators.OS_NAME + ", Family: " + OSAndHardwareIndicators.OS_FAMILY
 				+ ", Manufacturer: " + OSAndHardwareIndicators.OS_MANUFACTURER + ", Version Name: "
@@ -258,8 +259,8 @@ public class DHISGenerateDataValueSetSchemas {
 					systemMonitorService.getDHISLastMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_primaryCareHours", clinicHours,
 					systemMonitorService.getDHISLastMonthPeriod()));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_operatingSystemName", operatingSystem,
-					systemMonitorService.getDHISLastMonthPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_operatingSystemName",
+					operatingSystem, systemMonitorService.getDHISLastMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_operatingSystemArch",
 					operatingSystemArch, systemMonitorService.getDHISLastMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_operatingSystemVersion",

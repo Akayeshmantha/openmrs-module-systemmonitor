@@ -103,6 +103,7 @@ public class SystemMonitorMainController {
 		Long usedMemory = OSAndHardwareIndicators.MEMORY_USED;
 		Long availableMemory = OSAndHardwareIndicators.MEMORY_AVAILABLE;
 
+		//TODO log memory to MemoryAggregation at this point and overwrite sent memory value in the reports with the aggregated value
 		json.put("systemLoad", systemLoad);
 		json.put("cpuTemperature", cpuTemperature);
 		json.put("cpuVoltage", cpuVoltage);

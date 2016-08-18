@@ -8,6 +8,10 @@
 <openmrs:htmlInclude
 	file="/moduleResources/systemmonitor/scripts/smoothie.js" />
 
+<h3>
+	<spring:message code="systemmonitor.activityMonitor" />
+</h3>
+
 <script type="text/javascript">
 	var activityMonitorInfo,
 	systemLoad = new TimeSeries(),
