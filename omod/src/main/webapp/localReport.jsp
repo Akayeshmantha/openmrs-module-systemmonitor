@@ -26,7 +26,7 @@
 	var reportTableData = "";
 
 	jQuery(function() {
-		if(jsonData == undefined || jsonData == null || jsonData == "MIS-CONFIGURED") {
+		if(jsonData == undefined || jsonData == null || jsonData == "undefined") {
 			alert("Report wouldn't be generated, either FOS/Site ID is mis-configred or something else is wrong, contact the admin to check the system logss");
 		} else {
 			for ( var i in jsonData) {

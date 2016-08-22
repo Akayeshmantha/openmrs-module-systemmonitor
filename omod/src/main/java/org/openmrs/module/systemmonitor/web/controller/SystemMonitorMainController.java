@@ -83,7 +83,7 @@ public class SystemMonitorMainController {
 
 		model.addAttribute("orgUnit", Context.getService(SystemMonitorService.class).getDHISConfiguredOrgUnitName());
 		model.addAttribute("reportData", generatedDHISDataValueSetJSON != null
-				? generatedDHISDataValueSetJSON.getJSONObject("allData").getJSONArray("dataValues") : "MIS-CONFIGURED");
+				? generatedDHISDataValueSetJSON.getJSONObject("allData").getJSONArray("dataValues") : "undefined");
 	}
 
 	@RequestMapping(value = "/module/systemmonitor/activityMonitorInfo", method = RequestMethod.GET)
