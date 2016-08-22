@@ -31,7 +31,7 @@ public class DHISGenerateDataValueSetSchemas {
 		File mappingsFile = SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE;
 		JSONObject jsonObj = new JSONObject();
 		JSONObject jsonObj2 = new JSONObject();
-		JSONObject finalJSON = new JSONObject();
+		JSONObject finalJSON = null;
 		JSONArray jsonToBePushed;
 		JSONArray jsonDataValueSets = new JSONArray();
 		SystemMonitorService systemMonitorService = Context.getService(SystemMonitorService.class);
@@ -164,12 +164,13 @@ public class DHISGenerateDataValueSetSchemas {
 		}
 		jsonObj2.put("orgUnit", dhisOrgUnitUid);
 		jsonObj.put("orgUnit", systemMonitorService.getDHISConfiguredOrgUnitName());
-		if (mappingsFile.exists() && mappingsFile.isFile()) {
+		if (mappingsFile.exists() && mappingsFile.isFile() && systemMonitorService.matchConfiguredFosID()) {
 			JSONObject systemRealLocationDataElementJSON = new JSONObject();
 			JSONObject installedModulesDataElementJSON = new JSONObject();
 			JSONObject systemRealLocationDataElementJSON2 = new JSONObject();
 			JSONObject installedModulesDataElementJSON2 = new JSONObject();
 
+			finalJSON = new JSONObject();
 			systemRealLocationDataElementJSON.put("dataElement",
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemRealLocation"));
 			systemRealLocationDataElementJSON.put("period", systemMonitorService.getDHISLastMonthPeriod());

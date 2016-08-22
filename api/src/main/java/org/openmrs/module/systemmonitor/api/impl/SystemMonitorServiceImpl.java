@@ -33,6 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.openmrs.Concept;
 import org.openmrs.GlobalProperty;
@@ -714,11 +715,12 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		return dao.unitTestingTheseMetrics();
 	}
 
-	@Override
-	public JSONObject getDataToPushToDHIS() {
-		return DHISGenerateDataValueSetSchemas.generateRwandaSPHEMTDHISDataValueSets().length() > 0
-				? DHISGenerateDataValueSetSchemas.generateRwandaSPHEMTDHISDataValueSets().getJSONObject("toBePushed")
-				: null;
+	private JSONObject getDataToPushToDHIS() {
+		JSONObject generatedRwandaSPHEMTDHISDataValueSets = DHISGenerateDataValueSetSchemas
+				.generateRwandaSPHEMTDHISDataValueSets();
+
+		return generatedRwandaSPHEMTDHISDataValueSets != null && generatedRwandaSPHEMTDHISDataValueSets.length() > 0
+				? generatedRwandaSPHEMTDHISDataValueSets.getJSONObject("toBePushed") : null;
 	}
 
 	@Override
@@ -1229,5 +1231,27 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public boolean matchConfiguredFosID() {
+		String configuredFosId = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.SITE_ID);
+
+		if (StringUtils.isNotBlank(configuredFosId) && SystemMonitorConstants.SYSTEMMONITOR_ORGUNIT_FILE.exists()
+				&& SystemMonitorConstants.SYSTEMMONITOR_ORGUNIT_FILE.length() > 0) {
+			try {
+				JSONObject json = new JSONObject(
+						FileUtils.readFileToString(SystemMonitorConstants.SYSTEMMONITOR_ORGUNIT_FILE));
+
+				if (json.length() > 0 && configuredFosId.equals(json.getString("code")))
+					return true;
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 }

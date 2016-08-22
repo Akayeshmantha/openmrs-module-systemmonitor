@@ -26,42 +26,46 @@
 	var reportTableData = "";
 
 	jQuery(function() {
-		for ( var i in jsonData) {
-			if (jsonData[i].dataElementName === "Installed Modules") {
-				var insiderTableData = "<table><tr><th>Name</th><th>Version</th><th>Author</th></tr>";
-				var modules = jsonData[i].value;
-	
-				for ( var j in modules) {
-					insiderTableData += "<tr><td>" + modules[j].name + "</td><td>"
-							+ modules[j].version + "</td><td>" + modules[j].author + "</td></tr>";
+		if(jsonData == undefined || jsonData == null || jsonData == "MIS-CONFIGURED") {
+			alert("Report wouldn't be generated, either FOS/Site ID is mis-configred or something else is wrong, contact the admin to check the system logss");
+		} else {
+			for ( var i in jsonData) {
+				if (jsonData[i].dataElementName == "Installed Modules") {
+					var insiderTableData = "<table><tr><th>Name</th><th>Version</th><th>Author</th></tr>";
+					var modules = jsonData[i].value;
+		
+					for ( var j in modules) {
+						insiderTableData += "<tr><td>" + modules[j].name + "</td><td>"
+								+ modules[j].version + "</td><td>" + modules[j].author + "</td></tr>";
+					}
+		
+					insiderTableData += "</table>";
+					reportTableData += "<tr><td>" + jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
+							+ "</td><td>" + insiderTableData + "</td></tr>";
+				} else if (jsonData[i].dataElementName == "Server's Real Location") {
+					var insiderTableData = "<table><tr><th>Country</th><td>"
+							+ jsonData[i].value.country
+							+ "</tr><tr><th>Region</th><td>" + jsonData[i].value.region
+							+ "</tr><tr><th>City</th><td>" + jsonData[i].value.city
+							+ "</tr><tr><th>Location(Latitude,Longitude)</th><td>"
+							+ jsonData[i].value.loc + "</tr><tr><th>HostName</th><td>"
+							+ jsonData[i].value.hostname
+							+ "</tr><tr><th>IP Address</th><td>" + jsonData[i].value.ip
+							+ "</tr><tr><th>ISP</th><td>" + jsonData[i].value.org
+							+ "</td></tr></table>";
+		
+					reportTableData += "<tr><td>" + jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
+							+ "</td><td>" + insiderTableData + "</td></tr>";
+				} else {
+					reportTableData += "<tr><td>" + jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
+							+ "</td><td>" + jsonData[i].value
+							+ "</td></tr>";
 				}
-	
-				insiderTableData += "</table>";
-				reportTableData += "<tr><td>" + jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
-						+ "</td><td>" + insiderTableData + "</td></tr>";
-			} else if (jsonData[i].dataElementName === "Server's Real Location") {
-				var insiderTableData = "<table><tr><th>Country</th><td>"
-						+ jsonData[i].value.country
-						+ "</tr><tr><th>Region</th><td>" + jsonData[i].value.region
-						+ "</tr><tr><th>City</th><td>" + jsonData[i].value.city
-						+ "</tr><tr><th>Location(Latitude,Longitude)</th><td>"
-						+ jsonData[i].value.loc + "</tr><tr><th>HostName</th><td>"
-						+ jsonData[i].value.hostname
-						+ "</tr><tr><th>IP Address</th><td>" + jsonData[i].value.ip
-						+ "</tr><tr><th>ISP</th><td>" + jsonData[i].value.org
-						+ "</td></tr></table>";
-	
-				reportTableData += "<tr><td>" + jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
-						+ "</td><td>" + insiderTableData + "</td></tr>";
-			} else {
-				reportTableData += "<tr><td>" + jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
-						+ "</td><td>" + jsonData[i].value
-						+ "</td></tr>";
 			}
+		
+			jQuery('#renderReport tr:last').after(reportTableData);
+			jQuery("#date").html("Date: <b>" + new Date() + "</b>");
 		}
-	
-		jQuery('#renderReport tr:last').after(reportTableData);
-		jQuery("#date").html("Date: <b>" + new Date() + "</b>");
 	});
 	
 	function printLatestReport(){

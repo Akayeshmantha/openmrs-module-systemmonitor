@@ -269,8 +269,6 @@ public interface SystemMonitorService extends OpenmrsService {
 
 	JSONObject pushMonitoredDataToDHIS();
 
-	JSONObject getDataToPushToDHIS();
-
 	/**
 	 * Fetches the whole dhis dataelement/indicator/metric json object to get
 	 * its id use; getIndicatorOrMetricOrDataElement("id").getString("id") and
@@ -357,4 +355,6 @@ public interface SystemMonitorService extends OpenmrsService {
 	String getDHISLastMonthPeriod();
 
 	String getDHISConfiguredOrgUnitName();
+
+	boolean matchConfiguredFosID();
 }
