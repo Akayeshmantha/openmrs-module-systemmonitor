@@ -12,15 +12,21 @@
 			- "use business-database-name;" was called prior to
 			   calling this script
 	</help>
-
-<!-- 
-	<diff>
+	
+ 	<diff>
 		<version>1.0-SNAPSHOT</version>
 		<author>k-joseph</author>
-		<date></date>
-		<description></description>
-		<sql></sql>
+		<date>Aug 30 2016</date>
+		<description>Replacing liquibase with plain SQL to support lower 1.6.x Rwandan versions</description>
+		<sql>
+			DELETE FROM liquibasechangelog WHERE ID in ('2016June28-1553', '2016June29-1721', '2016July13-1722');
+			DELETE FROM scheduler_task_config WHERE schedulable_class in ('org.openmrs.module.systemmonitor.scheduler.PushMonitoredDataTask', 'org.openmrs.module.systemmonitor.scheduler.UpdateLocallyStoredDHISMetadataFromRemoteTask', 'org.openmrs.module.systemmonitor.scheduler.LocalLogsAndDHISDataCleanerTask');
+			INSERT INTO scheduler_task_config(name, schedulable_class, description, start_time, start_time_pattern, repeat_interval, start_on_startup, started, created_by, date_created, uuid)
+				VALUES
+					('Push System Monitored Data to DHIS', 'org.openmrs.module.systemmonitor.scheduler.PushMonitoredDataTask', 'Scheduled task for Sending data to the configured DHIS instance every after 4 hours', '2016-06-28 08:00:00', 'MM/dd/yyyy HH:mm:ss', 14400, 1, 1, 1, '2016-06-28 16:40:32', 'e87dfe90-3d35-11e6-ac61-9e71128cae77'),
+					('Update Locally Stored DHIS Metadata', 'org.openmrs.module.systemmonitor.scheduler.UpdateLocallyStoredDHISMetadataFromRemoteTask', 'Scheduled task for updating DHIS metadata locally from configured remote instance once a day at mid-day', '2016-06-29 12:00:00', 'MM/dd/yyyy HH:mm:ss', 86400, 1, 1, 1, '2016-06-29 17:20:21', 'a790a422-3e08-11e6-ac61-9e71128cae77'),
+					('Clean/Delete Old Local Logs and DHIS Data', 'org.openmrs.module.systemmonitor.scheduler.LocalLogsAndDHISDataCleanerTask', 'Scheduled task for cleaning/deleting locally stored logs and dhis data', '2016-08-01 12:00:00', 'MM/dd/yyyy HH:mm:ss', 2592000, 1, 1, 1, '2016-07-12 17:22:45', 'A54ABA4C-2999-4F20-A1B5-81E322F1DDF7')
+		</sql>
 	</diff>
- -->
 	
 </sqldiff>
