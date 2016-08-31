@@ -357,4 +357,6 @@ public interface SystemMonitorService extends OpenmrsService {
 	String getDHISConfiguredOrgUnitName();
 
 	boolean matchConfiguredFosID();
+
+	JSONArray fetchDataToBePushedAtClientLevelOrExported();
 }

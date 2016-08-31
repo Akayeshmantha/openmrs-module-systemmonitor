@@ -31,3 +31,4 @@ ______________________________________________
 - [x] Improve local printable report as well as dhis datavalues schema
 - [ ] May be we can model a way to match the SiteID to see if it is the right site being configured, may be around openmrs locations etc if reliable
 - [ ] Add disable/enable sending to dhis to preferences page
+- [ ] Backport memory aggregation etc to 1.6.x

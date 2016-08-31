@@ -14,12 +14,18 @@
 package org.openmrs.module.systemmonitor.web.controller;
 
 import java.lang.management.ManagementFactory;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
 import org.openmrs.module.systemmonitor.ConfigureGPs;
+import org.openmrs.module.systemmonitor.SystemMonitorConstants;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.distributions.RwandaSPHStudyEMT;
 import org.openmrs.module.systemmonitor.indicators.OSAndHardwareIndicators;
@@ -28,7 +34,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * The main controller.
@@ -119,5 +127,67 @@ public class SystemMonitorMainController {
 	@RequestMapping(value = "/module/systemmonitor/activityMonitor", method = RequestMethod.GET)
 	public void getActiveMonitor(ModelMap model) {
 		model.put("activityMonitorInfo", createClientActivityMonitorInfor());
+	}
+
+	@RequestMapping(value = "/module/systemmonitor/transferDHISData", method = RequestMethod.GET)
+	public void renderTransferDHISData(ModelMap model) {
+
+	}
+
+	@RequestMapping(value = "/module/systemmonitor/transferDHISData", method = RequestMethod.POST)
+	public String postTransferDHISData(ModelMap model,
+			@RequestParam(value = "dhisFile", required = false) MultipartFile mapping,
+			@RequestParam(value = "formAction") String formAction) {
+		String data = "";
+
+		if (StringUtils.isNotBlank(formAction)) {
+			// supplies data to be pushed at client level
+			if (formAction.equals("Push")) {
+				JSONObject allDHISValuesJSON = prepareClientMonitoredData();
+
+				data = allDHISValuesJSON.toString();
+			}
+		}
+
+		return data;
+	}
+
+	@RequestMapping(value = "/module/systemmonitor/dataForClientPushing", method = RequestMethod.GET)
+	public @ResponseBody String getDataForClientPushing() {
+		String dhisUserName = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
+		String dhisPassword = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_PASSWORD);
+		String dhisPostUrl = (Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)) != null
+						? Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)
+								+ SystemMonitorConstants.DHIS_API_DATAVALUES_URL
+						: "";
+		String systemId = OSAndHardwareIndicators.getHostName() + "-" + (OSAndHardwareIndicators.getMacAddress() != null
+				? OSAndHardwareIndicators.getMacAddress().replace(":", "") : "");
+		JSONObject allDataValues = prepareClientMonitoredData();
+		JSONObject allDHISValuesJSON = new JSONObject();
+
+		allDHISValuesJSON.put("data", allDataValues);
+		allDHISValuesJSON.put("dhisUserName", dhisUserName);
+		allDHISValuesJSON.put("dhisPassword", dhisPassword);
+		allDHISValuesJSON.put("dhisPostUrl", dhisPostUrl);
+		allDHISValuesJSON.put("fileName",
+				systemId + "-dhisData-" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".json");
+		allDHISValuesJSON.put("failureMessage",
+				Context.getMessageSourceService().getMessage("systemmonitor.clientPushing.failureMessage"));
+
+		return allDataValues.length() > 0 ? allDHISValuesJSON.toString() : "";
+	}
+
+	private JSONObject prepareClientMonitoredData() {
+		JSONObject allDataValues = new JSONObject();
+		JSONArray dataToBePushedOrExported = Context.getService(SystemMonitorService.class)
+				.fetchDataToBePushedAtClientLevelOrExported();
+
+		if (dataToBePushedOrExported.length() > 0)
+			allDataValues.put("dataValues", dataToBePushedOrExported);
+
+		return allDataValues;
 	}
 }
