@@ -363,4 +363,6 @@ public interface SystemMonitorService extends OpenmrsService {
 	TaskDefinition getTaskByClass(String taskClass) throws DAOException;
 
 	void rebootSystemMonitorTasks();
+
+	JSONArray fetchDataToBePushedAtClientLevelOrExported();
 }

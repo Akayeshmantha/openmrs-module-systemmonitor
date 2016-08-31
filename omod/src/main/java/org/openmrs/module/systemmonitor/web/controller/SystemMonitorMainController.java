@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class SystemMonitorMainController {
-
 	@RequestMapping(value = "/module/systemmonitor/dhisDataValues", method = RequestMethod.GET)
 	public void dhisDataValuesViewer(ModelMap model) {
 		RwandaSPHStudyEMT emt = new RwandaSPHStudyEMT();
@@ -95,4 +94,5 @@ public class SystemMonitorMainController {
 		Context.getService(SystemMonitorService.class).rebootSystemMonitorTasks();
 		request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "systemmonitor.runAsSoonAsStarted.success");
 	}
+
 }

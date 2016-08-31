@@ -1256,4 +1256,61 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	public TaskDefinition getTaskByClass(String taskClass) throws DAOException {
 		return dao.getTaskByClass(taskClass);
 	}
+
+	@Override
+	public JSONArray fetchDataToBePushedAtClientLevelOrExported() {
+		JSONArray json = new JSONArray();
+
+		JSONArray currentDataValues = reArrangeDataValuesJSONArrayToIncludeOrgUnitInEachEntry(getDataToPushToDHIS());
+		JSONArray storedDataValues = new JSONArray();
+		File dataDir = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
+
+		if (dataDir.exists() && dataDir.isDirectory() && dataDir.listFiles().length > 0) {
+			for (int i = 0; i < dataDir.listFiles().length; i++) {
+				File backup = dataDir.listFiles()[i];
+
+				if (backup.getPath().endsWith(".json")) {
+					JSONArray data = reArrangeDataValuesJSONArrayToIncludeOrgUnitInEachEntry(
+							new JSONObject(readFileToString(backup)));
+					storedDataValues.put(data);
+				}
+			}
+		}
+		if (currentDataValues.length() > 0) {
+			for (int i = 0; i < currentDataValues.length(); i++) {
+				json.put(currentDataValues.getJSONObject(i));
+			}
+		}
+		if (storedDataValues.length() > 0) {
+			for (int i = 0; i < storedDataValues.length(); i++) {
+				json.put(storedDataValues.getJSONObject(i));
+			}
+		}
+
+		return json;
+	}
+
+	private JSONArray reArrangeDataValuesJSONArrayToIncludeOrgUnitInEachEntry(JSONObject dataValuesJson) {
+		JSONArray dataValues = dataValuesJson.getJSONArray("dataValues");
+		JSONArray newDataValues = dataValues;
+		String dhisOrgUnitUid = dataValuesJson.getString("orgUnit");
+
+		if (StringUtils.isNotBlank(dhisOrgUnitUid)) {
+
+			if (dataValues != null) {
+				newDataValues = new JSONArray();
+				for (int i = 0; i < dataValues.length(); i++) {
+					JSONObject json = new JSONObject();
+
+					json.put("orgUnit", dhisOrgUnitUid);
+					json.put("dataElement", dataValues.getJSONObject(i).getString("dataElement"));
+					json.put("period", dataValues.getJSONObject(i).getString("period"));
+					json.put("value", dataValues.getJSONObject(i).get("value"));
+					newDataValues.put(json);
+				}
+			}
+		}
+
+		return newDataValues;
+	}
 }

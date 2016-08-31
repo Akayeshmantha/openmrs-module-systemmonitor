@@ -15,16 +15,16 @@
 
 	<dependencies>
 		<!-- Begin OpenMRS modules -->
-		
+
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>${project.parent.artifactId}-api</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-		
-				
+
+
 		<!-- End OpenMRS modules -->
-		
+
 
 		<!-- Begin OpenMRS core -->
 
@@ -39,12 +39,12 @@
 			<artifactId>openmrs-web</artifactId>
 			<type>jar</type>
 		</dependency>
-		
+
 		<!-- End OpenMRS core -->
-				
+
 	</dependencies>
 
-	
+
 	<build>
 		<finalName>${project.parent.artifactId}-${project.parent.version}</finalName>
 		<resources>

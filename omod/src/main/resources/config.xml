@@ -31,6 +31,22 @@
 	<mappingFiles>
 		SystemMonitor.hbm.xml
 	</mappingFiles>
+	
+	<dwr>
+        <allow>
+            <create creator="new" javascript="DWRSystemMonitorService">
+                <param name="class" value="org.openmrs.module.systemmonitor.web.dwr.DWRSystemMonitorService"/>
+                <include method="getDataForClientPushing"/>
+            </create>
+        </allow>
+ 
+        <signatures>
+            <![CDATA[
+            import org.openmrs.module.systemmonitor.web.dwr.DWRSystemMonitorService;
+            DWRSystemMonitorService.getDataForClientPushing();
+            ]]>
+        </signatures>
+    </dwr>
 
 	<!-- Internationalization -->
 	<!-- All message codes should start with ${project.parent.artifactId}. -->
