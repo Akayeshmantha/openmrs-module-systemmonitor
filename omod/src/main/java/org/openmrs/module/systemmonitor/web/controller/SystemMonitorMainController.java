@@ -47,7 +47,8 @@ public class SystemMonitorMainController {
 	public void pushToDHIS(ModelMap model) {
 		JSONObject response = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
 
-		model.addAttribute("response", response);
+		model.addAttribute("response", response != null ? response
+				: Context.getMessageSourceService().getMessage("systemmonitor.pushToDHIS.serverInternetFailure"));
 	}
 
 	@RequestMapping(value = "/module/systemmonitor/configurations", method = RequestMethod.GET)
@@ -82,7 +83,6 @@ public class SystemMonitorMainController {
 
 	@RequestMapping(value = "/module/systemmonitor/runAsSoonAsStarted", method = RequestMethod.GET)
 	public void renderAutoRun(ModelMap model) {
-
 	}
 
 	@RequestMapping(value = "/module/systemmonitor/runAsSoonAsStarted", method = RequestMethod.POST)

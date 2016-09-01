@@ -21,14 +21,13 @@
  	<spring:message code="systemmonitor.clientPushing.description" />
 </p>
 <br /><br />
-<div id="dhis2ServerResponse">${response}</div>
+<div id="dhis2ServerResponse" style="font-weight:bold;font-size:1.15em;">${response}</div>
 
 <script type="text/javascript">
 	function pushToDHISOrExportOnFailure(data) {
 		if (data != "" && data != undefined) {
 				data = JSON.parse(data);
 				
-				//Download the data before pushing
 				var auth = btoa(data.dhisUserName + ":" + data.dhisPassword);
 				var url = data.dhisPostUrl;
 				var dataStr = JSON.stringify(data.data);
@@ -38,8 +37,8 @@
 						"content-type": "application/json",
 						"authorization": "Basic " + auth,
 						"cache-control": "no-cache"
-						},
-						crossDomain: true,
+					},
+					crossDomain: true,
 					processData: false,
 					url : url,
 				    method : "POST",
@@ -48,6 +47,7 @@
 						$("#dhis2ServerResponse").text(dhisResponse);
 					},
 					error: function(e) {
+						//download the data if pushing failed because of no TODO (OpenHIM interoperability layer) to wire the request through
 						var dataStr2 = "data:text/json;charset=utf-8," + encodeURIComponent(dataStr);
 						var dlAnchorElem = document.getElementById('downloadAnchorElem');
 						

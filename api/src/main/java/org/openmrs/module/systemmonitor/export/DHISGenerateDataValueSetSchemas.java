@@ -162,7 +162,11 @@ public class DHISGenerateDataValueSetSchemas {
 			dhisOrgUnitUid = "";
 		}
 		jsonObj2.put("orgUnit", dhisOrgUnitUid);
-		jsonObj.put("orgUnit", systemMonitorService.getDHISConfiguredOrgUnitName());
+		jsonObj.put("orgUnit",
+				StringUtils.isNotBlank(systemMonitorService.getDHISConfiguredOrgUnitName())
+						? systemMonitorService.getDHISConfiguredOrgUnitName()
+						: "Org Unit DHIS Id: " + dhisOrgUnitUid + " FosID: "
+								+ systemMonitorService.getCurrentConfiguredDHISOrgUnit().getPropertyValue());
 		if (mappingsFile.exists() && mappingsFile.isFile()) {
 			JSONObject systemRealLocationDataElementJSON = new JSONObject();
 			JSONObject installedModulesDataElementJSON = new JSONObject();
@@ -258,8 +262,8 @@ public class DHISGenerateDataValueSetSchemas {
 					systemMonitorService.getDHISLastMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_primaryCareHours", clinicHours,
 					systemMonitorService.getDHISLastMonthPeriod()));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_operatingSystemName", operatingSystem,
-					systemMonitorService.getDHISLastMonthPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_operatingSystemName",
+					operatingSystem, systemMonitorService.getDHISLastMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_operatingSystemArch",
 					operatingSystemArch, systemMonitorService.getDHISLastMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_operatingSystemVersion",

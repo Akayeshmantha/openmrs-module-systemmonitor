@@ -38,6 +38,7 @@ import org.openmrs.Concept;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Person;
 import org.openmrs.Program;
+import org.openmrs.api.APIAuthenticationException;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.api.impl.BaseOpenmrsService;
@@ -635,8 +636,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				try {
 					FileUtils.copyFile(mappingsFile, SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE);
 				} catch (FileNotFoundException e) {
-					if (e.getMessage().startsWith("Source")
-							|| e.getMessage().endsWith(SystemMonitorConstants.SYSTEMMONITOR_MAPPING_FILENAME))
+					if (e.getMessage().indexOf("Source") > -1
+							|| e.getMessage().indexOf(SystemMonitorConstants.SYSTEMMONITOR_MAPPING_FILENAME) > -1)
 						WindowsMappingsFileNotFoundHack.addMappingsFileToSystemMonitorDataDirectory();
 				}
 			}
@@ -1249,6 +1250,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				Context.getSchedulerService().scheduleTask(updateLocalDHISMetadataTask);
 		} catch (SchedulerException e) {
 			e.printStackTrace();
+		} catch (APIAuthenticationException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -1272,7 +1275,9 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				if (backup.getPath().endsWith(".json")) {
 					JSONArray data = reArrangeDataValuesJSONArrayToIncludeOrgUnitInEachEntry(
 							new JSONObject(readFileToString(backup)));
-					storedDataValues.put(data);
+					for (int j = 0; j < data.length(); j++) {
+						storedDataValues.put(data.getJSONObject(j));
+					}
 				}
 			}
 		}
@@ -1293,10 +1298,11 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	private JSONArray reArrangeDataValuesJSONArrayToIncludeOrgUnitInEachEntry(JSONObject dataValuesJson) {
 		JSONArray dataValues = dataValuesJson.getJSONArray("dataValues");
 		JSONArray newDataValues = dataValues;
-		String dhisOrgUnitUid = dataValuesJson.getString("orgUnit");
+		String dhisOrgUnitUid = null;
+		if (dataValuesJson.has("orgUnit"))
+			dhisOrgUnitUid = dataValuesJson.getString("orgUnit");
 
 		if (StringUtils.isNotBlank(dhisOrgUnitUid)) {
-
 			if (dataValues != null) {
 				newDataValues = new JSONArray();
 				for (int i = 0; i < dataValues.length(); i++) {
