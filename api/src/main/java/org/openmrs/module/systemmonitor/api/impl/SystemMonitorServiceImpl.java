@@ -49,7 +49,7 @@ import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
 import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 import org.openmrs.module.systemmonitor.export.DHISGenerateDataValueSetSchemas;
-import org.openmrs.module.systemmonitor.hacks.WindowsMappingsFileNotFoundHack;
+import org.openmrs.module.systemmonitor.hacks.WindowsResourceFileNotFoundHack;
 import org.openmrs.module.systemmonitor.mapping.DHISMapping;
 import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.TaskDefinition;
@@ -635,14 +635,17 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 					|| (SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE.exists() && !addedLocalDHISMappings())) {
 				try {
 					FileUtils.copyFile(mappingsFile, SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE);
+					FileUtils.copyFile(dataElementsFile,
+							SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);
 				} catch (FileNotFoundException e) {
 					if (e.getMessage().indexOf("Source") > -1
 							|| e.getMessage().indexOf(SystemMonitorConstants.SYSTEMMONITOR_MAPPING_FILENAME) > -1)
-						WindowsMappingsFileNotFoundHack.addMappingsFileToSystemMonitorDataDirectory();
+						WindowsResourceFileNotFoundHack.addMappingsFileToSystemMonitorDataDirectory();
+					if (e.getMessage().indexOf("Source") > -1 || e.getMessage()
+							.indexOf(SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILENAME) > -1)
+						WindowsResourceFileNotFoundHack.addDHISDataElementsMetadataToSystemMonitorDataDirectory();
 				}
 			}
-
-			FileUtils.copyFile(dataElementsFile, SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -1214,10 +1217,9 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	@Override
-	public String getDHISLastMonthPeriod() {
+	public String getDHISCurrentMonthPeriod() {
 		Calendar lastMonthFromToday = Calendar.getInstance(Context.getLocale());
 
-		lastMonthFromToday.add(Calendar.MONTH, -1);
 		return new SimpleDateFormat("yyyyMM").format(lastMonthFromToday.getTime());
 	}
 

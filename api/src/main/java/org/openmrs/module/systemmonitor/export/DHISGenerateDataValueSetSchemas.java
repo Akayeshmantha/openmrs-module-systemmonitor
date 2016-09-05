@@ -175,21 +175,21 @@ public class DHISGenerateDataValueSetSchemas {
 
 			systemRealLocationDataElementJSON.put("dataElement",
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemRealLocation"));
-			systemRealLocationDataElementJSON.put("period", systemMonitorService.getDHISLastMonthPeriod());
+			systemRealLocationDataElementJSON.put("period", systemMonitorService.getDHISCurrentMonthPeriod());
 			systemRealLocationDataElementJSON.put("value",
 					serverRealLocation != null ? serverRealLocation : "No Internet Connection");
 			installedModulesDataElementJSON.put("dataElement",
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_installedModules"));
-			installedModulesDataElementJSON.put("period", systemMonitorService.getDHISLastMonthPeriod());
+			installedModulesDataElementJSON.put("period", systemMonitorService.getDHISCurrentMonthPeriod());
 			installedModulesDataElementJSON.put("value", systemMonitorService.getInstalledModules());
 			systemRealLocationDataElementJSON2.put("dataElement",
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemRealLocation"));
-			systemRealLocationDataElementJSON2.put("period", systemMonitorService.getDHISLastMonthPeriod());
+			systemRealLocationDataElementJSON2.put("period", systemMonitorService.getDHISCurrentMonthPeriod());
 			systemRealLocationDataElementJSON2.put("value", serverRealLocation != null
 					? convertJSONToCleanString(serverRealLocation, null) : "No Internet Connection");
 			installedModulesDataElementJSON2.put("dataElement",
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_installedModules"));
-			installedModulesDataElementJSON2.put("period", systemMonitorService.getDHISLastMonthPeriod());
+			installedModulesDataElementJSON2.put("period", systemMonitorService.getDHISCurrentMonthPeriod());
 			installedModulesDataElementJSON2.put("value",
 					convertJSONToCleanString(null, systemMonitorService.getInstalledModules()));
 
@@ -243,9 +243,9 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_dataForLastBackup", dateForLastBackUp,
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemId", systemId,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_processor", processor,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_serverUptimeSecs", uptime,
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalMemory", totalMemory,
@@ -255,47 +255,47 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_freeMemory", freeMemory,
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_openmrsAppName", openmrsAPPName,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_openmrsUptimeSecs", openmrsUptime,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_primaryCareDays", clinicDays,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_primaryCareHours", clinicHours,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_operatingSystemName",
-					operatingSystem, systemMonitorService.getDHISLastMonthPeriod()));
+					operatingSystem, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_operatingSystemArch",
-					operatingSystemArch, systemMonitorService.getDHISLastMonthPeriod()));
+					operatingSystemArch, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_operatingSystemVersion",
-					operatingSystemVersion, systemMonitorService.getDHISLastMonthPeriod()));
+					operatingSystemVersion, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_javaVersion", javaVersion,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_javaVendor", javaVendor,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_jvmVersion", jvmVersion,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_jvmVendor", jvmVendor,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_userName", userName,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_systemLanguage",
-					systemLanguage, systemMonitorService.getDHISLastMonthPeriod()));
+					systemLanguage, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_systemTimezone",
-					systemTimezone, systemMonitorService.getDHISLastMonthPeriod()));
+					systemTimezone, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_userDirectory", userDirectory,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_tempDirectory", tempDirectory,
-					systemMonitorService.getDHISLastMonthPeriod()));
+					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_javaRuntimeName",
-					javaRuntimeName, systemMonitorService.getDHISLastMonthPeriod()));
+					javaRuntimeName, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_javaRuntimeVersion",
-					javaRuntimeVersion, systemMonitorService.getDHISLastMonthPeriod()));
+					javaRuntimeVersion, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_systemDateTime",
-					systemDateTime, systemMonitorService.getDHISLastMonthPeriod()));
+					systemDateTime, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_fileSystemEncoding",
-					fileSystemEncoding, systemMonitorService.getDHISLastMonthPeriod()));
+					fileSystemEncoding, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_openMRSVersion",
-					openmrsVersion, systemMonitorService.getDHISLastMonthPeriod()));
+					openmrsVersion, systemMonitorService.getDHISCurrentMonthPeriod()));
 
 			// jsonDataValueSets.put(new JSONObject(systemStartupsDataElement));
 			// jsonDataValueSets.put(new JSONObject(upTimeThisWeekDataElement));

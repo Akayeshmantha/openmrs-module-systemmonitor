@@ -352,63 +352,63 @@
     {
       "lastUpdated": "2016-07-14T07:37:18.634+0000",
       "created": "2016-07-11T09:01:58.001+0000",
-      "name": "Yesterday's Total Adult Initial Encounters",
+      "name": "New Total Adult Initial Encounters",
       "id": "HkctO4QQgte",
       "href": "http://82.196.9.250:8080/api/dataElements/HkctO4QQgte"
     },
     {
       "lastUpdated": "2016-07-14T07:37:31.893+0000",
       "created": "2016-07-11T09:03:50.692+0000",
-      "name": "Yesterday's Total Adult Return Encounters",
+      "name": "New Total Adult Return Encounters",
       "id": "aHYdS1cNuam",
       "href": "http://82.196.9.250:8080/api/dataElements/aHYdS1cNuam"
     },
     {
       "lastUpdated": "2016-07-14T07:37:53.031+0000",
       "created": "2016-07-06T16:33:19.037+0000",
-      "name": "Yesterday's Total  Encounters",
+      "name": "New Total  Encounters",
       "id": "oUoKdxhelRG",
       "href": "http://82.196.9.250:8080/api/dataElements/oUoKdxhelRG"
     },
     {
       "lastUpdated": "2016-07-14T07:38:03.349+0000",
       "created": "2016-07-11T09:00:14.506+0000",
-      "name": "Yesterday's Total  Observations",
+      "name": "New Total  Observations",
       "id": "BHXAiiCvX5K",
       "href": "http://82.196.9.250:8080/api/dataElements/BHXAiiCvX5K"
     },
     {
       "lastUpdated": "2016-07-14T07:38:17.822+0000",
       "created": "2016-07-11T09:05:03.038+0000",
-      "name": "Yesterday's Total  Paediatrics Initial Encounters",
+      "name": "New Total  Paediatrics Initial Encounters",
       "id": "UidOuL65vMw",
       "href": "http://82.196.9.250:8080/api/dataElements/UidOuL65vMw"
     },
     {
       "lastUpdated": "2016-07-14T07:38:30.489+0000",
       "created": "2016-07-11T09:05:33.184+0000",
-      "name": "Yesterday's Total Paediatrics Return Encounters",
+      "name": "New Total Paediatrics Return Encounters",
       "id": "CdlLkU6tqSX",
       "href": "http://82.196.9.250:8080/api/dataElements/CdlLkU6tqSX"
     },
     {
       "lastUpdated": "2016-07-14T07:47:53.987+0000",
       "created": "2016-07-14T07:47:53.944+0000",
-      "name": "Yesterday's Total Patients - Active",
+      "name": "New Total Patients - Active",
       "id": "GCC9L1LGFBH",
       "href": "http://82.196.9.250:8080/api/dataElements/GCC9L1LGFBH"
     },
     {
       "lastUpdated": "2016-07-14T07:48:16.890+0000",
       "created": "2016-07-14T07:48:16.876+0000",
-      "name": "Yesterday's Total Patients - New",
+      "name": "New Total Patients - New",
       "id": "JNsXijeCdIx",
       "href": "http://82.196.9.250:8080/api/dataElements/JNsXijeCdIx"
     },
     {
       "lastUpdated": "2016-07-14T07:38:40.938+0000",
       "created": "2016-07-11T09:00:44.485+0000",
-      "name": "Yesterday's Total Users",
+      "name": "New Total Users",
       "id": "luKfl7hZZek",
       "href": "http://82.196.9.250:8080/api/dataElements/luKfl7hZZek"
     }

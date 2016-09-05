@@ -3,6 +3,7 @@ package org.openmrs.module.systemmonitor.indicators;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -26,7 +27,7 @@ import oshi.software.os.OperatingSystemVersion;
 public class OSAndHardwareIndicators {
 	private static SystemInfo si = new SystemInfo();
 
-	private static CentralProcessor p = si.getHardware().getProcessor();
+	private static CentralProcessor p = getCentralProcessor();
 
 	private static HardwareAbstractionLayer hal = si.getHardware();
 
@@ -42,17 +43,17 @@ public class OSAndHardwareIndicators {
 
 	public static String PROCESSOR_NAME = getLinuxProcessorName();
 
-	public static String PROCESSOR_VENDOR = p.getVendor();
+	public static String PROCESSOR_VENDOR = p != null ? p.getVendor() : null;
 
-	public static Double PROCESSOR_SYSTEM_LOAD = p.getSystemLoadAverage();
+	public static Double PROCESSOR_SYSTEM_LOAD = p != null ? p.getSystemLoadAverage() : null;
 
-	public static String PROCESSOR_SERIAL_NUMBER = p.getSystemSerialNumber();
+	public static String PROCESSOR_SERIAL_NUMBER = p != null ? p.getSystemSerialNumber() : null;
 
-	public static Integer PROCESSOR_LOGICAL_COUNT = p.getLogicalProcessorCount();
+	public static Integer PROCESSOR_LOGICAL_COUNT = p != null ? p.getLogicalProcessorCount() : null;
 
-	public static Integer PROCESSOR_PHYSICAL_COUNT = p.getPhysicalProcessorCount();
+	public static Integer PROCESSOR_PHYSICAL_COUNT = p != null ? p.getPhysicalProcessorCount() : null;
 
-	public static Integer PROCESSOR_THREAD_COUNT = p.getThreadCount();
+	public static Integer PROCESSOR_THREAD_COUNT = p != null ? p.getThreadCount() : null;
 
 	/**
 	 * Total Physical Memory (RAM) in Megabytes(MB)
@@ -109,7 +110,8 @@ public class OSAndHardwareIndicators {
 	/**
 	 * Time from when System started in minutes
 	 */
-	public static Long PROCESSOR_SYSTEM_UPTIME = p.getSystemUptime() / 60;
+	public static Long PROCESSOR_SYSTEM_UPTIME = p != null ? p.getSystemUptime() / 60
+			: ManagementFactory.getRuntimeMXBean().getUptime() / 60;
 
 	public static String getHostName() {
 		try {
@@ -200,13 +202,29 @@ public class OSAndHardwareIndicators {
 	}
 
 	public static String getLinuxProcessorName() {
-		if ("Linux".equals(System.getProperties().getProperty("os.name")) && StringUtils.isBlank(p.getName())) {
+		if (p != null && "Linux".equals(System.getProperties().getProperty("os.name"))
+				&& StringUtils.isBlank(p.getName())) {
 			String[] cmds = { "/bin/sh", "-c", "cat /proc/cpuinfo | grep 'name' | uniq" };
 
 			return executeCommand(cmds).replace("model name", "").replace(": ", "").replace(">", "");
 		} else {
-			return p.getName();
+			return p != null ? p.getName() : "";
 		}
+	}
+
+	private static CentralProcessor getCentralProcessor() {
+		CentralProcessor p = null;
+		try {
+			p = si.getHardware().getProcessor();
+		} catch (UnsatisfiedLinkError e) {
+			// handles java.lang.UnsatisfiedLinkError: C:\Program Files
+			// (x86)\Apache Software Foundation\Tomcat
+			// 6.0\temp\1472550968944.openmrs-lib-cache\systemmonitor\com\sun\jna\win32-x86\jnidispatch.dll:
+			// Can't find dependent libraries thrown on some Windows servers
+			e.printStackTrace();
+			p = null;
+		}
+		return p;
 	}
 
 	private static String executeCommand(String[] commands) {

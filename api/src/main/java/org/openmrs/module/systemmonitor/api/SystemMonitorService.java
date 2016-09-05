@@ -356,7 +356,7 @@ public interface SystemMonitorService extends OpenmrsService {
 	 * 
 	 * @return
 	 */
-	String getDHISLastMonthPeriod();
+	String getDHISCurrentMonthPeriod();
 
 	String getDHISConfiguredOrgUnitName();
 
