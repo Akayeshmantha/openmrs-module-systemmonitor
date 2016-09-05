@@ -31,7 +31,7 @@ public class OSAndHardwareIndicators {
 
 	private static HardwareAbstractionLayer hal = si.getHardware();
 
-	private static GlobalMemory memory = hal.getMemory();
+	private static GlobalMemory memory = getMemory();
 
 	private static OperatingSystem os = si.getOperatingSystem();
 
@@ -58,32 +58,36 @@ public class OSAndHardwareIndicators {
 	/**
 	 * Total Physical Memory (RAM) in Megabytes(MB)
 	 */
-	public static Long MEMORY_TOTAL = memory.getTotal() / 1048576;
-
-	/**
-	 * Available Physical Memory (RAM) in Megabytes(MB)
-	 */
-	public static Long MEMORY_AVAILABLE = memory.getAvailable() / 1048576;
+	public static Long MEMORY_TOTAL = memory != null ? memory.getTotal() / 1048576
+			: Runtime.getRuntime().maxMemory() / 1048576;
 
 	/**
 	 * Used Physical Memory (RAM) in Megabytes(MB)
 	 */
-	public static Long MEMORY_USED = (memory.getTotal() - memory.getAvailable()) / 1048576;
+	public static Long MEMORY_USED = memory != null ? (memory.getTotal() - memory.getAvailable()) / 1048576
+			: Runtime.getRuntime().totalMemory() / 1048576;
+
+	/**
+	 * Available Physical Memory (RAM) in Megabytes(MB)
+	 */
+	public static Long MEMORY_AVAILABLE = memory != null ? memory.getAvailable() / 1048576
+			: Runtime.getRuntime().freeMemory() / 1048576;
 
 	/**
 	 * Total Swap memory in Megabytes(MB)
 	 */
-	public static Long MEMORY_SWAP_TOTAL = memory.getSwapTotal() / 1048576;
+	public static Long MEMORY_SWAP_TOTAL = memory != null ? memory.getSwapTotal() / 1048576 : null;
 
 	/**
 	 * Used Swap Memory in Megabytes(MB)
 	 */
-	public static Long MEMORY_SWAP_USED = memory.getSwapUsed() / 1048576;
+	public static Long MEMORY_SWAP_USED = memory != null ? memory.getSwapUsed() / 1048576 : null;
 
 	/**
 	 * Free Swap Memory in Megabytes(MB)
 	 */
-	public static Long MEMORY_SWAP_FREE = (memory.getSwapTotal() - memory.getSwapUsed()) / 1048576;
+	public static Long MEMORY_SWAP_FREE = memory != null ? (memory.getSwapTotal() - memory.getSwapUsed()) / 1048576
+			: null;
 
 	/**
 	 * CPU Voltage in Volts (V)
@@ -120,6 +124,16 @@ public class OSAndHardwareIndicators {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private static GlobalMemory getMemory() {
+		GlobalMemory memory = null;
+		try {
+			memory = hal.getMemory();
+		} catch (NoClassDefFoundError e) {
+			// fake Doors OS, TODO do what now?
+		}
+		return memory;
 	}
 
 	public static String getIpAddress() throws SocketException, UnknownHostException {

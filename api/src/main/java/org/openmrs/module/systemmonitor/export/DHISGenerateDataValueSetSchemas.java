@@ -257,7 +257,7 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_openmrsAppName", openmrsAPPName,
 					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_openmrsUptimeSecs", openmrsUptime,
-					systemMonitorService.getDHISCurrentMonthPeriod()));
+					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_primaryCareDays", clinicDays,
 					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_primaryCareHours", clinicHours,
@@ -291,7 +291,7 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_javaRuntimeVersion",
 					javaRuntimeVersion, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_systemDateTime",
-					systemDateTime, systemMonitorService.getDHISCurrentMonthPeriod()));
+					systemDateTime, systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_fileSystemEncoding",
 					fileSystemEncoding, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_openMRSVersion",
