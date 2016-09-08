@@ -39,7 +39,7 @@ public class OSAndHardwareIndicators {
 
 	private static OperatingSystemVersion version = os != null ? os.getVersion() : null;
 
-	private static PowerSource[] psArr = si.getHardware().getPowerSources();
+	private static PowerSource[] psArr = /*si.getHardware().getPowerSources()*/null;;
 
 	public static String PROCESSOR_NAME = getLinuxProcessorName();
 
@@ -92,14 +92,14 @@ public class OSAndHardwareIndicators {
 	/**
 	 * CPU Voltage in Volts (V)
 	 */
-	public static Double CPU_VOLTAGE = s.getCpuVoltage();
+	public static Double CPU_VOLTAGE = /*s.getCpuVoltage()*/null;
 
 	/**
 	 * CPU Temperature in Degrees celsius (°C)
 	 */
-	public static Double CPU_TEMPERATURE = s.getCpuTemperature();
+	public static Double CPU_TEMPERATURE = /*s.getCpuTemperature()*/null;
 
-	public static int[] FAN_SPEED = s.getFanSpeeds();
+	public static int[] FAN_SPEED = /*s.getFanSpeeds()*/null;
 
 	public static String OS_FAMILY = os != null ? os.getFamily() : "";
 
@@ -131,7 +131,7 @@ public class OSAndHardwareIndicators {
 
 		try {
 			os = si.getOperatingSystem();
-		} catch (Exception e) {
+		} catch (NoClassDefFoundError e) {
 			// fake Doors OS, TODO do what now?
 		}
 		return os;
