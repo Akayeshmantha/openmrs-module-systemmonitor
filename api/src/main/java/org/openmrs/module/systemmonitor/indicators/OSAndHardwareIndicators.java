@@ -33,11 +33,11 @@ public class OSAndHardwareIndicators {
 
 	private static GlobalMemory memory = getMemory();
 
-	private static OperatingSystem os = si.getOperatingSystem();
+	private static OperatingSystem os = getOperatingSystem();
 
 	private static Sensors s = si.getHardware().getSensors();
 
-	private static OperatingSystemVersion version = os.getVersion();
+	private static OperatingSystemVersion version = os != null ? os.getVersion() : null;
 
 	private static PowerSource[] psArr = si.getHardware().getPowerSources();
 
@@ -101,15 +101,15 @@ public class OSAndHardwareIndicators {
 
 	public static int[] FAN_SPEED = s.getFanSpeeds();
 
-	public static String OS_FAMILY = os.getFamily();
+	public static String OS_FAMILY = os != null ? os.getFamily() : "";
 
-	public static String OS_MANUFACTURER = os.getManufacturer();
+	public static String OS_MANUFACTURER = os != null ? os.getManufacturer() : "";
 
-	public static String OS_VERSION_NAME = version.getCodeName();
+	public static String OS_VERSION_NAME = version != null ? version.getCodeName() : System.getProperty("os.version");
 
 	public static String OS_VERSION_BUILDNUMBER = version.getBuildNumber();
 
-	public static String OS_VERSION_NUMBER = version.getVersion();
+	public static String OS_VERSION_NUMBER = version != null ? version.getVersion() : System.getProperty("os.name");
 
 	/**
 	 * Time from when System started in minutes
@@ -124,6 +124,17 @@ public class OSAndHardwareIndicators {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private static OperatingSystem getOperatingSystem() {
+		OperatingSystem os = null;
+
+		try {
+			os = si.getOperatingSystem();
+		} catch (Exception e) {
+			// fake Doors OS, TODO do what now?
+		}
+		return os;
 	}
 
 	private static GlobalMemory getMemory() {
