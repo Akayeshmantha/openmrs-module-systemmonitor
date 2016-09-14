@@ -156,7 +156,7 @@
     {
       "lastUpdated": "2016-07-14T08:00:52.280+0000",
       "created": "2016-07-11T09:06:52.731+0000",
-      "name": "Patient CD4 Count Test Results - Yesterday",
+      "name": "Patient CD4 Count Test Results - New",
       "id": "QoIyYyc7Z36",
       "href": "http://82.196.9.250:8080/api/dataElements/QoIyYyc7Z36"
     },
@@ -184,7 +184,7 @@
     {
       "lastUpdated": "2016-07-14T08:01:07.195+0000",
       "created": "2016-07-11T09:07:21.967+0000",
-      "name": "Patient Viral Load Test Results - Yesterday",
+      "name": "Patient Viral Load Test Results - New",
       "id": "uaUc1zJbaEC",
       "href": "http://82.196.9.250:8080/api/dataElements/uaUc1zJbaEC"
     },

@@ -25,99 +25,100 @@ import oshi.software.os.OperatingSystem;
 import oshi.software.os.OperatingSystemVersion;
 
 public class OSAndHardwareIndicators {
-	private static SystemInfo si = new SystemInfo();
+	private SystemInfo si = new SystemInfo();
 
-	private static CentralProcessor p = getCentralProcessor();
+	private CentralProcessor p = getCentralProcessor();
 
-	private static HardwareAbstractionLayer hal = si.getHardware();
+	private HardwareAbstractionLayer hal = si.getHardware();
 
-	private static GlobalMemory memory = getMemory();
+	private GlobalMemory memory = getMemory();
 
-	private static OperatingSystem os = getOperatingSystem();
+	private OperatingSystem os = getOperatingSystem();
 
-	private static Sensors s = si.getHardware().getSensors();
+	private Sensors s = si.getHardware().getSensors();
 
-	private static OperatingSystemVersion version = os != null ? os.getVersion() : null;
+	private OperatingSystemVersion version = os != null ? os.getVersion() : null;
 
-	private static PowerSource[] psArr = /*si.getHardware().getPowerSources()*/null;;
+	private PowerSource[] psArr = /*
+									 * si.getHardware().getPowerSources( )
+									 */null;;
 
-	public static String PROCESSOR_NAME = getLinuxProcessorName();
+	public String PROCESSOR_NAME = getLinuxProcessorName();
 
-	public static String PROCESSOR_VENDOR = p != null ? p.getVendor() : null;
+	public String PROCESSOR_VENDOR = p != null ? p.getVendor() : null;
 
-	public static Double PROCESSOR_SYSTEM_LOAD = p != null ? p.getSystemLoadAverage() : null;
+	public Double PROCESSOR_SYSTEM_LOAD = p != null ? p.getSystemLoadAverage() : null;
 
-	public static String PROCESSOR_SERIAL_NUMBER = p != null ? p.getSystemSerialNumber() : null;
+	public String PROCESSOR_SERIAL_NUMBER = p != null ? p.getSystemSerialNumber() : null;
 
-	public static Integer PROCESSOR_LOGICAL_COUNT = p != null ? p.getLogicalProcessorCount() : null;
+	public Integer PROCESSOR_LOGICAL_COUNT = p != null ? p.getLogicalProcessorCount() : null;
 
-	public static Integer PROCESSOR_PHYSICAL_COUNT = p != null ? p.getPhysicalProcessorCount() : null;
+	public Integer PROCESSOR_PHYSICAL_COUNT = p != null ? p.getPhysicalProcessorCount() : null;
 
-	public static Integer PROCESSOR_THREAD_COUNT = p != null ? p.getThreadCount() : null;
+	public Integer PROCESSOR_THREAD_COUNT = p != null ? p.getThreadCount() : null;
 
 	/**
 	 * Total Physical Memory (RAM) in Megabytes(MB)
 	 */
-	public static Long MEMORY_TOTAL = memory != null ? memory.getTotal() / 1048576
+	public Long MEMORY_TOTAL = memory != null ? memory.getTotal() / 1048576
 			: Runtime.getRuntime().maxMemory() / 1048576;
 
 	/**
 	 * Used Physical Memory (RAM) in Megabytes(MB)
 	 */
-	public static Long MEMORY_USED = memory != null ? (memory.getTotal() - memory.getAvailable()) / 1048576
+	public Long MEMORY_USED = memory != null ? (memory.getTotal() - memory.getAvailable()) / 1048576
 			: Runtime.getRuntime().totalMemory() / 1048576;
 
 	/**
 	 * Available Physical Memory (RAM) in Megabytes(MB)
 	 */
-	public static Long MEMORY_AVAILABLE = memory != null ? memory.getAvailable() / 1048576
+	public Long MEMORY_AVAILABLE = memory != null ? memory.getAvailable() / 1048576
 			: Runtime.getRuntime().freeMemory() / 1048576;
 
 	/**
 	 * Total Swap memory in Megabytes(MB)
 	 */
-	public static Long MEMORY_SWAP_TOTAL = memory != null ? memory.getSwapTotal() / 1048576 : null;
+	public Long MEMORY_SWAP_TOTAL = memory != null ? memory.getSwapTotal() / 1048576 : null;
 
 	/**
 	 * Used Swap Memory in Megabytes(MB)
 	 */
-	public static Long MEMORY_SWAP_USED = memory != null ? memory.getSwapUsed() / 1048576 : null;
+	public Long MEMORY_SWAP_USED = memory != null ? memory.getSwapUsed() / 1048576 : null;
 
 	/**
 	 * Free Swap Memory in Megabytes(MB)
 	 */
-	public static Long MEMORY_SWAP_FREE = memory != null ? (memory.getSwapTotal() - memory.getSwapUsed()) / 1048576
-			: null;
+	public Long MEMORY_SWAP_FREE = memory != null ? (memory.getSwapTotal() - memory.getSwapUsed()) / 1048576 : null;
 
 	/**
 	 * CPU Voltage in Volts (V)
 	 */
-	public static Double CPU_VOLTAGE = /*s.getCpuVoltage()*/null;
+	public Double CPU_VOLTAGE = /* s.getCpuVoltage() */null;
 
 	/**
 	 * CPU Temperature in Degrees celsius (°C)
 	 */
-	public static Double CPU_TEMPERATURE = /*s.getCpuTemperature()*/null;
+	public Double CPU_TEMPERATURE = /* s.getCpuTemperature() */null;
 
-	public static int[] FAN_SPEED = /*s.getFanSpeeds()*/null;
+	public int[] FAN_SPEED = /* s.getFanSpeeds() */null;
 
-	public static String OS_FAMILY = os != null ? os.getFamily() : "";
+	public String OS_FAMILY = os != null ? os.getFamily() : "";
 
-	public static String OS_MANUFACTURER = os != null ? os.getManufacturer() : "";
+	public String OS_MANUFACTURER = os != null ? os.getManufacturer() : "";
 
-	public static String OS_VERSION_NAME = version != null ? version.getCodeName() : System.getProperty("os.version");
+	public String OS_VERSION_NAME = version != null ? version.getCodeName() : System.getProperty("os.version");
 
-	public static String OS_VERSION_BUILDNUMBER = version.getBuildNumber();
+	public String OS_VERSION_BUILDNUMBER = version != null ? version.getBuildNumber() : "";
 
-	public static String OS_VERSION_NUMBER = version != null ? version.getVersion() : System.getProperty("os.name");
+	public String OS_VERSION_NUMBER = version != null ? version.getVersion() : System.getProperty("os.name");
 
 	/**
 	 * Time from when System started in minutes
 	 */
-	public static Long PROCESSOR_SYSTEM_UPTIME = p != null ? p.getSystemUptime() / 60
+	public Long PROCESSOR_SYSTEM_UPTIME = p != null ? p.getSystemUptime() / 60
 			: ManagementFactory.getRuntimeMXBean().getUptime() / 60;
 
-	public static String getHostName() {
+	public String getHostName() {
 		try {
 			return InetAddress.getLocalHost().getHostName();
 		} catch (UnknownHostException e) {
@@ -126,7 +127,7 @@ public class OSAndHardwareIndicators {
 		return null;
 	}
 
-	private static OperatingSystem getOperatingSystem() {
+	private OperatingSystem getOperatingSystem() {
 		OperatingSystem os = null;
 
 		try {
@@ -137,7 +138,7 @@ public class OSAndHardwareIndicators {
 		return os;
 	}
 
-	private static GlobalMemory getMemory() {
+	private GlobalMemory getMemory() {
 		GlobalMemory memory = null;
 		try {
 			memory = hal.getMemory();
@@ -147,7 +148,7 @@ public class OSAndHardwareIndicators {
 		return memory;
 	}
 
-	public static String getIpAddress() throws SocketException, UnknownHostException {
+	public String getIpAddress() throws SocketException, UnknownHostException {
 		try {
 			@SuppressWarnings("static-access")
 			String publicIp = new CurlEmulator().sendNormalHtmlGET("http://ipinfo.io/ip");
@@ -161,39 +162,48 @@ public class OSAndHardwareIndicators {
 		return InetAddress.getLocalHost().getHostAddress();
 	}
 
-	public static JSONArray getNetworkInformation() {
-		JSONArray json = new JSONArray();
+	public JSONArray getNetworkInformation() {
+		JSONArray json = null;
 
-		for (NetworkIF net : si.getHardware().getNetworkIFs()) {
-			JSONObject js = new JSONObject();
+		try {
+			for (NetworkIF net : si.getHardware().getNetworkIFs()) {
+				json = new JSONArray();
+				JSONObject js = new JSONObject();
 
-			if (net != null) {
-				js.put("name", net.getDisplayName());
-				js.put("macAddress", net.getMacaddr());
-				js.put("speed", net.getSpeed());
-				js.put("packetsReceived", net.getPacketsRecv());
-				js.put("packetsSent", net.getPacketsSent());
-				js.put("mtu", net.getMTU());
-				json.put(js);
+				if (net != null) {
+					js.put("name", net.getDisplayName());
+					js.put("macAddress", net.getMacaddr());
+					js.put("speed", net.getSpeed());
+					js.put("packetsReceived", net.getPacketsRecv());
+					js.put("packetsSent", net.getPacketsSent());
+					js.put("mtu", net.getMTU());
+					json.put(js);
+				}
 			}
+		} catch (NoClassDefFoundError e) {
+			e.printStackTrace();
 		}
 		return json;
 	}
 
-	public static String getMacAddress() {
-		String macAdd = null;
+	public String getMacAddress() {
+		String macAdd = "";
 
-		for (int i = 0; i < getNetworkInformation().length(); i++) {
-			if (getNetworkInformation().getJSONObject(i) != null
-					&& StringUtils.isNotBlank(getNetworkInformation().getJSONObject(i).getString("macAddress"))) {
-				macAdd = getNetworkInformation().getJSONObject(i).getString("macAddress");
-				break;
+		JSONArray networkInformation = getNetworkInformation();
+
+		if (networkInformation != null) {
+			for (int i = 0; i < networkInformation.length(); i++) {
+				if (networkInformation.getJSONObject(i) != null
+						&& StringUtils.isNotBlank(networkInformation.getJSONObject(i).getString("macAddress"))) {
+					macAdd = networkInformation.getJSONObject(i).getString("macAddress");
+					break;
+				}
 			}
 		}
 		return macAdd;
 	}
 
-	public static JSONArray getDisksInformation() {
+	public JSONArray getDisksInformation() {
 		JSONArray json = new JSONArray();
 
 		for (HWDiskStore disk : si.getHardware().getDiskStores()) {
@@ -210,7 +220,7 @@ public class OSAndHardwareIndicators {
 		return json;
 	}
 
-	public static JSONArray getPowerInformation() {
+	public JSONArray getPowerInformation() {
 		JSONArray json = new JSONArray();
 
 		for (PowerSource ps : psArr) {
@@ -226,7 +236,7 @@ public class OSAndHardwareIndicators {
 		return json;
 	}
 
-	public static String getLinuxProcessorName() {
+	public String getLinuxProcessorName() {
 		if (p != null && "Linux".equals(System.getProperties().getProperty("os.name"))
 				&& StringUtils.isBlank(p.getName())) {
 			String[] cmds = { "/bin/sh", "-c", "cat /proc/cpuinfo | grep 'name' | uniq" };
@@ -237,7 +247,7 @@ public class OSAndHardwareIndicators {
 		}
 	}
 
-	private static CentralProcessor getCentralProcessor() {
+	private CentralProcessor getCentralProcessor() {
 		CentralProcessor p = null;
 		try {
 			p = si.getHardware().getProcessor();
@@ -246,13 +256,15 @@ public class OSAndHardwareIndicators {
 			// (x86)\Apache Software Foundation\Tomcat
 			// 6.0\temp\1472550968944.openmrs-lib-cache\systemmonitor\com\sun\jna\win32-x86\jnidispatch.dll:
 			// Can't find dependent libraries thrown on some Windows servers
-			e.printStackTrace();
+			// e.printStackTrace();
+			p = null;
+		} catch (NoClassDefFoundError e) {
 			p = null;
 		}
 		return p;
 	}
 
-	private static String executeCommand(String[] commands) {
+	private String executeCommand(String[] commands) {
 		StringBuffer output = new StringBuffer();
 
 		Process p;

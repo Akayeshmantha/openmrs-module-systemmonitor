@@ -205,7 +205,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 
 	@Test
 	public void testGetIp() throws SocketException, UnknownHostException {
-		System.out.println("IP ADDR: " + OSAndHardwareIndicators.getIpAddress());
+		System.out.println("IP ADDR: " + new OSAndHardwareIndicators().getIpAddress());
 	}
 
 	@Ignore

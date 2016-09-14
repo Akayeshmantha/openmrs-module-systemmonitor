@@ -22,8 +22,10 @@ public class DWRSystemMonitorService {
 						? Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)
 								+ SystemMonitorConstants.DHIS_API_DATAVALUES_URL
 						: "";
-		String systemId = OSAndHardwareIndicators.getHostName() + "-" + (OSAndHardwareIndicators.getMacAddress() != null
-				? OSAndHardwareIndicators.getMacAddress().replace(":", "") : "");
+		OSAndHardwareIndicators osshi = new OSAndHardwareIndicators();
+		
+		String systemId = osshi.getHostName() + "-" + (osshi.getMacAddress() != null
+				? osshi.getMacAddress().replace(":", "") : "");
 		JSONObject allDataValues = prepareClientMonitoredData();
 		JSONObject allDHISValuesJSON = new JSONObject();
 

@@ -34,9 +34,10 @@ public class DHISGenerateDataValueSetSchemas {
 		JSONArray jsonToBePushed;
 		JSONArray jsonDataValueSets = new JSONArray();
 		SystemMonitorService systemMonitorService = Context.getService(SystemMonitorService.class);
+		OSAndHardwareIndicators osshi = new OSAndHardwareIndicators();
 
-		String systemId = OSAndHardwareIndicators.getHostName() + "-" + (OSAndHardwareIndicators.getMacAddress() != null
-				? OSAndHardwareIndicators.getMacAddress().replace(":", "") : "");
+		String systemId = osshi.getHostName() + "-" + (osshi.getMacAddress() != null
+				? osshi.getMacAddress().replace(":", "") : "");
 
 		String dhisOrgUnitUid = DHISMapping
 				.getDHISMappedObjectValue(systemMonitorService.getCurrentConfiguredDHISOrgUnit().getPropertyValue());
@@ -48,23 +49,23 @@ public class DHISGenerateDataValueSetSchemas {
 
 		String openmrsAPPName = WebConstants.WEBAPP_NAME;
 
-		Integer uptime = OSAndHardwareIndicators.PROCESSOR_SYSTEM_UPTIME.intValue();
+		Integer uptime = osshi.PROCESSOR_SYSTEM_UPTIME.intValue();
 
-		String processor = OSAndHardwareIndicators.getLinuxProcessorName();
+		String processor = osshi.getLinuxProcessorName();
 
 		Integer openmrsUptime = systemMonitorService.getOpenMRSSystemUpTime().intValue();
 
-		Long freeMemory = OSAndHardwareIndicators.MEMORY_AVAILABLE;
+		Long freeMemory = osshi.MEMORY_AVAILABLE;
 
-		Long usedMemory = OSAndHardwareIndicators.MEMORY_USED;
+		Long usedMemory = osshi.MEMORY_USED;
 
-		Long totalMemory = OSAndHardwareIndicators.MEMORY_TOTAL;
+		Long totalMemory = osshi.MEMORY_TOTAL;
 
-		String operatingSystem = SystemPropertiesIndicators.OS_NAME + ", Family: " + OSAndHardwareIndicators.OS_FAMILY
-				+ ", Manufacturer: " + OSAndHardwareIndicators.OS_MANUFACTURER + ", Version Name: "
-				+ OSAndHardwareIndicators.OS_VERSION_NAME + ", Version Number: "
-				+ OSAndHardwareIndicators.OS_VERSION_NUMBER + ", Build Number: "
-				+ OSAndHardwareIndicators.OS_VERSION_BUILDNUMBER;
+		String operatingSystem = SystemPropertiesIndicators.OS_NAME + ", Family: " + osshi.OS_FAMILY
+				+ ", Manufacturer: " + osshi.OS_MANUFACTURER + ", Version Name: "
+				+ osshi.OS_VERSION_NAME + ", Version Number: "
+				+ osshi.OS_VERSION_NUMBER + ", Build Number: "
+				+ osshi.OS_VERSION_BUILDNUMBER;
 
 		String operatingSystemArch = SystemPropertiesIndicators.OS_ARCH;
 
@@ -101,7 +102,7 @@ public class DHISGenerateDataValueSetSchemas {
 		JSONObject serverRealLocation = null;
 		try {
 			serverRealLocation = CurlEmulator
-					.get(SystemMonitorConstants.IP_INFO_URL + OSAndHardwareIndicators.getIpAddress(), null, null);
+					.get(SystemMonitorConstants.IP_INFO_URL + osshi.getIpAddress(), null, null);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (SocketException e) {

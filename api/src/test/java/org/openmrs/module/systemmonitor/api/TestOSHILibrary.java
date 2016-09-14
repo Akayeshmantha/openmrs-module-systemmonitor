@@ -36,6 +36,7 @@ import oshi.software.os.OperatingSystemVersion;
  * @TODO Re-write a version of this library that supports lower java version
  *       instead of requiring 1.8
  */
+@Ignore
 public class TestOSHILibrary {
 
 	@Test
@@ -87,7 +88,7 @@ public class TestOSHILibrary {
 			System.out.println("IP ADDRESS: " + InetAddress.getLocalHost().getHostAddress());
 			System.out.println("NETWORK SPEED: " + net.getSpeed());
 
-			String ipInfoUrl = "http://ipinfo.io/" + OSAndHardwareIndicators.getIpAddress();
+			String ipInfoUrl = "http://ipinfo.io/" + new OSAndHardwareIndicators().getIpAddress();
 			String googleIpInfoUrl = "http://ipinfo.io/8.8.8.8";
 			System.out.println("ipInfoUrl: " + ipInfoUrl);
 			System.out.println("CurlEmulator.get(googleIpInfoUrl): " + CurlEmulator.get(googleIpInfoUrl, null, null));
