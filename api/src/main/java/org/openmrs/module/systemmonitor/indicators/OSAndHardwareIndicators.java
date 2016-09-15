@@ -134,6 +134,8 @@ public class OSAndHardwareIndicators {
 			os = si.getOperatingSystem();
 		} catch (NoClassDefFoundError e) {
 			// fake Doors OS, TODO do what now?
+		} catch (UnsatisfiedLinkError e) {
+			e.printStackTrace();
 		}
 		return os;
 	}
@@ -144,6 +146,8 @@ public class OSAndHardwareIndicators {
 			memory = hal.getMemory();
 		} catch (NoClassDefFoundError e) {
 			// fake Doors OS, TODO do what now?
+		} catch (UnsatisfiedLinkError e) {
+			e.printStackTrace();
 		}
 		return memory;
 	}
@@ -181,6 +185,8 @@ public class OSAndHardwareIndicators {
 				}
 			}
 		} catch (NoClassDefFoundError e) {
+			e.printStackTrace();
+		}  catch (UnsatisfiedLinkError e) {
 			e.printStackTrace();
 		}
 		return json;
