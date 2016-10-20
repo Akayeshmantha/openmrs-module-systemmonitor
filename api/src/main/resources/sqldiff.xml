@@ -30,13 +30,33 @@
 	</diff>
 	
 	<diff>
-		<version>1.3.6.6</version>
+		<version>1.1</version>
 		<author>k-joseph</author>
-		<date>Sept 14 2016</date>
+		<date>Sept 14th 2016</date>
 		<description>Update DHIS User account details to sphentry account</description>
 		<sql>
 			UPDATE global_property SET property_value = 'sphentry' WHERE property = 'systemmonitor.DHISUSERNAME';
-			UPDATE global_property SET property_value = 'SphDataEntry123' WHERE property = 'systemmonitor.DHISUSERNAME';
+			UPDATE global_property SET property_value = 'SphDataEntry123' WHERE property = 'systemmonitor.DHISPASSWORD';
+		</sql>
+	</diff>
+	
+	<diff>
+		<version>1.2</version>
+		<author>k-joseph</author>
+		<date>Sept 27th 2016</date>
+		<description>Avoid systemmonitor tasks from attempting to start on startup</description>
+		<sql>
+			UPDATE scheduler_task_config SET start_on_startup = 0 WHERE schedulable_class LIKE 'org.openmrs.module.systemmonitor.scheduler.%';
+		</sql>
+	</diff>
+	
+	<diff>
+		<version>1.3</version>
+		<author>k-joseph</author>
+		<date>Sept 28th 2016</date>
+		<description>Avoid systemmonitor tasks from attempting to start on startup</description>
+		<sql>
+			UPDATE scheduler_task_config SET start_on_startup = 0 WHERE schedulable_class LIKE 'org.openmrs.module.systemmonitor.scheduler.%';
 		</sql>
 	</diff>
 	

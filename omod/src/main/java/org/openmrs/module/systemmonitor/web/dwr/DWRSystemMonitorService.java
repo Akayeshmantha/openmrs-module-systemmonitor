@@ -12,6 +12,7 @@ import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.indicators.OSAndHardwareIndicators;
 
 public class DWRSystemMonitorService {
+
 	public String getDataForClientPushing() {
 		String dhisUserName = Context.getAdministrationService()
 				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
@@ -23,9 +24,9 @@ public class DWRSystemMonitorService {
 								+ SystemMonitorConstants.DHIS_API_DATAVALUES_URL
 						: "";
 		OSAndHardwareIndicators osshi = new OSAndHardwareIndicators();
-		
-		String systemId = osshi.getHostName() + "-" + (osshi.getMacAddress() != null
-				? osshi.getMacAddress().replace(":", "") : "");
+
+		String systemId = osshi.getHostName() + "-"
+				+ (osshi.getMacAddress() != null ? osshi.getMacAddress().replace(":", "") : "");
 		JSONObject allDataValues = prepareClientMonitoredData();
 		JSONObject allDHISValuesJSON = new JSONObject();
 

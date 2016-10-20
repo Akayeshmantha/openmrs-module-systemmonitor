@@ -89,8 +89,6 @@ public class SystemMonitorMainController {
 	public void postAutoRun(ModelMap model, HttpServletRequest request) {
 		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
 		Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
-		Context.getService(SystemMonitorService.class)
-				.updateNumberOfSecondsAtOpenMRSStartup(System.currentTimeMillis() / 1000);
 		Context.getService(SystemMonitorService.class).rebootSystemMonitorTasks();
 		request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "systemmonitor.runAsSoonAsStarted.success");
 	}
