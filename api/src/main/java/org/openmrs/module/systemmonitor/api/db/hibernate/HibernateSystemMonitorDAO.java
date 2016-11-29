@@ -300,410 +300,424 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer getTotalEncountersToday(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountToday(includeRetired, Encounter.class);
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Encounter.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalEncountersThisWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Encounter.class);
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Encounter.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalEncountersLastWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Encounter.class);
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Encounter.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalEncountersLastMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Encounter.class);
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Encounter.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalEncountersThisMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Encounter.class);
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Encounter.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalEncountersThisYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Encounter.class);
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Encounter.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalEncountersLastYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Encounter.class);
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Encounter.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalEncounters(Boolean includeRetired) {
-		return fetchTotalOpenMRSObject(includeRetired, Encounter.class);
+		return fetchTotalOpenMRSObject(includeRetired, Encounter.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalUsersToday(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountToday(includeRetired, User.class);
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, User.class, "*");
 	}
 
 	@Override
 	public Integer getTotalUsersThisWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, User.class);
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, User.class, "*");
 	}
 
 	@Override
 	public Integer getTotalUsersLastWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, User.class);
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, User.class, "*");
 	}
 
 	@Override
 	public Integer getTotalUsersLastMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, User.class);
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, User.class, "*");
 	}
 
 	@Override
 	public Integer getTotalUsersThisMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, User.class);
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, User.class, "*");
 	}
 
 	@Override
 	public Integer getTotalUsersThisYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, User.class);
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, User.class, "*");
 	}
 
 	@Override
 	public Integer getTotalUsersLastYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, User.class);
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, User.class, "*");
 	}
 
 	@Override
 	public Integer getTotalUsers(Boolean includeRetired) {
-		return fetchTotalOpenMRSObject(includeRetired, User.class);
+		return fetchTotalOpenMRSObject(includeRetired, User.class, "*");
 	}
 
 	@Override
 	public Integer getTotalObservationsToday(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountToday(includeRetired, Obs.class);
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Obs.class, "distinct person_id");
 	}
 
 	@Override
 	public Integer getTotalObservationsThisWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Obs.class);
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Obs.class, "distinct person_id");
 	}
 
 	@Override
 	public Integer getTotalObservationsLastWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Obs.class);
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Obs.class, "distinct person_id");
 	}
 
 	@Override
 	public Integer getTotalObservationsLastMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Obs.class);
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Obs.class, "distinct person_id");
 	}
 
 	@Override
 	public Integer getTotalObservationsThisMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Obs.class);
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Obs.class, "distinct person_id");
 	}
 
 	@Override
 	public Integer getTotalObservationsThisYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Obs.class);
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Obs.class, "distinct person_id");
 	}
 
 	@Override
 	public Integer getTotalObservations(Boolean includeRetired) {
-		return fetchTotalOpenMRSObject(includeRetired, Obs.class);
+		return fetchTotalOpenMRSObject(includeRetired, Obs.class, "distinct person_id");
 	}
 
 	@Override
 	public Integer getTotalObservationsLastYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Obs.class);
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Obs.class, "distinct person_id");
 	}
 
 	@Override
 	public Integer getTotalVisitsToday(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountToday(includeRetired, Visit.class);
+		return null;// fetchTotalOpenMRSObjectCountToday(includeRetired,
+					// Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisitsThisWeek(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Visit.class);
+		return null;// fetchTotalOpenMRSObjectCountThisWeek(includeRetired,
+					// Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisitsLastWeek(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Visit.class);
+		return null;// fetchTotalOpenMRSObjectCountLastWeek(includeRetired,
+					// Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisitsThisMonth(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Visit.class);
+		return null;// fetchTotalOpenMRSObjectCountThisMonth(includeRetired,
+					// Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisitsLastMonth(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Visit.class);
+		return null;// fetchTotalOpenMRSObjectCountLastMonth(includeRetired,
+					// Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisitsThisYear(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountThisYear(includeRetired, Visit.class);
+		return null;// fetchTotalOpenMRSObjectCountThisYear(includeRetired,
+					// Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisitsLastYear(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountLastYear(includeRetired, Visit.class);
+		return null;// fetchTotalOpenMRSObjectCountLastYear(includeRetired,
+					// Visit.class);
 	}
 
 	@Override
 	public Integer getTotalVisits(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObject(includeRetired, Visit.class);
+		return null;// fetchTotalOpenMRSObject(includeRetired, Visit.class);
 	}
 
 	@Override
 	public Integer getTotalPatientsToday(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountToday(includeRetired, Patient.class);
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Patient.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalPatientsThisWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Patient.class);
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Patient.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalPatientsLastWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Patient.class);
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Patient.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalPatientsLastMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Patient.class);
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Patient.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalPatientsThisMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Patient.class);
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Patient.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalPatientsThisYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Patient.class);
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Patient.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalPatientsLastYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Patient.class);
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Patient.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalPatients(Boolean includeRetired) {
-		return fetchTotalOpenMRSObject(includeRetired, Patient.class);
+		return fetchTotalOpenMRSObject(includeRetired, Patient.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalLocationsToday(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountToday(includeRetired, Location.class);
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Location.class, "*");
 	}
 
 	@Override
 	public Integer getTotalLocationsThisWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Location.class);
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Location.class, "*");
 	}
 
 	@Override
 	public Integer getTotalLocationsLastWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Location.class);
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Location.class, "*");
 	}
 
 	@Override
 	public Integer getTotalLocationsLastMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Location.class);
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Location.class, "*");
 	}
 
 	@Override
 	public Integer getTotalLocationsThisMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Location.class);
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Location.class, "*");
 	}
 
 	@Override
 	public Integer getTotalLocationsThisYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Location.class);
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Location.class, "*");
 	}
 
 	@Override
 	public Integer getTotalLocations(Boolean includeRetired) {
-		return fetchTotalOpenMRSObject(includeRetired, Location.class);
+		return fetchTotalOpenMRSObject(includeRetired, Location.class, "*");
 	}
 
 	@Override
 	public Integer getTotalLocationsLastYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Location.class);
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Location.class, "*");
 	}
 
 	@Override
 	public Integer getTotalConceptsLastYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Concept.class);
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Concept.class, "*");
 	}
 
 	@Override
 	public Integer getTotalConceptsToday(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountToday(includeRetired, Concept.class);
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Concept.class, "*");
 	}
 
 	@Override
 	public Integer getTotalConceptsThisWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Concept.class);
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Concept.class, "*");
 	}
 
 	@Override
 	public Integer getTotalConceptsLastWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Concept.class);
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Concept.class, "*");
 	}
 
 	@Override
 	public Integer getTotalConceptsLastMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Concept.class);
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Concept.class, "*");
 	}
 
 	@Override
 	public Integer getTotalConceptsThisMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Concept.class);
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Concept.class, "*");
 	}
 
 	@Override
 	public Integer getTotalConcepts(Boolean includeRetired) {
-		return fetchTotalOpenMRSObject(includeRetired, Concept.class);
+		return fetchTotalOpenMRSObject(includeRetired, Concept.class, "*");
 	}
 
 	@Override
 	public Integer getTotalConceptsThisYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Concept.class);
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Concept.class, "*");
 	}
 
 	@Override
 	public Integer getTotalFormsLastYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Form.class);
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Form.class, "*");
 	}
 
 	@Override
 	public Integer getTotalFormsToday(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountToday(includeRetired, Form.class);
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Form.class, "*");
 	}
 
 	@Override
 	public Integer getTotalFormsThisWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Form.class);
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Form.class, "*");
 	}
 
 	@Override
 	public Integer getTotalFormsLastWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Form.class);
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Form.class, "*");
 	}
 
 	@Override
 	public Integer getTotalFormsLastMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Form.class);
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Form.class, "*");
 	}
 
 	@Override
 	public Integer getTotalFormsThisMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Form.class);
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Form.class, "*");
 	}
 
 	@Override
 	public Integer getTotalFormsThisYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Form.class);
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Form.class, "*");
 	}
 
 	@Override
 	public Integer getTotalForms(Boolean includeRetired) {
-		return fetchTotalOpenMRSObject(includeRetired, Form.class);
+		return fetchTotalOpenMRSObject(includeRetired, Form.class, "*");
 	}
 
 	@Override
 	public Integer getTotalOrdersLastYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Order.class);
+		return fetchTotalOpenMRSObjectCountLastYear(includeRetired, Order.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalOrdersToday(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountToday(includeRetired, Order.class);
+		return fetchTotalOpenMRSObjectCountToday(includeRetired, Order.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalOrdersThisWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Order.class);
+		return fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Order.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalOrdersLastWeek(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Order.class);
+		return fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Order.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalOrdersLastMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Order.class);
+		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Order.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalOrdersThisMonth(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Order.class);
+		return fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Order.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalOrders(Boolean includeRetired) {
-		return fetchTotalOpenMRSObject(includeRetired, Order.class);
+		return fetchTotalOpenMRSObject(includeRetired, Order.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalOrdersThisYear(Boolean includeRetired) {
-		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Order.class);
+		return fetchTotalOpenMRSObjectCountThisYear(includeRetired, Order.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer getTotalProvidersLastYear(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountLastYear(includeRetired, Provider.class);
+		return null;// fetchTotalOpenMRSObjectCountLastYear(includeRetired,
+					// Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProvidersToday(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountToday(includeRetired, Provider.class);
+		return null;// fetchTotalOpenMRSObjectCountToday(includeRetired,
+					// Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProvidersThisWeek(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountThisWeek(includeRetired, Provider.class);
+		return null;// fetchTotalOpenMRSObjectCountThisWeek(includeRetired,
+					// Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProvidersLastWeek(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountLastWeek(includeRetired, Provider.class);
+		return null;// fetchTotalOpenMRSObjectCountLastWeek(includeRetired,
+					// Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProvidersLastMonth(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Provider.class);
+		return null;// fetchTotalOpenMRSObjectCountLastMonth(includeRetired,
+					// Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProviders(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObject(includeRetired, Provider.class);
+		return null;// fetchTotalOpenMRSObject(includeRetired, Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProvidersThisMonth(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountThisMonth(includeRetired, Provider.class);
+		return null;// fetchTotalOpenMRSObjectCountThisMonth(includeRetired,
+					// Provider.class);
 	}
 
 	@Override
 	public Integer getTotalProvidersThisYear(Boolean includeRetired) {
-		return null;//fetchTotalOpenMRSObjectCountThisYear(includeRetired, Provider.class);
+		return null;// fetchTotalOpenMRSObjectCountThisYear(includeRetired,
+					// Provider.class);
 	}
 
 	private String getObjectTableNameFromClass(@SuppressWarnings("rawtypes") Class clazz) {
 		String tableName = "";
 
-		/*if (clazz.equals(Provider.class)) {
-			tableName = "provider";
-		} else */if (clazz.equals(User.class)) {
+		/*
+		 * if (clazz.equals(Provider.class)) { tableName = "provider"; } else
+		 */if (clazz.equals(User.class)) {
 			tableName = "users";
 		} else if (clazz.equals(Location.class)) {
 			tableName = "location";
@@ -715,9 +729,9 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 			tableName = "patient";
 		} else if (clazz.equals(Order.class)) {
 			tableName = "orders";
-		}/* else if (clazz.equals(Visit.class)) {
-			tableName = "visit";
-		}*/ else if (clazz.equals(Obs.class)) {
+		} /*
+			 * else if (clazz.equals(Visit.class)) { tableName = "visit"; }
+			 */ else if (clazz.equals(Obs.class)) {
 			tableName = "obs";
 		} else if (clazz.equals(Encounter.class)) {
 			tableName = "encounter";
@@ -725,10 +739,10 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return tableName;
 	}
 
-	private Integer fetchTotalOpenMRSObjectCountToday(Boolean includeRetired,
-			@SuppressWarnings("rawtypes") Class clazz) {
+	private Integer fetchTotalOpenMRSObjectCountToday(Boolean includeRetired, @SuppressWarnings("rawtypes") Class clazz,
+			String distinctFilter) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
-		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+		String sql = "select count(" + distinctFilter + ") from " + getObjectTableNameFromClass(clazz) + " where "
 				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ( ";
 
 		if (!clazz.equals(Obs.class)) {
@@ -744,9 +758,9 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountThisWeek(Boolean includeRetired,
-			@SuppressWarnings("rawtypes") Class clazz) {
+			@SuppressWarnings("rawtypes") Class clazz, String distinctFilter) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
-		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+		String sql = "select count(" + distinctFilter + ") from " + getObjectTableNameFromClass(clazz) + " where "
 				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
 				+ getThisWeekStartDate() + "' and '" + getThisWeekEndDate() + "')";
 
@@ -763,9 +777,9 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountThisMonth(Boolean includeRetired,
-			@SuppressWarnings("rawtypes") Class clazz) {
+			@SuppressWarnings("rawtypes") Class clazz, String distinctFilter) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
-		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+		String sql = "select count(" + distinctFilter + ") from " + getObjectTableNameFromClass(clazz) + " where "
 				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
 				+ getThisMonthStartDate() + "' and '" + getThisMonthEndDate() + "')";
 
@@ -785,7 +799,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		String voidedOrRetiredParameterName = "voided";
 
 		// metadata voided is named retired instead
-		if (/*clazz.equals(Provider.class) || */clazz.equals(User.class) || clazz.equals(Location.class)
+		if (/* clazz.equals(Provider.class) || */clazz.equals(User.class) || clazz.equals(Location.class)
 				|| clazz.equals(Form.class) || clazz.equals(Concept.class)) {
 			voidedOrRetiredParameterName = "retired";
 		}
@@ -793,9 +807,9 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountYesterday(Boolean includeRetired,
-			@SuppressWarnings("rawtypes") Class clazz) {
+			@SuppressWarnings("rawtypes") Class clazz, String distinctFilter) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
-		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+		String sql = "select count(" + distinctFilter + ") from " + getObjectTableNameFromClass(clazz) + " where "
 				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
 				+ getYesterdayStartDate() + "' and '" + getYesterdayEndDate() + "')";
 
@@ -813,8 +827,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	private Integer fetchTotalOpenMRSEncounterCountYesterdayByType(Boolean includeRetired, EncounterType type) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(Encounter.class);
-		String sql = "select count(*) from " + getObjectTableNameFromClass(Encounter.class) + " where "
-				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
+		String sql = "select count(distinct patient_id) from " + getObjectTableNameFromClass(Encounter.class)
+				+ " where " + voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_changed between '"
 				+ getYesterdayStartDate() + "' and '" + getYesterdayEndDate() + "') or (date_created between '"
 				+ getYesterdayStartDate() + "' and '" + getYesterdayEndDate() + "')) and encounter_type = "
 				+ type.getEncounterTypeId();
@@ -825,9 +839,9 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountThisYear(Boolean includeRetired,
-			@SuppressWarnings("rawtypes") Class clazz) {
+			@SuppressWarnings("rawtypes") Class clazz, String distinctFilter) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
-		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+		String sql = "select count(" + distinctFilter + ") from " + getObjectTableNameFromClass(clazz) + " where "
 				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
 				+ getThisYearStartDate() + "' and '" + getThisYearEndDate() + "')";
 
@@ -844,9 +858,9 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountLastWeek(Boolean includeRetired,
-			@SuppressWarnings("rawtypes") Class clazz) {
+			@SuppressWarnings("rawtypes") Class clazz, String distinctFilter) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
-		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+		String sql = "select count(" + distinctFilter + ") from " + getObjectTableNameFromClass(clazz) + " where "
 				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
 				+ getLastWeekStartDate() + "' and '" + getLastWeekEndDate() + "')";
 
@@ -863,9 +877,9 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountLastMonth(Boolean includeRetired,
-			@SuppressWarnings("rawtypes") Class clazz) {
+			@SuppressWarnings("rawtypes") Class clazz, String distinctFilter) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
-		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+		String sql = "select count(" + distinctFilter + ") from " + getObjectTableNameFromClass(clazz) + " where "
 				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
 				+ getLastMonthStartDate() + "' and '" + getLastMonthEndDate() + "')";
 
@@ -881,9 +895,10 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return count;
 	}
 
-	private Integer fetchTotalOpenMRSObject(Boolean includeRetired, @SuppressWarnings("rawtypes") Class clazz) {
+	private Integer fetchTotalOpenMRSObject(Boolean includeRetired, @SuppressWarnings("rawtypes") Class clazz,
+			String distinctFilter) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
-		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+		String sql = "select count(" + distinctFilter + ") from " + getObjectTableNameFromClass(clazz) + " where "
 				+ voidedOrRetiredParameterName + "=" + includeRetired;
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
@@ -892,9 +907,9 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	private Integer fetchTotalOpenMRSObjectCountLastYear(Boolean includeRetired,
-			@SuppressWarnings("rawtypes") Class clazz) {
+			@SuppressWarnings("rawtypes") Class clazz, String distinctFilter) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
-		String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where "
+		String sql = "select count(" + distinctFilter + ") from " + getObjectTableNameFromClass(clazz) + " where "
 				+ voidedOrRetiredParameterName + "=" + includeRetired + " and ((date_created between '"
 				+ getLastYearStartDate() + "' and '" + getLastYearEndDate() + "')";
 
@@ -976,7 +991,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	private Person[] getAllPersonsWithOrders() {
 		List<Person> allPersonsWithOrders = new ArrayList<Person>();
 		List<Order> allOrders = getSessionFactory().getCurrentSession().createCriteria(Order.class).list();
-		//List<Provider> allProviders = Context.getProviderService().getAllProviders();
+		// List<Provider> allProviders =
+		// Context.getProviderService().getAllProviders();
 		List<User> allUsers = getSessionFactory().getCurrentSession().createCriteria(User.class).list();
 
 		for (int i = 0; i < allOrders.size(); i++) {
@@ -993,18 +1009,18 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 							allPersonsWithOrders.add(person);
 					}
 				}
-			}/* else if (o != null && o.getOrderer().getClass().equals(Provider.class)) {
-				for (int j = 0; j < allProviders.size(); j++) {
-					Provider p = allProviders.get(j);
-
-					if (p != null && o.getOrderId().equals(p.getProviderId())) {
-						Person person = Context.getPersonService().getPerson(p.getProviderId());
-
-						if (person != null)
-							allPersonsWithOrders.add(person);
-					}
-				}
-			}*/
+			} /*
+				 * else if (o != null &&
+				 * o.getOrderer().getClass().equals(Provider.class)) { for (int
+				 * j = 0; j < allProviders.size(); j++) { Provider p =
+				 * allProviders.get(j);
+				 * 
+				 * if (p != null && o.getOrderId().equals(p.getProviderId())) {
+				 * Person person =
+				 * Context.getPersonService().getPerson(p.getProviderId());
+				 * 
+				 * if (person != null) allPersonsWithOrders.add(person); } } }
+				 */
 		}
 
 		return allPersonsWithOrders.toArray(new Person[allPersonsWithOrders.size()]);
@@ -1012,7 +1028,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@SuppressWarnings({ "unchecked", "unused" })
 	private Object[] getAllOrderers() {
-		//List<Provider> allProviders = Context.getProviderService().getAllProviders();
+		// List<Provider> allProviders =
+		// Context.getProviderService().getAllProviders();
 		List<Order> allOrders = getSessionFactory().getCurrentSession().createCriteria(Order.class).list();
 		List<User> allUsers = getSessionFactory().getCurrentSession().createCriteria(User.class).list();
 		List<Object> orderers = new ArrayList<Object>();
@@ -1028,15 +1045,15 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 						orderers.add(u);
 					}
 				}
-			}/* else if (o != null && o.getOrderer().getClass().equals(Provider.class)) {
-				for (int j = 0; j < allProviders.size(); j++) {
-					Provider p = allProviders.get(j);
-
-					if (p != null && o.getOrderId().equals(p.getProviderId())) {
-						orderers.add(p);
-					}
-				}
-			}*/
+			} /*
+				 * else if (o != null &&
+				 * o.getOrderer().getClass().equals(Provider.class)) { for (int
+				 * j = 0; j < allProviders.size(); j++) { Provider p =
+				 * allProviders.get(j);
+				 * 
+				 * if (p != null && o.getOrderId().equals(p.getProviderId())) {
+				 * orderers.add(p); } } }
+				 */
 		}
 		return orderers.toArray(new Object[orderers.size()]);
 	}
@@ -1046,7 +1063,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		Integer count = 0;
 
 		if (concept != null) {
-			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
+			sql = "select count(distinct person_id) from " + getObjectTableNameFromClass(Obs.class)
 					+ " where voided=false and concept_id = " + concept.getConceptId()
 					+ " and person_id in(select distinct patient_id from patient)";
 			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
@@ -1089,15 +1106,18 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	private String toSql(Criteria criteria) {
 		try {
-			/*CriteriaImpl c = (CriteriaImpl) criteria;
-			SessionImpl s = (SessionImpl) c.getSession();
-			SessionFactoryImplementor factory = (SessionFactoryImplementor) s.getSessionFactory();
-			String[] implementors = factory.getImplementors(c.getEntityOrClassName());
-			CriteriaLoader loader = new CriteriaLoader((OuterJoinLoadable) factory.getEntityPersister(implementors[0]),
-					factory, c, implementors[0], s.getLoadQueryInfluencers());*/
+			/*
+			 * CriteriaImpl c = (CriteriaImpl) criteria; SessionImpl s =
+			 * (SessionImpl) c.getSession(); SessionFactoryImplementor factory =
+			 * (SessionFactoryImplementor) s.getSessionFactory(); String[]
+			 * implementors = factory.getImplementors(c.getEntityOrClassName());
+			 * CriteriaLoader loader = new CriteriaLoader((OuterJoinLoadable)
+			 * factory.getEntityPersister(implementors[0]), factory, c,
+			 * implementors[0], s.getLoadQueryInfluencers());
+			 */
 			Field f = OuterJoinLoader.class.getDeclaredField("sql");
 			f.setAccessible(true);
-			return null;//(String) f.get(loader);
+			return null;// (String) f.get(loader);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -1108,7 +1128,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		Integer count = 0;
 
 		if (concept != null) {
-			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
+			sql = "select count(distinct person_id) from " + getObjectTableNameFromClass(Obs.class)
 					+ " where voided=false and concept_id = " + concept.getConceptId()
 					+ " and person_id in(select distinct patient_id from patient) and obs_datetime > DATE_SUB(now(), INTERVAL 6 MONTH)";
 			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
@@ -1122,7 +1142,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		Integer count = 0;
 
 		if (concept != null) {
-			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
+			sql = "select count(distinct person_id) from " + getObjectTableNameFromClass(Obs.class)
 					+ " where voided=false and concept_id = " + concept.getConceptId()
 					+ " and person_id in(select distinct patient_id from patient) and obs_datetime between '"
 					+ getYesterdayStartDate() + "' and '" + getYesterdayEndDate() + "'";
@@ -1167,7 +1187,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		Integer count = 0;
 
 		if (concept != null) {
-			sql = "select count(*) from " + getObjectTableNameFromClass(Obs.class)
+			sql = "select count(distinct person_id) from " + getObjectTableNameFromClass(Obs.class)
 					+ " where voided=false and concept_id = " + concept.getConceptId()
 					+ " and person_id in(select distinct patient_id from patient) and obs_datetime > DATE_SUB(now(), INTERVAL 12 MONTH)";
 			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
@@ -1178,8 +1198,10 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalVisits() {
-		String sql = "select count(*) from encounter where encounter_type in (" + Context.getAdministrationService()
-				.getGlobalProperty(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFVISITS) + ")";
+		String sql = "select count(distinct patient_id) from encounter where encounter_type in ("
+				+ Context.getAdministrationService()
+						.getGlobalProperty(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFVISITS)
+				+ ")";
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -1188,10 +1210,10 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalActivePatients() {
-		String sql = "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id = "
+		String sql = "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id != "
 				+ getReasonForExitingCareConcept().getConceptId() + "  and program_id = "
 				+ getHIVProgram().getProgramId()
-				+ " and ord.concept_id in (select distinct concept_id from concept_set where concept_set = "
+				+ " and ord.concept_id in (select distinct concept_id from concept_set where pp.date_completed is null and concept_set = "
 				+ getARVDrugsConceptSet().getConceptId() + ")";
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
@@ -1201,10 +1223,10 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalActivePatientsForYesterday() {
-		String sql = "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id = "
+		String sql = "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id != "
 				+ getReasonForExitingCareConcept().getConceptId() + "  and program_id = "
 				+ getHIVProgram().getProgramId()
-				+ " and ord.concept_id in (select distinct concept_id from concept_set where concept_set = "
+				+ " and ord.concept_id in (select distinct concept_id from concept_set where pp.date_completed is null and concept_set = "
 				+ getARVDrugsConceptSet().getConceptId() + ") and (obs_datetime between '" + getYesterdayStartDate()
 				+ "' and '" + getYesterdayEndDate() + "')";
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
@@ -1248,8 +1270,10 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalNewPatients() {
-		String sql = "select count(*) from encounter where encounter_type in (" + Context.getAdministrationService()
-				.getGlobalProperty(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFPATIENTSNEW) + ")";
+		String sql = "select count(distinct patient_id) from encounter where encounter_type in ("
+				+ Context.getAdministrationService()
+						.getGlobalProperty(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFPATIENTSNEW)
+				+ ")";
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -1258,7 +1282,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalNewPatientsForYesterday() {
-		String sql = "select count(*) from encounter where encounter_type in ("
+		String sql = "select count(distinct patient_id) from encounter where encounter_type in ("
 				+ Context.getAdministrationService()
 						.getGlobalProperty(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFPATIENTSNEW)
 				+ ") and ((date_created between '" + getYesterdayStartDate() + "' and '" + getYesterdayEndDate()
@@ -1271,17 +1295,17 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalEncountersForYesterday() {
-		return fetchTotalOpenMRSObjectCountYesterday(false, Encounter.class);
+		return fetchTotalOpenMRSObjectCountYesterday(false, Encounter.class, "distinct patient_id");
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalObservationsForYesterday() {
-		return fetchTotalOpenMRSObjectCountYesterday(false, Obs.class);
+		return fetchTotalOpenMRSObjectCountYesterday(false, Obs.class, "distinct person_id");
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalUsersForYesterday() {
-		return fetchTotalOpenMRSObjectCountYesterday(false, User.class);
+		return fetchTotalOpenMRSObjectCountYesterday(false, User.class, "*");
 	}
 
 	@Override
@@ -1295,7 +1319,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	public Integer getTotalVisitsForYesterday() {
-		return null;//fetchTotalOpenMRSObjectCountYesterday(false, Visit.class);
+		return null;// fetchTotalOpenMRSObjectCountYesterday(false,
+					// Visit.class);
 	}
 
 	@Override
@@ -1347,14 +1372,14 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 		return encTypeId != null ? Context.getEncounterService().getEncounterType(encTypeId) : null;
 	}
-	
+
 	@Override
 	public TaskDefinition getTaskByClass(String taskClass) throws DAOException {
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(TaskDefinition.class).add(
-		    Expression.eq("taskClass", taskClass));
-		
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(TaskDefinition.class)
+				.add(Expression.eq("taskClass", taskClass));
+
 		TaskDefinition task = (TaskDefinition) crit.uniqueResult();
-		
+
 		if (task == null) {
 			log.warn("Task '" + taskClass + "' not found");
 			throw new ObjectRetrievalFailureException(TaskDefinition.class, taskClass);

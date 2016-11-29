@@ -1,5 +1,8 @@
 TODOs:
 ______________________________________________
+- support former date for evaluation and submission
+- encrypt dhis user connection details
+- run task at first installation to update formery submitted data from when SMT started collecting data to correct any incorrect reported data
 - [x] supporting uploading supported metadata json into the configured DHIS instance
 - [x] Read from the local DHIS Data Elements metadata copy to name indicators in the module's pages
 - [x] Writing well timed (similar to EMT) scheduling tasks for both data capture and pushing into DHIS2

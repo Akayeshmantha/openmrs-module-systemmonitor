@@ -298,14 +298,6 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_openMRSVersion",
 					openmrsVersion, systemMonitorService.getDHISCurrentMonthPeriod()));
 
-			// jsonDataValueSets.put(new JSONObject(systemStartupsDataElement));
-			// jsonDataValueSets.put(new JSONObject(upTimeThisWeekDataElement));
-			// jsonDataValueSets.put(new JSONObject(upTimeLastWeekDataElement));
-			// jsonDataValueSets.put(new
-			// JSONObject(upTimeLastMonthDataElement));
-			// jsonDataValueSets.put(new
-			// JSONObject(totalOpenMRSUptimeDataElement));
-
 			jsonToBePushed = new JSONArray(jsonDataValueSets.toString());
 			jsonToBePushed.put(systemRealLocationDataElementJSON2);
 			jsonToBePushed.put(installedModulesDataElementJSON2);

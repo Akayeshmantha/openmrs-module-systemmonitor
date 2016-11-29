@@ -974,7 +974,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 					.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)) != null
 							? Context.getAdministrationService()
 									.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)
-									+ SystemMonitorConstants.DHIS_API_DATAELEMENTS_URL + "?pageSize=100"
+									+ SystemMonitorConstants.DHIS_API_DATAELEMENTS_URL + "?pageSize=1000"
 							: null;
 			dhisDataFile = SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE;
 		} else {

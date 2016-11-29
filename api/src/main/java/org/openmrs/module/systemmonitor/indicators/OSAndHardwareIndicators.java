@@ -186,7 +186,7 @@ public class OSAndHardwareIndicators {
 			}
 		} catch (NoClassDefFoundError e) {
 			e.printStackTrace();
-		}  catch (UnsatisfiedLinkError e) {
+		} catch (UnsatisfiedLinkError e) {
 			e.printStackTrace();
 		}
 		return json;

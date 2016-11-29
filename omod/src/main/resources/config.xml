@@ -156,12 +156,12 @@
 	</globalProperty>
 	<globalProperty>
 		<property>systemmonitor.numberOfVisitsMetricEncounterTypeIds</property>
-		<defaultValue>2,4</defaultValue>
+		<defaultValue>2</defaultValue>
 		<description>USed to set encounter type ids for Rwanda EMT total visits indicator</description>
 	</globalProperty>
 	<globalProperty>
 		<property>systemmonitor.numberOfTotalNewPatientsMetricEncounterTypeIds</property>
-		<defaultValue>1,3</defaultValue>
+		<defaultValue>1</defaultValue>
 		<description>USed to set encounter type ids for Rwanda EMT total new patients indicator</description>
 	</globalProperty>
 	<globalProperty>

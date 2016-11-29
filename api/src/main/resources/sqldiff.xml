@@ -60,4 +60,15 @@
 		</sql>
 	</diff>
 	
+	<diff>
+		<version>1.4</version>
+		<author>k-joseph</author>
+		<date>Nov 29th 2016</date>
+		<description>Eliminate pediatric patients from SPH study</description>
+		<sql>
+			UPDATE global_property SET property_value = '1' WHERE property = 'systemmonitor.numberOfTotalNewPatientsMetricEncounterTypeIds';
+			UPDATE global_property SET property_value = '2' WHERE property = 'systemmonitor.numberOfVisitsMetricEncounterTypeIds';
+		</sql>
+	</diff>
+	
 </sqldiff>
