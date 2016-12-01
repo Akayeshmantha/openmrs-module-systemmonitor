@@ -1,9 +1,7 @@
 package org.openmrs.module.systemmonitor;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.Module;
@@ -81,19 +79,11 @@ public class SystemMonitorConstants {
 
 	public static File SYSTEMMONITOR_LOGSFOLDER = new File(SystemMonitorConstants.SYSTEMMONITOR_LOGS_DIRECTORYPATH);
 
-	public static File SYSTEMMONITOR_LOGSFILE = new File(SystemMonitorConstants.SYSTEMMONITOR_LOGS_DIRECTORYPATH
-			+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_LOGS_PREFIX
-			+ new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".log");
-
 	public static File SYSTEMMONITOR_BACKUPFOLDER = new File(SystemMonitorConstants.SYSTEMMONITOR_DATA_DIRECTORYPATH);
 
-	public static File SYSTEMMONITOR_BACKUPFILE = new File(SystemMonitorConstants.SYSTEMMONITOR_DATA_DIRECTORYPATH
-			+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_DATA_PREFIX
-			+ new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".json");
-
 	public static String SCHEDULER_TASKCLASS_LOCALCLEANER = "org.openmrs.module.systemmonitor.scheduler.LocalLogsAndDHISDataCleanerTask";
-	
+
 	public static String SCHEDULER_TASKCLASS_PUSH = "org.openmrs.module.systemmonitor.scheduler.PushMonitoredDataTask";
-	
+
 	public static String SCHEDULER_TASKCLASS_UPDATESHISMETADATA = "org.openmrs.module.systemmonitor.scheduler.UpdateLocallyStoredDHISMetadataFromRemoteTask";
 }

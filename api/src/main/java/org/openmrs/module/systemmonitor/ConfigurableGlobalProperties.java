@@ -44,4 +44,6 @@ public class ConfigurableGlobalProperties {
 	public static String MONTHS_TO_STORE_LOGSANDDATA = "systemmonitor.numberOfMonthsBeforeDeletingLogsAndData";
 
 	public static String ADDED_LOCAL_DHISMAPPINGS = "systemmonitor.addedLocalDHISMappings";
+
+	public static String EVALUATION_AND_REPORTING_DATE = "systemmonitor.evaluationAndReportingSToday";
 }

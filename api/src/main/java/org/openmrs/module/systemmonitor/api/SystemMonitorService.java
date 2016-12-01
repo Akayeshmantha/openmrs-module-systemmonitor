@@ -365,4 +365,7 @@ public interface SystemMonitorService extends OpenmrsService {
 	void rebootSystemMonitorTasks();
 
 	JSONArray fetchDataToBePushedAtClientLevelOrExported();
+
+	Date getEvaluationAndReportingDate();
+
 }

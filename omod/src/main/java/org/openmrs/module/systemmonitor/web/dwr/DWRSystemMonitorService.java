@@ -1,7 +1,6 @@
 package org.openmrs.module.systemmonitor.web.dwr;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,7 +34,10 @@ public class DWRSystemMonitorService {
 		allDHISValuesJSON.put("dhisPassword", dhisPassword);
 		allDHISValuesJSON.put("dhisPostUrl", dhisPostUrl);
 		allDHISValuesJSON.put("fileName",
-				systemId + "-dhisData-" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".json");
+				systemId + "-dhisData-"
+						+ new SimpleDateFormat("yyyyMMdd")
+								.format(Context.getService(SystemMonitorService.class).getEvaluationAndReportingDate())
+						+ ".json");
 		allDHISValuesJSON.put("failureMessage",
 				Context.getMessageSourceService().getMessage("systemmonitor.clientPushing.failureMessage"));
 

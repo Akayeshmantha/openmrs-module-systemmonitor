@@ -15,9 +15,11 @@ package org.openmrs.module.systemmonitor.api.db.hibernate;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -32,6 +34,7 @@ import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Form;
+import org.openmrs.GlobalProperty;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Order;
@@ -56,6 +59,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	private SessionFactory sessionFactory;
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+	@Override
+	public SimpleDateFormat getSdf() {
+		return sdf;
+	}
 
 	/**
 	 * @param sessionFactory
@@ -112,6 +120,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	public String getToday() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 
+		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 
 		return sdf.format(calendar.getTime());
@@ -121,6 +130,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	public String getYesterdayStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 
+		calendar.setTime(getEvaluationAndReportingDate());
 		calendar.add(Calendar.DATE, -1);
 		resetDateTimes(calendar);
 
@@ -131,6 +141,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	public String getYesterdayEndDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 
+		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		calendar.add(Calendar.MILLISECOND, -1);
 
@@ -141,6 +152,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	public String getThisWeekStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
 
+		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		// get start of this week in milliseconds
 		calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
@@ -158,6 +170,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public String getThisWeekEndDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		Calendar first = (Calendar) calendar.clone();
 		first.add(Calendar.DAY_OF_WEEK, first.getFirstDayOfWeek() - first.get(Calendar.DAY_OF_WEEK));
@@ -171,6 +185,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public String getLastWeekStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) - 1);
 		calendar.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the
@@ -187,6 +203,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public String getLastWeekEndDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		Calendar first = (Calendar) calendar.clone();
 		first.add(Calendar.DAY_OF_WEEK, first.getFirstDayOfWeek() - first.get(Calendar.DAY_OF_WEEK));
@@ -201,6 +219,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public String getThisMonthStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 
@@ -210,6 +230,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public String getThisMonthEndDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
@@ -219,6 +241,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public String getLastMonthStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		calendar.add(Calendar.MONTH, -1);
 		// set DATE to 1, so first date of previous month
@@ -229,6 +253,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public String getLastMonthEndDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		calendar.add(Calendar.MONTH, -1);
 		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -239,6 +265,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public String getThisYearStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		calendar.set(Calendar.DAY_OF_YEAR, 1);
 
@@ -248,6 +276,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public String getThisYearEndDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		calendar.set(Calendar.DAY_OF_YEAR, isLeapYear(calendar.get(Calendar.YEAR)) ? 366 : 365);
 
@@ -257,11 +287,38 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public String getLastYearStartDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		calendar.add(Calendar.YEAR, -1);
 		calendar.set(Calendar.DAY_OF_YEAR, 1);
 
 		return sdf.format(calendar.getTime());
+	}
+
+	@Override
+	public Date getEvaluationAndReportingDate() {
+		Calendar today = Calendar.getInstance(Context.getLocale());
+		GlobalProperty evalDate = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.EVALUATION_AND_REPORTING_DATE);
+
+		if (evalDate != null && StringUtils.isNotBlank(evalDate.getPropertyValue())) {
+			try {
+				Calendar evalD = Calendar.getInstance();
+				Date d = sdf.parse(evalDate.getPropertyValue());
+
+				evalD.setTime(d);
+				resetDateTimes(today);
+				resetDateTimes(evalD);
+				if (d != null && evalD.getTime().before(today.getTime())) {
+					return evalD.getTime();
+				}
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return today.getTime();
 	}
 
 	@Override
@@ -277,6 +334,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public String getOneHalfYearBackDate() {
 		Calendar prevHalfYear = Calendar.getInstance();
+
+		prevHalfYear.setTime(getEvaluationAndReportingDate());
 		prevHalfYear.add(Calendar.MONTH, -6);
 
 		return sdf.format(prevHalfYear.getTime());
@@ -285,6 +344,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public String getOneYearBackDate() {
 		Calendar prevYear = Calendar.getInstance();
+
+		prevYear.setTime(getEvaluationAndReportingDate());
 		prevYear.add(Calendar.YEAR, -1);
 
 		return sdf.format(prevYear.getTime());
@@ -899,7 +960,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 			String distinctFilter) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
 		String sql = "select count(" + distinctFilter + ") from " + getObjectTableNameFromClass(clazz) + " where "
-				+ voidedOrRetiredParameterName + "=" + includeRetired;
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and date_created <= '"
+				+ sdf.format(getEvaluationAndReportingDate()) + "'";
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -991,8 +1053,6 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	private Person[] getAllPersonsWithOrders() {
 		List<Person> allPersonsWithOrders = new ArrayList<Person>();
 		List<Order> allOrders = getSessionFactory().getCurrentSession().createCriteria(Order.class).list();
-		// List<Provider> allProviders =
-		// Context.getProviderService().getAllProviders();
 		List<User> allUsers = getSessionFactory().getCurrentSession().createCriteria(User.class).list();
 
 		for (int i = 0; i < allOrders.size(); i++) {
@@ -1009,18 +1069,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 							allPersonsWithOrders.add(person);
 					}
 				}
-			} /*
-				 * else if (o != null &&
-				 * o.getOrderer().getClass().equals(Provider.class)) { for (int
-				 * j = 0; j < allProviders.size(); j++) { Provider p =
-				 * allProviders.get(j);
-				 * 
-				 * if (p != null && o.getOrderId().equals(p.getProviderId())) {
-				 * Person person =
-				 * Context.getPersonService().getPerson(p.getProviderId());
-				 * 
-				 * if (person != null) allPersonsWithOrders.add(person); } } }
-				 */
+			}
 		}
 
 		return allPersonsWithOrders.toArray(new Person[allPersonsWithOrders.size()]);
@@ -1028,8 +1077,6 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	@SuppressWarnings({ "unchecked", "unused" })
 	private Object[] getAllOrderers() {
-		// List<Provider> allProviders =
-		// Context.getProviderService().getAllProviders();
 		List<Order> allOrders = getSessionFactory().getCurrentSession().createCriteria(Order.class).list();
 		List<User> allUsers = getSessionFactory().getCurrentSession().createCriteria(User.class).list();
 		List<Object> orderers = new ArrayList<Object>();
@@ -1045,15 +1092,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 						orderers.add(u);
 					}
 				}
-			} /*
-				 * else if (o != null &&
-				 * o.getOrderer().getClass().equals(Provider.class)) { for (int
-				 * j = 0; j < allProviders.size(); j++) { Provider p =
-				 * allProviders.get(j);
-				 * 
-				 * if (p != null && o.getOrderId().equals(p.getProviderId())) {
-				 * orderers.add(p); } } }
-				 */
+			}
 		}
 		return orderers.toArray(new Object[orderers.size()]);
 	}
@@ -1065,7 +1104,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		if (concept != null) {
 			sql = "select count(distinct person_id) from " + getObjectTableNameFromClass(Obs.class)
 					+ " where voided=false and concept_id = " + concept.getConceptId()
-					+ " and person_id in(select distinct patient_id from patient)";
+					+ " and person_id in(select distinct patient_id from patient) and obs_datetime <= '"
+					+ sdf.format(getEvaluationAndReportingDate()) + "'";
 			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 					.intValue();
 		}
@@ -1106,15 +1146,6 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 	private String toSql(Criteria criteria) {
 		try {
-			/*
-			 * CriteriaImpl c = (CriteriaImpl) criteria; SessionImpl s =
-			 * (SessionImpl) c.getSession(); SessionFactoryImplementor factory =
-			 * (SessionFactoryImplementor) s.getSessionFactory(); String[]
-			 * implementors = factory.getImplementors(c.getEntityOrClassName());
-			 * CriteriaLoader loader = new CriteriaLoader((OuterJoinLoadable)
-			 * factory.getEntityPersister(implementors[0]), factory, c,
-			 * implementors[0], s.getLoadQueryInfluencers());
-			 */
 			Field f = OuterJoinLoader.class.getDeclaredField("sql");
 			f.setAccessible(true);
 			return null;// (String) f.get(loader);
@@ -1130,7 +1161,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		if (concept != null) {
 			sql = "select count(distinct person_id) from " + getObjectTableNameFromClass(Obs.class)
 					+ " where voided=false and concept_id = " + concept.getConceptId()
-					+ " and person_id in(select distinct patient_id from patient) and obs_datetime > DATE_SUB(now(), INTERVAL 6 MONTH)";
+					+ " and person_id in(select distinct patient_id from patient) and obs_datetime > DATE_SUB('"
+					+ sdf.format(getEvaluationAndReportingDate()) + "', INTERVAL 6 MONTH)";
 			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 					.intValue();
 		}
@@ -1189,7 +1221,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		if (concept != null) {
 			sql = "select count(distinct person_id) from " + getObjectTableNameFromClass(Obs.class)
 					+ " where voided=false and concept_id = " + concept.getConceptId()
-					+ " and person_id in(select distinct patient_id from patient) and obs_datetime > DATE_SUB(now(), INTERVAL 12 MONTH)";
+					+ " and person_id in(select distinct patient_id from patient) and obs_datetime > DATE_SUB('"
+					+ sdf.format(getEvaluationAndReportingDate()) + "', INTERVAL 12 MONTH)";
 			count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 					.intValue();
 		}
@@ -1201,7 +1234,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		String sql = "select count(distinct patient_id) from encounter where encounter_type in ("
 				+ Context.getAdministrationService()
 						.getGlobalProperty(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFVISITS)
-				+ ")";
+				+ ") and encounter_datetime <= '" + sdf.format(getEvaluationAndReportingDate()) + "'";
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -1214,7 +1247,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				+ getReasonForExitingCareConcept().getConceptId() + "  and program_id = "
 				+ getHIVProgram().getProgramId()
 				+ " and ord.concept_id in (select distinct concept_id from concept_set where pp.date_completed is null and concept_set = "
-				+ getARVDrugsConceptSet().getConceptId() + ")";
+				+ getARVDrugsConceptSet().getConceptId() + ") and o.obs_datetime <= '"
+				+ sdf.format(getEvaluationAndReportingDate()) + "'";
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 
@@ -1273,7 +1307,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		String sql = "select count(distinct patient_id) from encounter where encounter_type in ("
 				+ Context.getAdministrationService()
 						.getGlobalProperty(ConfigurableGlobalProperties.METRIC_ENC_TYPEIDS_NUMBEROFPATIENTSNEW)
-				+ ")";
+				+ ") and encounter_datetime <= '" + sdf.format(getEvaluationAndReportingDate()) + "'";
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 

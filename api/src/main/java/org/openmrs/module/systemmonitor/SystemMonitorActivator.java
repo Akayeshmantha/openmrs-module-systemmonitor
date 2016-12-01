@@ -66,7 +66,7 @@ public class SystemMonitorActivator implements Activator {
 			dhisPass.setPropertyValue("SphDataEntry123");
 			Context.getAdministrationService().saveGlobalProperty(dhisPass);
 		}
-
+		
 		TaskDefinition pushTask = Context.getSchedulerService().getTaskByName("Push System Monitored Data to DHIS");
 		TaskDefinition metadataTask = Context.getSchedulerService()
 				.getTaskByName("Update Locally Stored DHIS Metadata");
@@ -88,5 +88,6 @@ public class SystemMonitorActivator implements Activator {
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
+
 	}
 }

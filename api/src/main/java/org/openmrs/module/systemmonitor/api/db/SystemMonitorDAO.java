@@ -13,6 +13,9 @@
  */
 package org.openmrs.module.systemmonitor.api.db;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.openmrs.Concept;
 import org.openmrs.Person;
 import org.openmrs.Program;
@@ -280,4 +283,8 @@ public interface SystemMonitorDAO {
 	Integer rwandaPIHEMTGetTotalActivePatientsForYesterday();
 
 	TaskDefinition getTaskByClass(String taskClass) throws DAOException;
+
+	Date getEvaluationAndReportingDate();
+
+	SimpleDateFormat getSdf();
 }
