@@ -1029,9 +1029,22 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				.getGlobalProperty(ConfigurableGlobalProperties.NUMBER_OF_SECS_AT_STARTUP));
 	}
 
+	private Long getNumberOfSecondsAtOpenMRSOpenningHours() {
+		Integer openingHour = Integer.parseInt(getConfiguredOpeningHour().getPropertyValue().substring(0, 2));
+		Calendar evalStart = Calendar.getInstance();
+
+		evalStart.setTime(getEvaluationAndReportingDate());
+		evalStart.set(Calendar.HOUR_OF_DAY, openingHour);
+		evalStart.clear(Calendar.MINUTE);
+		evalStart.clear(Calendar.SECOND);
+		evalStart.clear(Calendar.MILLISECOND);
+
+		return evalStart.getTimeInMillis();
+	}
+
 	@Override
 	public Long getOpenMRSSystemUpTime() {
-		return ((System.currentTimeMillis() / 1000) - getNumberOfSecondsAtOpenMRSStartup()) / 60;
+		return ((System.currentTimeMillis() / 1000) - getNumberOfSecondsAtOpenMRSOpenningHours()) / 60;
 	}
 
 	@Override
@@ -1395,5 +1408,35 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public Integer rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment() {
+		return dao.rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment();
+	}
+
+	@Override
+	public Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment() {
+		return dao.rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment();
+	}
+
+	@Override
+	public Integer rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneViralLoad_InEMR() {
+		return dao.rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneViralLoad_InEMR();
+	}
+
+	@Override
+	public Integer rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneCD4Count_InEMR() {
+		return dao.rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneCD4Count_InEMR();
+	}
+
+	@Override
+	public Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneViralLoad_LastYear() {
+		return dao.rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneViralLoad_LastYear();
+	}
+
+	@Override
+	public Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear() {
+		return dao.rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear();
 	}
 }

@@ -368,4 +368,16 @@ public interface SystemMonitorService extends OpenmrsService {
 
 	Date getEvaluationAndReportingDate();
 
+	Integer rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment();
+
+	Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment();
+
+	Integer rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneViralLoad_InEMR();
+
+	Integer rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneCD4Count_InEMR();
+
+	Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneViralLoad_LastYear();
+
+	Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear();
+
 }

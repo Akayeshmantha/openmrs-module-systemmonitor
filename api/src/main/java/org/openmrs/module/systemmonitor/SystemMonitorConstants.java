@@ -86,4 +86,15 @@ public class SystemMonitorConstants {
 	public static String SCHEDULER_TASKCLASS_PUSH = "org.openmrs.module.systemmonitor.scheduler.PushMonitoredDataTask";
 
 	public static String SCHEDULER_TASKCLASS_UPDATESHISMETADATA = "org.openmrs.module.systemmonitor.scheduler.UpdateLocallyStoredDHISMetadataFromRemoteTask";
+
+	public static String USED_MEMORY_FILE_NAME = "used-memory.txt";
+
+	public static File SYSTEMMONITOR_MEMORYDATAFILE = new File(
+			SYSTEMMONITOR_DATA_DIRECTORYPATH + File.separator + USED_MEMORY_FILE_NAME);
+
+	public static String OPENMRS_UPANDDOWNTIME_FILE_NAME = "openmrs-upanddowntime.txt";
+
+	public static File OPENMRS_UPANDDOWNTIME_FILE = new File(
+			SYSTEMMONITOR_DATA_DIRECTORYPATH + File.separator + OPENMRS_UPANDDOWNTIME_FILE_NAME);
+
 }

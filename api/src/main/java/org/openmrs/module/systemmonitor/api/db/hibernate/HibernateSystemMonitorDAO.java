@@ -273,6 +273,25 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		return sdf.format(calendar.getTime());
 	}
 
+	public String getLastYearBackwardsStartDate() {
+		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		calendar.setTime(getEvaluationAndReportingDate());
+		resetDateTimes(calendar);
+		calendar.set(Calendar.YEAR, -1);
+
+		return sdf.format(calendar.getTime());
+	}
+
+	public String getLastYearBackwardsEndDate() {// today
+		Calendar calendar = Calendar.getInstance(Context.getLocale());
+
+		calendar.setTime(getEvaluationAndReportingDate());
+		resetDateTimes(calendar);
+
+		return sdf.format(calendar.getTime());
+	}
+
 	@Override
 	public String getThisYearEndDate() {
 		Calendar calendar = Calendar.getInstance(Context.getLocale());
@@ -1258,11 +1277,75 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public Integer rwandaPIHEMTGetTotalActivePatientsForYesterday() {
 		String sql = "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id != "
+				+ getReasonForExitingCareConcept().getConceptId() + " and program_id = "
+				+ getHIVProgram().getProgramId()
+				+ " and ord.concept_id in (select distinct concept_id from concept_set where pp.date_completed is null and concept_set = "
+				+ getARVDrugsConceptSet().getConceptId() + ") and (o.obs_datetime between '" + getYesterdayStartDate()
+				+ "' and '" + getYesterdayEndDate() + "')";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
+
+		return count;
+	}
+
+	@Override
+	public Integer rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment() {
+		return rwandaGetTotalActivePatients_AtleastNMonthsARVTreatment(8);
+	}
+
+	@Override
+	public Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment() {
+		return rwandaGetTotalActivePatients_AtleastNMonthsARVTreatment(20);
+	}
+
+	@Override
+	public Integer rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneViralLoad_InEMR() {
+		return rwandaGetTotalActivePatients_AtleastNMonthsARVTreatment_AtleastOneCodedObsCount_InEMROrLastYear(8,
+				getViralLoadsConcept(), false);
+	}
+
+	@Override
+	public Integer rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneCD4Count_InEMR() {
+		return rwandaGetTotalActivePatients_AtleastNMonthsARVTreatment_AtleastOneCodedObsCount_InEMROrLastYear(8,
+				getCD4CountConcept(), false);
+	}
+
+	@Override
+	public Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneViralLoad_LastYear() {
+		return rwandaGetTotalActivePatients_AtleastNMonthsARVTreatment_AtleastOneCodedObsCount_InEMROrLastYear(20,
+				getViralLoadsConcept(), true);
+	}
+
+	@Override
+	public Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear() {
+		return rwandaGetTotalActivePatients_AtleastNMonthsARVTreatment_AtleastOneCodedObsCount_InEMROrLastYear(20,
+				getCD4CountConcept(), true);
+	}
+
+	private Integer rwandaGetTotalActivePatients_AtleastNMonthsARVTreatment(Integer nMonths) {
+		String sql = "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id where o.concept_id != "
 				+ getReasonForExitingCareConcept().getConceptId() + "  and program_id = "
 				+ getHIVProgram().getProgramId()
 				+ " and ord.concept_id in (select distinct concept_id from concept_set where pp.date_completed is null and concept_set = "
-				+ getARVDrugsConceptSet().getConceptId() + ") and (obs_datetime between '" + getYesterdayStartDate()
-				+ "' and '" + getYesterdayEndDate() + "')";
+				+ getARVDrugsConceptSet().getConceptId() + ") and o.obs_datetime <= '"
+				+ sdf.format(getEvaluationAndReportingDate()) + "' and ord.date_created >= DATE_SUB(now(), INTERVAL "
+				+ nMonths + " MONTH)";
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
+
+		return count;
+	}
+
+	private Integer rwandaGetTotalActivePatients_AtleastNMonthsARVTreatment_AtleastOneCodedObsCount_InEMROrLastYear(
+			Integer arvNMonths, Concept concept, boolean codedObsLastYear) {
+		String sql = "select count(distinct person_id) from obs o inner join patient_program pp on o.person_id = pp.patient_id inner join orders ord on o.person_id = ord.patient_id"
+				+ " where o.concept_id != " + getReasonForExitingCareConcept().getConceptId() + "  and program_id = "
+				+ getHIVProgram().getProgramId()
+				+ " and ord.concept_id in (select distinct concept_id from concept_set where pp.date_completed is null and concept_set = "
+				+ getARVDrugsConceptSet().getConceptId() + ") and o.obs_datetime <= '"
+				+ sdf.format(getEvaluationAndReportingDate()) + "' and ord.date_created >= DATE_SUB(now(), INTERVAL "
+				+ arvNMonths + " MONTH) and o.concept_id = " + concept.getConceptId() + ((codedObsLastYear != true) ? ""
+						: " and o.obs_datetime >= DATE_SUB(now(), INTERVAL 12 MONTH)");
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 

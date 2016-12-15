@@ -1,5 +1,9 @@
 TODOs:
 ______________________________________________
+- setup OpenHIM to avoid re-configuration of SMT after DHIS data migration
+- do some simple dhis and scheduler password encryption
+- percentage enrolled with viral load test result in the n months. (deno:group of patients/what percentage of those active patients have viral load test results)
+- repeat the same for cd4 count
 - support former date for evaluation and submission
 - encrypt dhis user connection details
 - run task at first installation to update formery submitted data from when SMT started collecting data to correct any incorrect reported data

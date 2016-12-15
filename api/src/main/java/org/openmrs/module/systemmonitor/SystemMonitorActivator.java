@@ -66,12 +66,14 @@ public class SystemMonitorActivator implements Activator {
 			dhisPass.setPropertyValue("SphDataEntry123");
 			Context.getAdministrationService().saveGlobalProperty(dhisPass);
 		}
-		
+
 		TaskDefinition pushTask = Context.getSchedulerService().getTaskByName("Push System Monitored Data to DHIS");
 		TaskDefinition metadataTask = Context.getSchedulerService()
 				.getTaskByName("Update Locally Stored DHIS Metadata");
 		TaskDefinition cleanTask = Context.getSchedulerService()
 				.getTaskByName("Clean/Delete Old Local Logs and DHIS Data");
+		TaskDefinition memoTask = Context.getSchedulerService().getTaskByName("Used Memory Aggregation");
+		TaskDefinition uptimeTask = Context.getSchedulerService().getTaskByName("OpenMRS Uptime Evaluation");
 		try {
 			if (pushTask != null) {
 				pushTask.setStartOnStartup(false);
@@ -84,6 +86,14 @@ public class SystemMonitorActivator implements Activator {
 			if (cleanTask != null) {
 				cleanTask.setStartOnStartup(false);
 				Context.getSchedulerService().scheduleTask(cleanTask);
+			}
+			if (memoTask != null) {
+				memoTask.setStartOnStartup(false);
+				Context.getSchedulerService().scheduleTask(memoTask);
+			}
+			if (uptimeTask != null) {
+				uptimeTask.setStartOnStartup(false);
+				Context.getSchedulerService().scheduleTask(uptimeTask);
 			}
 		} catch (SchedulerException e) {
 			e.printStackTrace();

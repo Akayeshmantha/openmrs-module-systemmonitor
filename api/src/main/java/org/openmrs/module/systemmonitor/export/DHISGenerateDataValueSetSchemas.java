@@ -16,6 +16,8 @@ import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 import org.openmrs.module.systemmonitor.indicators.OSAndHardwareIndicators;
 import org.openmrs.module.systemmonitor.indicators.SystemPropertiesIndicators;
 import org.openmrs.module.systemmonitor.mapping.DHISMapping;
+import org.openmrs.module.systemmonitor.memory.MemoryAggregation;
+import org.openmrs.module.systemmonitor.uptime.OpenmrsUpAndDownTracker;
 import org.openmrs.web.WebConstants;
 
 public class DHISGenerateDataValueSetSchemas {
@@ -27,6 +29,11 @@ public class DHISGenerateDataValueSetSchemas {
 	 * @throws UnknownHostException
 	 */
 	public static JSONObject generateRwandaSPHEMTDHISDataValueSets() {
+		Integer openingHour = Integer.parseInt(Context.getService(SystemMonitorService.class).getConfiguredOpeningHour()
+				.getPropertyValue().substring(0, 2));
+		Integer closingHour = Integer.parseInt(Context.getService(SystemMonitorService.class).getConfiguredClosingHour()
+				.getPropertyValue().substring(0, 2));
+		Integer workingMinutesDifference = ((closingHour - openingHour) - 1) * 60;
 		File mappingsFile = SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE;
 		JSONObject jsonObj = new JSONObject();
 		JSONObject jsonObj2 = new JSONObject();
@@ -36,8 +43,8 @@ public class DHISGenerateDataValueSetSchemas {
 		SystemMonitorService systemMonitorService = Context.getService(SystemMonitorService.class);
 		OSAndHardwareIndicators osshi = new OSAndHardwareIndicators();
 
-		String systemId = osshi.getHostName() + "-" + (osshi.getMacAddress() != null
-				? osshi.getMacAddress().replace(":", "") : "");
+		String systemId = osshi.getHostName() + "-"
+				+ (osshi.getMacAddress() != null ? osshi.getMacAddress().replace(":", "") : "");
 
 		String dhisOrgUnitUid = DHISMapping
 				.getDHISMappedObjectValue(systemMonitorService.getCurrentConfiguredDHISOrgUnit().getPropertyValue());
@@ -53,19 +60,62 @@ public class DHISGenerateDataValueSetSchemas {
 
 		String processor = osshi.getLinuxProcessorName();
 
-		Integer openmrsUptime = systemMonitorService.getOpenMRSSystemUpTime().intValue();
+		Calendar date = Calendar.getInstance();
 
-		Long freeMemory = osshi.MEMORY_AVAILABLE;
+		date.setTime(systemMonitorService.getEvaluationAndReportingDate());
 
-		Long usedMemory = osshi.MEMORY_USED;
+		Integer numberOfDownTimes = OpenmrsUpAndDownTracker.getNumberOfOpenMRSDownTimesToday();
+
+		Integer[] openmrsUpAndDownTime = OpenmrsUpAndDownTracker.calculateOpenMRSUpAndtimeBy(date.getTime());
+
+		Integer openmrsUptime = openmrsUpAndDownTime[0];
+
+		Integer openMRsUpTimePercentage = openmrsUptime != null ? (openmrsUptime * 100) / workingMinutesDifference
+				: null;
+
+		Integer totalActivePatients_AtleastEightMonthsARVTreatment = systemMonitorService
+				.rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment();
+
+		Integer totalActivePatients_AtleastTwentyMonthsARVTreatment = systemMonitorService
+				.rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment();
+
+		Integer totalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneViralLoad_InEMR = systemMonitorService
+				.rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneViralLoad_InEMR();
+
+		Integer totalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneCD4Count_InEMR = systemMonitorService
+				.rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneCD4Count_InEMR();
+
+		Integer totalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneViralLoad_LastYear = systemMonitorService
+				.rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneViralLoad_LastYear();
+
+		Integer totalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear = systemMonitorService
+				.rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear();
+
+		Integer initialCD4Count = totalActivePatients_AtleastEightMonthsARVTreatment == 0 ? 0
+				: (totalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneCD4Count_InEMR * 100)
+						/ totalActivePatients_AtleastEightMonthsARVTreatment;
+
+		Integer initialViralLoad = totalActivePatients_AtleastEightMonthsARVTreatment == 0 ? 0
+				: (totalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneViralLoad_InEMR * 100)
+						/ totalActivePatients_AtleastEightMonthsARVTreatment;
+
+		Integer followupViralLoad = totalActivePatients_AtleastTwentyMonthsARVTreatment == 0 ? 0
+				: (totalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear * 100)
+						/ totalActivePatients_AtleastTwentyMonthsARVTreatment;
+
+		Integer followupCD4Count = totalActivePatients_AtleastTwentyMonthsARVTreatment == 0 ? 0
+				: (totalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneViralLoad_LastYear * 100)
+						/ totalActivePatients_AtleastTwentyMonthsARVTreatment;
+
+		Long usedMemory = MemoryAggregation.getAggregatedUsedMemory();
 
 		Long totalMemory = osshi.MEMORY_TOTAL;
 
+		Long freeMemory = totalMemory - usedMemory;
+
 		String operatingSystem = SystemPropertiesIndicators.OS_NAME + ", Family: " + osshi.OS_FAMILY
-				+ ", Manufacturer: " + osshi.OS_MANUFACTURER + ", Version Name: "
-				+ osshi.OS_VERSION_NAME + ", Version Number: "
-				+ osshi.OS_VERSION_NUMBER + ", Build Number: "
-				+ osshi.OS_VERSION_BUILDNUMBER;
+				+ ", Manufacturer: " + osshi.OS_MANUFACTURER + ", Version Name: " + osshi.OS_VERSION_NAME
+				+ ", Version Number: " + osshi.OS_VERSION_NUMBER + ", Build Number: " + osshi.OS_VERSION_BUILDNUMBER;
 
 		String operatingSystemArch = SystemPropertiesIndicators.OS_ARCH;
 
@@ -101,8 +151,8 @@ public class DHISGenerateDataValueSetSchemas {
 
 		JSONObject serverRealLocation = null;
 		try {
-			serverRealLocation = CurlEmulator
-					.get(SystemMonitorConstants.IP_INFO_URL + osshi.getIpAddress(), null, null);
+			serverRealLocation = CurlEmulator.get(SystemMonitorConstants.IP_INFO_URL + osshi.getIpAddress(), null,
+					null);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (SocketException e) {
@@ -168,7 +218,8 @@ public class DHISGenerateDataValueSetSchemas {
 						? systemMonitorService.getDHISConfiguredOrgUnitName()
 						: "Org Unit DHIS Id: " + dhisOrgUnitUid + " FosID: "
 								+ systemMonitorService.getCurrentConfiguredDHISOrgUnit().getPropertyValue());
-		if (mappingsFile.exists() && mappingsFile.isFile()) {
+		if (mappingsFile.exists() && mappingsFile.isFile() && date.get(Calendar.HOUR_OF_DAY) >= openingHour
+				&& date.get(Calendar.HOUR_OF_DAY) < closingHour) {
 			JSONObject systemRealLocationDataElementJSON = new JSONObject();
 			JSONObject installedModulesDataElementJSON = new JSONObject();
 			JSONObject systemRealLocationDataElementJSON2 = new JSONObject();
@@ -229,6 +280,35 @@ public class DHISGenerateDataValueSetSchemas {
 					cd4CountTestResultsEver, systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_patientsViralLoadTestResults_ever",
 					viralLoadTestResultsEver, systemMonitorService.getDHISTodayPeriod()));
+
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_activePatient8",
+					totalActivePatients_AtleastEightMonthsARVTreatment, systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_activePatient20",
+					totalActivePatients_AtleastTwentyMonthsARVTreatment, systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_activePatient8_Vl_EMR",
+					totalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneViralLoad_InEMR,
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_activePatient8_CD4_EMR",
+					totalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneCD4Count_InEMR,
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_activePatient20_CD4_lastYear",
+					totalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear,
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_activePatient20_Vl_lastYear",
+					totalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneViralLoad_LastYear,
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_initialVL", initialViralLoad,
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_initialCD4", initialCD4Count,
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_followUpCD4", followupCD4Count,
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_followUpVL", followupViralLoad,
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemStartupCounts", numberOfDownTimes,
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_openmrsUptime", openMRsUpTimePercentage,
+					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalEncounters", encounterTotal,
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalObservations", obsTotal,
