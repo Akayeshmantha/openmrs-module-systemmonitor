@@ -38,7 +38,7 @@ public class DHISGenerateDataValueSetSchemas {
 		JSONObject jsonObj = new JSONObject();
 		JSONObject jsonObj2 = new JSONObject();
 		JSONObject finalJSON = new JSONObject();
-		JSONArray jsonToBePushed;
+		JSONArray jsonToBePushed = new JSONArray();
 		JSONArray jsonDataValueSets = new JSONArray();
 		SystemMonitorService systemMonitorService = Context.getService(SystemMonitorService.class);
 		OSAndHardwareIndicators osshi = new OSAndHardwareIndicators();
@@ -383,11 +383,12 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonToBePushed.put(installedModulesDataElementJSON2);
 			jsonDataValueSets.put(systemRealLocationDataElementJSON);
 			jsonDataValueSets.put(installedModulesDataElementJSON);
-			jsonObj.put("dataValues", addMetricDetailsLikeNamesToAllDataJSON(jsonDataValueSets));
-			jsonObj2.put("dataValues", jsonToBePushed);
-			finalJSON.put("allData", jsonObj);
-			finalJSON.put("toBePushed", jsonObj2);
 		}
+		jsonObj.put("dataValues", addMetricDetailsLikeNamesToAllDataJSON(jsonDataValueSets));
+		jsonObj2.put("dataValues", jsonToBePushed);
+		finalJSON.put("allData", jsonObj);
+		finalJSON.put("toBePushed", jsonObj2);
+
 		return finalJSON;
 	}
 
