@@ -218,6 +218,8 @@ public class DHISGenerateDataValueSetSchemas {
 						? systemMonitorService.getDHISConfiguredOrgUnitName()
 						: "Org Unit DHIS Id: " + dhisOrgUnitUid + " FosID: "
 								+ systemMonitorService.getCurrentConfiguredDHISOrgUnit().getPropertyValue());
+		JSONArray metricDetails = new JSONArray();
+
 		if (mappingsFile.exists() && mappingsFile.isFile() && date.get(Calendar.HOUR_OF_DAY) >= openingHour
 				&& date.get(Calendar.HOUR_OF_DAY) < closingHour) {
 			JSONObject systemRealLocationDataElementJSON = new JSONObject();
@@ -383,8 +385,9 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonToBePushed.put(installedModulesDataElementJSON2);
 			jsonDataValueSets.put(systemRealLocationDataElementJSON);
 			jsonDataValueSets.put(installedModulesDataElementJSON);
+			metricDetails = addMetricDetailsLikeNamesToAllDataJSON(jsonDataValueSets);
 		}
-		jsonObj.put("dataValues", addMetricDetailsLikeNamesToAllDataJSON(jsonDataValueSets));
+		jsonObj.put("dataValues", metricDetails);
 		jsonObj2.put("dataValues", jsonToBePushed);
 		finalJSON.put("allData", jsonObj);
 		finalJSON.put("toBePushed", jsonObj2);

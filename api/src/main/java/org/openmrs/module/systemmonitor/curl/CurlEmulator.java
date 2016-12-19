@@ -91,13 +91,14 @@ public class CurlEmulator {
 
 				if (response.getStatus() != 200) {
 					throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+				} else {
+					try {
+						serverResponse = new JSONObject(response.getEntity(String.class));
+					} catch (JSONException ex) {
+						ex.printStackTrace();
+					}
 				}
 
-				try {
-					serverResponse = new JSONObject(response.getEntity(String.class));
-				} catch (JSONException ex) {
-					ex.printStackTrace();
-				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -108,7 +109,7 @@ public class CurlEmulator {
 	public static String sendNormalHtmlGET(String url) throws IOException, UnknownHostException, SocketException {
 		if (StringUtils.isNotBlank(url) || !url.endsWith("null")) {
 			url = removeLinesAndSpacesCharactersFromString(url);
-			
+
 			URL obj = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 			con.setRequestMethod("GET");

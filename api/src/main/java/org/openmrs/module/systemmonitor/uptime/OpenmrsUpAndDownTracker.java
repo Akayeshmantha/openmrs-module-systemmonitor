@@ -124,25 +124,31 @@ public class OpenmrsUpAndDownTracker extends SystemMonitorCommons {
 						String open = Long.toString(nearestOpening.getTime());
 						String close = Long.toString(nearestClosing.getTime());
 						String[] ranged = str.split(open)[1].split(close);
-						
-						String rangedContent = open + ranged[0] + ((ranged[1].indexOf(",") > 0)
-								? close + ranged[1].substring(0, ranged[1].indexOf(",")) : close + ranged[1]);
-						for (int i = 0; i < rangedContent.split(",").length; i++) {
-							Calendar logTime = Calendar.getInstance();
-							logTime.setTimeInMillis(Long.parseLong(content[i].split(":")[0]));
-							String string = rangedContent.split(",")[i];
-							String upOrDown = string.substring(string.indexOf(":") + 1, string.indexOf(";"));
 
-							if (upOrDown.equals("up")) {
-								Integer up = Integer.parseInt(string.split(":up;")[1]);
-								totalUp += up;
-								lastUp = up;
-							} else if (upOrDown.equals("down")) {
-								Integer down = Integer.parseInt(string.split(":down;")[1]);
-								totalDown += down;
-								lastDown = down;
+						if (ranged.length > 1) {
+							String rangedContent = open + ranged[0]
+									+ ((ranged[1].indexOf(",") > 0)
+											? close + ranged[1].substring(0, ranged[1].indexOf(","))
+											: close + ranged[1]);
+							for (int i = 0; i < rangedContent.split(",").length; i++) {
+								Calendar logTime = Calendar.getInstance();
+								logTime.setTimeInMillis(Long.parseLong(content[i].split(":")[0]));
+								String string = rangedContent.split(",")[i];
+								String upOrDown = string.substring(string.indexOf(":") + 1, string.indexOf(";"));
+
+								if (upOrDown.equals("up")) {
+									Integer up = Integer.parseInt(string.split(":up;")[1]);
+									totalUp += up;
+									lastUp = up;
+								} else if (upOrDown.equals("down")) {
+									Integer down = Integer.parseInt(string.split(":down;")[1]);
+									totalDown += down;
+									lastDown = down;
+								}
 							}
-						}
+						} else
+							totalUp = (int) (long) Context.getService(SystemMonitorService.class)
+									.getOpenMRSSystemUpTime();
 					}
 				} else
 					totalUp = (int) (long) Context.getService(SystemMonitorService.class).getOpenMRSSystemUpTime();
