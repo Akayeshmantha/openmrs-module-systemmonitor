@@ -45,18 +45,6 @@ public class OSAndHardwareIndicators {
 
 	public String PROCESSOR_NAME = getLinuxProcessorName();
 
-	public String PROCESSOR_VENDOR = p != null ? p.getVendor() : null;
-
-	public Double PROCESSOR_SYSTEM_LOAD = p != null ? p.getSystemLoadAverage() : null;
-
-	public String PROCESSOR_SERIAL_NUMBER = p != null ? p.getSystemSerialNumber() : null;
-
-	public Integer PROCESSOR_LOGICAL_COUNT = p != null ? p.getLogicalProcessorCount() : null;
-
-	public Integer PROCESSOR_PHYSICAL_COUNT = p != null ? p.getPhysicalProcessorCount() : null;
-
-	public Integer PROCESSOR_THREAD_COUNT = p != null ? p.getThreadCount() : null;
-
 	/**
 	 * Total Physical Memory (RAM) in Megabytes(MB)
 	 */
