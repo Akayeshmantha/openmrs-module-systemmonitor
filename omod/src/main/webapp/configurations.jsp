@@ -174,6 +174,12 @@
 				value="${configurations.closingHourGp.propertyValue}" /></td>
 			<td><spring:message code="systemmonitor.closing.hour.desc" /></td>
 		</tr>
+		<tr>
+			<td>${configurations.smtOnOrOffGp.property}</td>
+			<td><input type="text" name="smtOnOrOff"
+				value="${configurations.smtOnOrOffGp.propertyValue}" /></td>
+			<td>${configurations.smtOnOrOffGp.description}</td>
+		</tr>
 
 		<tr>
 			<td><input type="submit"

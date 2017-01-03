@@ -64,6 +64,8 @@ public class ConfigureGPs {
 
 	private GlobalProperty addedLocalDHISMappingsGp;
 
+	private GlobalProperty smtOnOrOffGp;
+
 	public ConfigureGPs() {
 		initialiseGPsWithTheirCurrentValues();
 	}
@@ -110,6 +112,8 @@ public class ConfigureGPs {
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.MONTHS_TO_STORE_LOGSANDDATA);
 		addedLocalDHISMappingsGp = Context.getAdministrationService()
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.ADDED_LOCAL_DHISMAPPINGS);
+		smtOnOrOffGp = Context.getAdministrationService()
+				.getGlobalPropertyObject(ConfigurableGlobalProperties.TOGGLE_SMT_EVALUATIONANDREPORTING_ONOROFF);
 
 		if (mustConfigureSchedulerAccount()) {
 			schedulerUsernameGp = Context.getAdministrationService().getGlobalPropertyObject("scheduler.username");
@@ -152,6 +156,7 @@ public class ConfigureGPs {
 		numberOfMonthsBeforeDeletingLogsAndDataGp
 				.setPropertyValue(request.getParameter("numberOfMonthsBeforeDeletingLogsAndData"));
 		addedLocalDHISMappingsGp.setPropertyValue(request.getParameter("addedLocalDHISMappings"));
+		smtOnOrOffGp.setPropertyValue(request.getParameter("smtOnOrOff"));
 
 		if (mustConfigureSchedulerAccount()) {
 			gps.add(schedulerUsernameGp);
@@ -178,6 +183,7 @@ public class ConfigureGPs {
 		gps.add(backupFolderPathOrNameGp);
 		gps.add(numberOfMonthsBeforeDeletingLogsAndDataGp);
 		gps.add(addedLocalDHISMappingsGp);
+		gps.add(smtOnOrOffGp);
 
 		Context.getAdministrationService().saveGlobalProperties(gps);
 	}
@@ -276,6 +282,10 @@ public class ConfigureGPs {
 
 	public GlobalProperty getAddedLocalDHISMappingsGp() {
 		return addedLocalDHISMappingsGp;
+	}
+
+	public GlobalProperty getSmtOnOrOffGp() {
+		return smtOnOrOffGp;
 	}
 
 }

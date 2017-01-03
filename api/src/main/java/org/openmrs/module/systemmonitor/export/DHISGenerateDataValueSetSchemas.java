@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
 import org.openmrs.module.systemmonitor.SystemMonitorConstants;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.curl.CurlEmulator;
@@ -219,9 +220,11 @@ public class DHISGenerateDataValueSetSchemas {
 						: "Org Unit DHIS Id: " + dhisOrgUnitUid + " FosID: "
 								+ systemMonitorService.getCurrentConfiguredDHISOrgUnit().getPropertyValue());
 		JSONArray metricDetails = new JSONArray();
+		String evaluationAndReportingIsAllowed = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.TOGGLE_SMT_EVALUATIONANDREPORTING_ONOROFF);
 
 		if (mappingsFile.exists() && mappingsFile.isFile() && date.get(Calendar.HOUR_OF_DAY) >= openingHour
-				&& date.get(Calendar.HOUR_OF_DAY) < closingHour) {
+				&& date.get(Calendar.HOUR_OF_DAY) < closingHour && "on".equals(evaluationAndReportingIsAllowed)) {
 			JSONObject systemRealLocationDataElementJSON = new JSONObject();
 			JSONObject installedModulesDataElementJSON = new JSONObject();
 			JSONObject systemRealLocationDataElementJSON2 = new JSONObject();

@@ -46,4 +46,6 @@ public class ConfigurableGlobalProperties {
 	public static String ADDED_LOCAL_DHISMAPPINGS = "systemmonitor.addedLocalDHISMappings";
 
 	public static String EVALUATION_AND_REPORTING_DATE = "systemmonitor.evaluationAndReportingSToday";
+	
+	public static String TOGGLE_SMT_EVALUATIONANDREPORTING_ONOROFF = "systemmonitor.toggleSMTEvaluationAndReportingOnOrOff";
 }

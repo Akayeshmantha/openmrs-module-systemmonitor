@@ -85,17 +85,18 @@ public class CurlEmulator {
 					client.addFilter(new HTTPBasicAuthFilter(username, password));
 				}
 
-				WebResource webResource = client.resource(urlString);
-				ClientResponse response = webResource.type("application/json").post(ClientResponse.class,
-						data.toString());
-
-				if (response.getStatus() != 200) {
-					throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-				} else {
-					try {
-						serverResponse = new JSONObject(response.getEntity(String.class));
-					} catch (JSONException ex) {
-						ex.printStackTrace();
+				if (data.getJSONArray("dataValues").length() > 0) {
+					WebResource webResource = client.resource(urlString);
+					ClientResponse response = webResource.type("application/json").post(ClientResponse.class,
+							data.toString());
+					if (response.getStatus() != 200) {
+						throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+					} else {
+						try {
+							serverResponse = new JSONObject(response.getEntity(String.class));
+						} catch (JSONException ex) {
+							ex.printStackTrace();
+						}
 					}
 				}
 

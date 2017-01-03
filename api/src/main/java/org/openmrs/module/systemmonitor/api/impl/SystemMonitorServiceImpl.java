@@ -751,7 +751,9 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		File backupFile = getSystemBackUpFile();
 
 		if (StringUtils.isNotBlank(dhisPostUrl) && StringUtils.isNotBlank(dhisPassword)
-				&& StringUtils.isNotBlank(dhisUserName) && dataToBePushed != null) {
+				&& StringUtils.isNotBlank(dhisUserName) && dataToBePushed != null && dataToBePushed.length() > 0
+				&& dataToBePushed.getJSONArray("dataValues") != null
+				&& dataToBePushed.getJSONArray("dataValues").length() > 0) {
 			try {
 				response = CurlEmulator.post(dhisPostUrl, dataToBePushed, dhisUserName, dhisPassword);
 				if (response != null) {

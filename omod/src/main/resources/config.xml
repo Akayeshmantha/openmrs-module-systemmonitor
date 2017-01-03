@@ -204,5 +204,10 @@
 		<defaultValue>2016-07-01 00:00:00</defaultValue>
 		<description>(yyyy-MM-dd HH:mm:ss) date format for the currently day for System monitor module, this is the starting day when SMT evaluates data and reports and will auto run until the date today</description>
 	</globalProperty>
+	<globalProperty>
+		<property>systemmonitor.toggleSMTEvaluationAndReportingOnOrOff</property>
+		<defaultValue>on</defaultValue>
+		<description>Set to either on or off, if set to on SMT evaluation and reporting/pushing is possible but impossible when set to off</description>
+	</globalProperty>
 
 </module>
