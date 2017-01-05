@@ -791,7 +791,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 			for (int i = 0; i < dataDir.listFiles().length; i++) {
 				File backup = dataDir.listFiles()[i];
 
-				if (backup.getPath().endsWith(".json")) {
+				if (backup.getPath().startsWith(SystemMonitorConstants.SYSTEMMONITOR_DATA_PREFIX)
+						&& backup.getPath().endsWith(".json") && backup.length() > 0) {
 					JSONObject data = new JSONObject(readFileToString(backup));
 
 					try {
@@ -807,6 +808,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 						e.printStackTrace();
 					}
 				}
+				if (backup.length() == 0)
+					backup.delete();
 			}
 		}
 	}

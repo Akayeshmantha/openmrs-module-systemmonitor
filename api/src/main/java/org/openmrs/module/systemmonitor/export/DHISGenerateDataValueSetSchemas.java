@@ -70,8 +70,13 @@ public class DHISGenerateDataValueSetSchemas {
 		Integer[] openmrsUpAndDownTime = OpenmrsUpAndDownTracker.calculateOpenMRSUpAndtimeBy(date.getTime());
 
 		Integer openmrsUptime = openmrsUpAndDownTime[0];
-
+		
+		Integer openmrsDowntime = openmrsUpAndDownTime[1];
+		
 		Integer openMRsUpTimePercentage = openmrsUptime != null ? (openmrsUptime * 100) / workingMinutesDifference
+				: null;
+		
+		Integer openMRsDownTimePercentage = openmrsDowntime != null ? (openmrsDowntime * 100) / workingMinutesDifference
 				: null;
 
 		Integer totalActivePatients_AtleastEightMonthsARVTreatment = systemMonitorService
@@ -314,6 +319,11 @@ public class DHISGenerateDataValueSetSchemas {
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_openmrsUptime", openMRsUpTimePercentage,
 					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimeMinutes", openmrsDowntime,
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimePercentage", openMRsDownTimePercentage,
+					systemMonitorService.getDHISTodayPeriod()));
+			//TODO intervals for up and down times
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalEncounters", encounterTotal,
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalObservations", obsTotal,
