@@ -3,7 +3,9 @@ package org.openmrs.module.systemmonitor.export;
 import java.io.File;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
@@ -19,6 +21,7 @@ import org.openmrs.module.systemmonitor.indicators.SystemPropertiesIndicators;
 import org.openmrs.module.systemmonitor.mapping.DHISMapping;
 import org.openmrs.module.systemmonitor.memory.MemoryAggregation;
 import org.openmrs.module.systemmonitor.uptime.OpenmrsUpAndDownTracker;
+import org.openmrs.module.systemmonitor.uptime.UpOrDownTimeInterval;
 import org.openmrs.web.WebConstants;
 
 public class DHISGenerateDataValueSetSchemas {
@@ -29,6 +32,7 @@ public class DHISGenerateDataValueSetSchemas {
 	 * @return dataValueSets json object
 	 * @throws UnknownHostException
 	 */
+	@SuppressWarnings("unchecked")
 	public static JSONObject generateRwandaSPHEMTDHISDataValueSets() {
 		Integer openingHour = Integer.parseInt(Context.getService(SystemMonitorService.class).getConfiguredOpeningHour()
 				.getPropertyValue().substring(0, 2));
@@ -67,17 +71,25 @@ public class DHISGenerateDataValueSetSchemas {
 
 		Integer numberOfDownTimes = OpenmrsUpAndDownTracker.getNumberOfOpenMRSDownTimesToday();
 
-		Integer[] openmrsUpAndDownTime = OpenmrsUpAndDownTracker.calculateOpenMRSUpAndtimeBy(date.getTime());
+		Object[] openmrsUpAndDownTime = OpenmrsUpAndDownTracker.calculateOpenMRSUpAndDowntimeBy(date.getTime(), null);
 
-		Integer openmrsUptime = openmrsUpAndDownTime[0];
-		
-		Integer openmrsDowntime = openmrsUpAndDownTime[1];
-		
+		Integer openmrsUptime = (Integer) openmrsUpAndDownTime[0];
+
+		Integer openmrsDowntime = (Integer) openmrsUpAndDownTime[1];
+
+		List<UpOrDownTimeInterval> upIntervals = (List<UpOrDownTimeInterval>) openmrsUpAndDownTime[2];
+
+		List<UpOrDownTimeInterval> downIntervals = (List<UpOrDownTimeInterval>) openmrsUpAndDownTime[3];
+
 		Integer openMRsUpTimePercentage = openmrsUptime != null ? (openmrsUptime * 100) / workingMinutesDifference
 				: null;
-		
+
 		Integer openMRsDownTimePercentage = openmrsDowntime != null ? (openmrsDowntime * 100) / workingMinutesDifference
 				: null;
+
+		String upIntervalString = convertUpOrDownTimeIntervalsToString(upIntervals);
+
+		String downIntervalString = convertUpOrDownTimeIntervalsToString(downIntervals);
 
 		Integer totalActivePatients_AtleastEightMonthsARVTreatment = systemMonitorService
 				.rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment();
@@ -321,9 +333,12 @@ public class DHISGenerateDataValueSetSchemas {
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimeMinutes", openmrsDowntime,
 					systemMonitorService.getDHISTodayPeriod()));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimePercentage", openMRsDownTimePercentage,
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimePercentage",
+					openMRsDownTimePercentage, systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimeIntervals", upIntervalString,
 					systemMonitorService.getDHISTodayPeriod()));
-			//TODO intervals for up and down times
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_upTimeIntervals", downIntervalString,
+					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalEncounters", encounterTotal,
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalObservations", obsTotal,
@@ -483,5 +498,30 @@ public class DHISGenerateDataValueSetSchemas {
 			json.put("value", value);
 		}
 		return json;
+	}
+
+	private static String convertUpOrDownTimeIntervalsToString(List<UpOrDownTimeInterval> upOrDownIntervals) {
+		String upOrDownIntervalsString = "";
+
+		if (upOrDownIntervals != null && upOrDownIntervals.size() > 0) {
+			upOrDownIntervalsString = "On: "
+					+ new SimpleDateFormat("EEE, d MMM yyyy").format(upOrDownIntervals.get(0).getIntervalStoppingAt())
+					+ ", EMR was " + upOrDownIntervals.get(0).getUpOrDown() + " during intervals: ";
+			for (int i = 0; i < upOrDownIntervals.size(); i++) {
+				UpOrDownTimeInterval upOrDown = upOrDownIntervals.get(i);
+				String startWith = "";
+				SimpleDateFormat hhmm = new SimpleDateFormat("HH:mm");
+
+				if (i != 0)
+					startWith = ", ";
+				upOrDownIntervalsString += startWith + "("
+						+ (upOrDown.getIntervalStartingAt() != null
+								? (hhmm.format(upOrDown.getIntervalStartingAt()) + " to ") : "by ")
+						+ hhmm.format(upOrDown.getIntervalStoppingAt()) + ")" + " for: "
+						+ upOrDown.getTotalUpOrDownTime() + " minutes";
+			}
+		}
+
+		return upOrDownIntervalsString;
 	}
 }

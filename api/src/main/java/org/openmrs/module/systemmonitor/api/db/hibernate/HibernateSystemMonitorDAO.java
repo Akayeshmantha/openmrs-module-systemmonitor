@@ -1494,7 +1494,6 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	public TaskDefinition getTaskByClass(String taskClass) throws DAOException {
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(TaskDefinition.class)
 				.add(Expression.eq("taskClass", taskClass));
-
 		TaskDefinition task = (TaskDefinition) crit.uniqueResult();
 
 		if (task == null) {

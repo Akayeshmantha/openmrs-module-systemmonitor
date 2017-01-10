@@ -20,7 +20,6 @@ import oshi.hardware.HWDiskStore;
 import oshi.hardware.HardwareAbstractionLayer;
 import oshi.hardware.NetworkIF;
 import oshi.hardware.PowerSource;
-import oshi.hardware.Sensors;
 import oshi.software.os.OperatingSystem;
 import oshi.software.os.OperatingSystemVersion;
 
@@ -34,8 +33,6 @@ public class OSAndHardwareIndicators {
 	private GlobalMemory memory = getMemory();
 
 	private OperatingSystem os = getOperatingSystem();
-
-	private Sensors s = si.getHardware().getSensors();
 
 	private OperatingSystemVersion version = os != null ? os.getVersion() : null;
 

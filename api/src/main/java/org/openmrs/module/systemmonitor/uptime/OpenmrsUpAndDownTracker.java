@@ -22,6 +22,16 @@ public class OpenmrsUpAndDownTracker extends SystemMonitorCommons {
 		Calendar updatedOn = Calendar.getInstance();
 		Calendar todate = Calendar.getInstance();
 
+		try {
+			if (!upTimelogFile.exists()) {
+				upTimelogFile.createNewFile();
+			} else if (upTimelogFile.exists() && updatedOn.before(todate)) {
+				upTimelogFile.delete();
+				upTimelogFile.createNewFile();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		updatedOn.setTimeInMillis(upTimelogFile.lastModified());
 
 		Calendar updatedAt = resetSecsAndMilliSecs(updatedOn);
@@ -36,14 +46,17 @@ public class OpenmrsUpAndDownTracker extends SystemMonitorCommons {
 
 		if (minutesDiff <= workingMinutesDifference && today.get(Calendar.HOUR_OF_DAY) >= openingHour
 				&& today.get(Calendar.HOUR_OF_DAY) < closingHour) {
-			/*
-			 * runs every 5 minutes, cater for delays upto 2 extra minutes on
-			 * slow machines
-			 */
-			if (minutesDiff >= 5 && minutesDiff <= 7) {
-				content += Long.toString(today.getTimeInMillis()) + ":up;" + minutesDiff;
-			} else {
-				content += Long.toString(today.getTimeInMillis()) + ":down;" + minutesDiff;
+			if (minutesDiff != 0) {
+				/*
+				 * runs every 5 minutes, cater for delays upto 1 extra minute on
+				 * slow machines. TODO 5 - 6 minutes downtime is counted as
+				 * uptime
+				 */
+				if (minutesDiff >= 5 && minutesDiff <= 6) {
+					content += Long.toString(today.getTimeInMillis()) + ":up;" + minutesDiff;
+				} else {
+					content += Long.toString(today.getTimeInMillis()) + ":down;" + minutesDiff;
+				}
 			}
 		}
 		resetDateTimes(updatedOn);
@@ -52,21 +65,11 @@ public class OpenmrsUpAndDownTracker extends SystemMonitorCommons {
 	}
 
 	private static void writeNow(File logFile, Calendar updatedOn, Calendar todate, String content) {
-		try {
-			if (!logFile.exists()) {
-				logFile.createNewFile();
-			} else if (logFile.exists() && updatedOn.before(todate)) {
-				logFile.delete();
-				logFile.createNewFile();
-			}
-			if (StringUtils.isNotBlank(content)) {
-				if (logFile.length() > 0)
-					writeToFile(logFile, "," + content, true);
-				else
-					writeToFile(logFile, content, false);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (StringUtils.isNotBlank(content)) {
+			if (logFile.length() > 0)
+				writeToFile(logFile, "," + content, true);
+			else
+				writeToFile(logFile, content, false);
 		}
 	}
 
@@ -87,10 +90,12 @@ public class OpenmrsUpAndDownTracker extends SystemMonitorCommons {
 	 *            by this date
 	 * @return
 	 */
-	public static Integer[] calculateOpenMRSUpAndtimeBy(Date date) {
-		Integer[] upAndDown = new Integer[2];
+	public static Object[] calculateOpenMRSUpAndDowntimeBy(Date date, String upAndDownTimeContent) {
+		Object[] upAndDown = new Object[4];
 		try {
-			String str = FileUtils.readFileToString(SystemMonitorConstants.OPENMRS_UPANDDOWNTIME_FILE);
+			String str = StringUtils.isBlank(upAndDownTimeContent)
+					? FileUtils.readFileToString(SystemMonitorConstants.OPENMRS_UPANDDOWNTIME_FILE)
+					: upAndDownTimeContent;
 			String[] content = StringUtils.isNotBlank(str) ? str.split(",") : null;
 			Calendar dateTime = Calendar.getInstance();
 			Calendar dateTimeOpenning = Calendar.getInstance();
@@ -100,7 +105,9 @@ public class OpenmrsUpAndDownTracker extends SystemMonitorCommons {
 			Integer closingHour = Integer.parseInt(Context.getService(SystemMonitorService.class)
 					.getConfiguredClosingHour().getPropertyValue().substring(0, 2));
 			List<Date> dates = new ArrayList<Date>();
-			Integer lastUp = 0, lastDown = 0, totalUp = 0, totalDown = 0;
+			Integer totalUp = 0, totalDown = 0;
+			List<UpOrDownTimeInterval> upIntervals = new ArrayList<UpOrDownTimeInterval>();
+			List<UpOrDownTimeInterval> downIntervals = new ArrayList<UpOrDownTimeInterval>();
 
 			dateTime.setTime(date);
 			if (content != null) {
@@ -124,6 +131,7 @@ public class OpenmrsUpAndDownTracker extends SystemMonitorCommons {
 						String open = Long.toString(nearestOpening.getTime());
 						String close = Long.toString(nearestClosing.getTime());
 						String[] ranged = str.split(open)[1].split(close);
+						Date lastStartingInterval = null;
 
 						if (ranged.length > 1) {
 							String rangedContent = open + ranged[0]
@@ -135,15 +143,21 @@ public class OpenmrsUpAndDownTracker extends SystemMonitorCommons {
 								logTime.setTimeInMillis(Long.parseLong(content[i].split(":")[0]));
 								String string = rangedContent.split(",")[i];
 								String upOrDown = string.substring(string.indexOf(":") + 1, string.indexOf(";"));
+								String lastString = i - 1 >= 0 && i - 1 < rangedContent.split(",").length - 1
+										? rangedContent.split(",")[i - 1] : null;
+								String nextString = i + 1 < rangedContent.split(",").length
+										? rangedContent.split(",")[i + 1] : null;
+								Integer up = 0;
+								Integer down = 0;
 
+								extractUpDownIntervals(string, lastString, nextString, upIntervals, downIntervals,
+										lastStartingInterval);
 								if (upOrDown.equals("up")) {
-									Integer up = Integer.parseInt(string.split(":up;")[1]);
+									up = Integer.parseInt(string.split(":up;")[1]);
 									totalUp += up;
-									lastUp = up;
 								} else if (upOrDown.equals("down")) {
-									Integer down = Integer.parseInt(string.split(":down;")[1]);
+									down = Integer.parseInt(string.split(":down;")[1]);
 									totalDown += down;
-									lastDown = down;
 								}
 							}
 						} else
@@ -152,15 +166,74 @@ public class OpenmrsUpAndDownTracker extends SystemMonitorCommons {
 					}
 				} else
 					totalUp = (int) (long) Context.getService(SystemMonitorService.class).getOpenMRSSystemUpTime();
-			} else
-				totalUp = totalUp = (int) (long) Context.getService(SystemMonitorService.class)
-						.getOpenMRSSystemUpTime();
-			upAndDown[1] = totalDown;
+			}
 			upAndDown[0] = totalUp;
+			upAndDown[1] = totalDown;
+			upAndDown[2] = upIntervals;
+			upAndDown[3] = downIntervals;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return upAndDown;
+	}
+
+	private static void extractUpDownIntervals(String currentUpOrDownEntry, String lastUpOrDownEntry,
+			String nextUpOrDownEntry, List<UpOrDownTimeInterval> upIntervals, List<UpOrDownTimeInterval> downIntervals,
+			Date lastStartingInterval) {
+		String currentUpOrDown = StringUtils.isNotBlank(currentUpOrDownEntry) ? currentUpOrDownEntry
+				.substring(currentUpOrDownEntry.indexOf(":") + 1, currentUpOrDownEntry.indexOf(";")) : null;
+		String lastUpOrDown = StringUtils.isNotBlank(lastUpOrDownEntry)
+				? lastUpOrDownEntry.substring(lastUpOrDownEntry.indexOf(":") + 1, lastUpOrDownEntry.indexOf(";"))
+				: null;
+		String nextUpOrDown = StringUtils.isNotBlank(nextUpOrDownEntry)
+				? nextUpOrDownEntry.substring(nextUpOrDownEntry.indexOf(":") + 1, nextUpOrDownEntry.indexOf(";"))
+				: null;
+		Integer currentUpOrDownValue = StringUtils.isNotBlank(currentUpOrDown)
+				? Integer.parseInt(currentUpOrDownEntry.split(":" + currentUpOrDown + ";")[1]) : null;
+		Date currentUpOrDownDate = StringUtils.isNotBlank(currentUpOrDown)
+				? new Date(Long.parseLong(currentUpOrDownEntry.split(":")[0])) : null;
+		Date lastUpOrDownDate = StringUtils.isNotBlank(lastUpOrDown)
+				? new Date(Long.parseLong(lastUpOrDownEntry.split(":")[0])) : null;
+		UpOrDownTimeInterval interval = new UpOrDownTimeInterval();
+
+		interval.setUpOrDown(currentUpOrDown);
+		interval.setIntervalStoppingAt(currentUpOrDownDate);
+		if ((!currentUpOrDown.equals(lastUpOrDown) && !currentUpOrDown.equals(nextUpOrDown))) {
+			interval.setTotalUpOrDownTime(currentUpOrDownValue);
+			interval.setIntervalStartingAt(lastUpOrDownDate);
+
+			if ("up".equals(currentUpOrDown)) {
+				upIntervals.add(interval);
+			} else if ("down".equals(currentUpOrDown)) {
+				downIntervals.add(interval);
+			}
+			lastStartingInterval = currentUpOrDownDate;
+		} else {
+			interval.setTotalUpOrDownTime(currentUpOrDownValue);
+			interval.setIntervalStartingAt((lastStartingInterval != null) ? lastStartingInterval : lastUpOrDownDate);
+
+			if ("up".equals(currentUpOrDown)) {
+				addOrSetLastUpOrDownInterval(upIntervals, interval);
+			} else if ("down".equals(currentUpOrDown)) {
+				addOrSetLastUpOrDownInterval(downIntervals, interval);
+			}
+		}
+
+	}
+
+	private static void addOrSetLastUpOrDownInterval(List<UpOrDownTimeInterval> intervals,
+			UpOrDownTimeInterval upOrDownInterval) {
+		UpOrDownTimeInterval lastUpOrDownInterval = intervals.size() > 0 ? intervals.get(intervals.size() - 1) : null;
+
+		if (lastUpOrDownInterval != null
+				&& lastUpOrDownInterval.getIntervalStoppingAt().equals(upOrDownInterval.getIntervalStartingAt())) {
+			upOrDownInterval.setIntervalStartingAt(lastUpOrDownInterval.getIntervalStartingAt());
+			upOrDownInterval.setTotalUpOrDownTime(
+					lastUpOrDownInterval.getTotalUpOrDownTime() + upOrDownInterval.getTotalUpOrDownTime());
+			intervals.set(intervals.size() - 1, upOrDownInterval);
+		} else {
+			intervals.add(upOrDownInterval);
+		}
 	}
 
 	private static Date getNearestDate(List<Date> dates, Date currentDate) {
