@@ -505,7 +505,7 @@ public class DHISGenerateDataValueSetSchemas {
 
 		if (upOrDownIntervals != null && upOrDownIntervals.size() > 0) {
 			upOrDownIntervalsString = "On: "
-					+ new SimpleDateFormat("EEE, d MMM yyyy").format(upOrDownIntervals.get(0).getIntervalStoppingAt())
+					+ new SimpleDateFormat("EEE, d MMM yyyy z").format(upOrDownIntervals.get(0).getIntervalStoppingAt())
 					+ ", EMR was " + upOrDownIntervals.get(0).getUpOrDown() + " during intervals: ";
 			for (int i = 0; i < upOrDownIntervals.size(); i++) {
 				UpOrDownTimeInterval upOrDown = upOrDownIntervals.get(i);
