@@ -201,7 +201,7 @@
 	</globalProperty>
 	<globalProperty>
 		<property>systemmonitor.evaluationAndReportingSToday</property>
-		<defaultValue>2016-08-22 00:00:00</defaultValue>
+		<defaultValue>2016-08-22 12:00:00</defaultValue>
 		<description>(yyyy-MM-dd HH:mm:ss) date format for the currently day for System monitor module, this is the starting day when SMT evaluates data and reports and will auto run until the date today</description>
 	</globalProperty>
 	<globalProperty>

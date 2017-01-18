@@ -327,8 +327,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				Date d = sdf.parse(evalDate.getPropertyValue());
 
 				evalD.setTime(d);
-				resetDateTimes(today);
-				resetDateTimes(evalD);
+				// resetDateTimes(today);
+				// resetDateTimes(evalD);
 				if (d != null && evalD.getTime().before(today.getTime())) {
 					return evalD.getTime();
 				}
@@ -1344,8 +1344,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				+ " and ord.concept_id in (select distinct concept_id from concept_set where pp.date_completed is null and concept_set = "
 				+ getARVDrugsConceptSet().getConceptId() + ") and o.obs_datetime <= '"
 				+ sdf.format(getEvaluationAndReportingDate()) + "' and ord.date_created >= DATE_SUB(now(), INTERVAL "
-				+ arvNMonths + " MONTH) and o.concept_id = " + concept.getConceptId() + ((codedObsLastYear != true) ? ""
-						: " and o.obs_datetime >= DATE_SUB(now(), INTERVAL 12 MONTH)");
+				+ arvNMonths + " MONTH) and o.concept_id = " + concept.getConceptId()
+				+ ((codedObsLastYear != true) ? "" : " and o.obs_datetime >= DATE_SUB(now(), INTERVAL 12 MONTH)");
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();
 

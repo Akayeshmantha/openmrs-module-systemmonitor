@@ -817,14 +817,14 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	private File getSystemLogFile() {
 		return new File(SystemMonitorConstants.SYSTEMMONITOR_LOGS_DIRECTORYPATH
 				+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_LOGS_PREFIX + new SimpleDateFormat("yyyyMMdd")
-						.format(Context.getService(SystemMonitorService.class).getEvaluationAndReportingDate())
+						.format(getEvaluationAndReportingDate())
 				+ ".log");
 	}
 
 	private File getSystemBackUpFile() {
 		return new File(SystemMonitorConstants.SYSTEMMONITOR_DATA_DIRECTORYPATH
 				+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_DATA_PREFIX + new SimpleDateFormat("yyyyMMdd")
-						.format(Context.getService(SystemMonitorService.class).getEvaluationAndReportingDate())
+						.format(getEvaluationAndReportingDate())
 				+ ".json");
 	}
 
