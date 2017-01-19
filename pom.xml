@@ -4,7 +4,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>systemmonitor</artifactId>
-	<version>1.4.3.6-SNAPSHOT</version>
+	<version>1.4.3.6</version>
 	<packaging>pom</packaging>
 	<name>System Monitor Module</name>
 	<description>Helps to monitor OpenMRS in the background and report to other systems about the server performance and OpenMRS indicators</description>
