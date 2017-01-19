@@ -96,4 +96,14 @@
 		</sql>
 	</diff>
 	
+	<diff>
+		<version>1.7</version>
+		<author>k-joseph</author>
+		<date>Jan 19th 2017</date>
+		<description>Update backup folder name</description>
+		<sql>
+			UPDATE global_property SET property_value = 'backup' WHERE property = 'systemmonitor.backupFolderPathOrName';
+		</sql>
+	</diff>
+	
 </sqldiff>

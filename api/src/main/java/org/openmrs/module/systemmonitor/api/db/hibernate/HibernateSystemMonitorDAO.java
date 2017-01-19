@@ -501,7 +501,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public Integer getTotalVisitsToday(Boolean includeRetired) {
 		return null;// fetchTotalOpenMRSObjectCountToday(includeRetired,
-					// Visit.class);
+					// Visit.class);TODO activate after upgrading to platform
+					// 1.11.5
 	}
 
 	@Override
