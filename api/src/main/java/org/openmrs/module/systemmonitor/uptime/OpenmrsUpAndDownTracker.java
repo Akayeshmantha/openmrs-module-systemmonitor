@@ -24,6 +24,8 @@ public class OpenmrsUpAndDownTracker extends SystemMonitorCommons {
 
 		try {
 			if (!upTimelogFile.exists()) {
+				if (!upTimelogFile.getParentFile().exists())
+					upTimelogFile.getParentFile().mkdirs();
 				upTimelogFile.createNewFile();
 			} else if (upTimelogFile.exists() && updatedOn.before(todate)) {
 				upTimelogFile.delete();

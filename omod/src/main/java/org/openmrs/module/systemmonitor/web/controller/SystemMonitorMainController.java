@@ -13,6 +13,10 @@
  */
 package org.openmrs.module.systemmonitor.web.controller;
 
+import java.lang.management.ManagementFactory;
+import java.util.Calendar;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
@@ -20,11 +24,16 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.systemmonitor.ConfigureGPs;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.distributions.RwandaSPHStudyEMT;
+import org.openmrs.module.systemmonitor.indicators.OSAndHardwareIndicators;
+import org.openmrs.module.systemmonitor.memory.MemoryAggregation;
+import org.openmrs.module.systemmonitor.uptime.OpenmrsUpAndDownTracker;
+import org.openmrs.module.systemmonitor.uptime.UpOrDownTimeInterval;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * The main controller.
@@ -78,7 +87,9 @@ public class SystemMonitorMainController {
 
 		model.addAttribute("orgUnit", Context.getService(SystemMonitorService.class).getDHISConfiguredOrgUnitName());
 		model.addAttribute("reportData",
-				emt.generatedDHISDataValueSetJSON().getJSONObject("allData").getJSONArray("dataValues"));
+				emt.generatedDHISDataValueSetJSON() != null
+						? emt.generatedDHISDataValueSetJSON().getJSONObject("allData").getJSONArray("dataValues")
+						: "undefined");
 	}
 
 	@RequestMapping(value = "/module/systemmonitor/runAsSoonAsStarted", method = RequestMethod.GET)
@@ -90,7 +101,62 @@ public class SystemMonitorMainController {
 		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
 		Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
 		Context.getService(SystemMonitorService.class).rebootSystemMonitorTasks();
+
 		request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "systemmonitor.runAsSoonAsStarted.success");
+	}
+
+	@RequestMapping(value = "/module/systemmonitor/activityMonitorInfo", method = RequestMethod.GET)
+	public @ResponseBody String getActiveMonitorInfo() {
+		JSONObject json = createClientActivityMonitorInfor();
+
+		return json.toString();
+	}
+
+	private JSONObject createClientActivityMonitorInfor() {
+		JSONObject json = new JSONObject();
+		OSAndHardwareIndicators oshi = new OSAndHardwareIndicators();
+		Double systemLoad = ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage();
+		Double cpuTemperature = oshi.CPU_TEMPERATURE;
+		Double cpuVoltage = oshi.CPU_VOLTAGE;
+		Long processorUpTime = oshi.PROCESSOR_SYSTEM_UPTIME;
+		Integer openmrsUpTime = Context.getService(SystemMonitorService.class).getOpenMRSSystemUpTime().intValue();
+		Long totalMemory = oshi.MEMORY_TOTAL;
+		Long usedMemory = MemoryAggregation.getAggregatedUsedMemory();
+		Long availableMemory = oshi.MEMORY_AVAILABLE;
+		Integer openingHour = Integer.parseInt(Context.getService(SystemMonitorService.class).getConfiguredOpeningHour()
+				.getPropertyValue().substring(0, 2));
+		Integer closingHour = Integer.parseInt(Context.getService(SystemMonitorService.class).getConfiguredClosingHour()
+				.getPropertyValue().substring(0, 2));
+		Calendar date = Calendar.getInstance();
+		date.setTime(Context.getService(SystemMonitorService.class).getEvaluationAndReportingDate());
+		Integer workingMinutesDifference = ((closingHour - openingHour) - 1) * 60;
+		Object[] openmrsUpAndDownTime = OpenmrsUpAndDownTracker.calculateOpenMRSUpAndDowntimeBy(date.getTime(), null);
+		Integer openmrsUptime = (Integer) openmrsUpAndDownTime[0];
+		Integer openmrsDowntime = (Integer) openmrsUpAndDownTime[1];
+		List<UpOrDownTimeInterval> upIntervals = (List<UpOrDownTimeInterval>) openmrsUpAndDownTime[2];
+		List<UpOrDownTimeInterval> downIntervals = (List<UpOrDownTimeInterval>) openmrsUpAndDownTime[3];
+		Integer openMRsUpTimePercentage = openmrsUptime != null ? (openmrsUptime * 100) / workingMinutesDifference
+				: null;
+		Integer openMRsDownTimePercentage = openmrsDowntime != null ? (openmrsDowntime * 100) / workingMinutesDifference
+				: null;
+
+		json.put("systemLoad", systemLoad);
+		json.put("cpuTemperature", cpuTemperature);
+		json.put("cpuVoltage", cpuVoltage);
+		json.put("processorUpTime", processorUpTime);
+		json.put("openmrsUpTime", openmrsUpTime);
+		json.put("totalMemory", totalMemory);
+		json.put("usedMemory", usedMemory);
+		json.put("availableMemory", availableMemory);
+		json.put("openMRsUpTimePercentage", openMRsUpTimePercentage);
+		json.put("openMRsDownTimePercentage", openMRsDownTimePercentage);
+
+		return json;
+	}
+
+	@RequestMapping(value = "/module/systemmonitor/activityMonitor", method = RequestMethod.GET)
+	public void getActiveMonitor(ModelMap model) {
+		model.put("activityMonitorInfo", createClientActivityMonitorInfor());
 	}
 
 }

@@ -32,8 +32,7 @@
         </dependency>
 
 		<!-- Begin OpenMRS core -->
-
-		<dependency>
+	<dependency>
 			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
 			<type>jar</type>

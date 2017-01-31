@@ -28,6 +28,8 @@ public class MemoryAggregation extends SystemMonitorCommons {
 		resetDateTimes(today);
 		try {
 			if (!logFile.exists()) {
+				if (!logFile.getParentFile().exists())
+					logFile.getParentFile().mkdirs();
 				logFile.createNewFile();
 			} else if (logFile.exists() && updatedOn.before(today)) {
 				logFile.delete();
