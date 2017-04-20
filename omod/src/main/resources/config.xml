@@ -95,7 +95,7 @@
 
 	<globalProperty>
 		<property>systemmonitor.DHISAPIROOTURL</property>
-		<defaultValue>http://82.196.9.250:8080/api</defaultValue>
+		<defaultValue>http://localhost:8080/api</defaultValue>
 		<description>
 			DHIS2 Instance's Web API Root url/link
 		</description>
@@ -103,7 +103,7 @@
 
 	<globalProperty>
 		<property>systemmonitor.DHISUSERNAME</property>
-		<defaultValue>sphentry</defaultValue>
+		<defaultValue>admin</defaultValue>
 		<description>
 			DHIS2 Account Username, Organization account is preferred
 		</description>
@@ -111,7 +111,7 @@
 
 	<globalProperty>
 		<property>systemmonitor.DHISPASSWORD</property>
-		<defaultValue>SphDataEntry123</defaultValue>
+		<defaultValue>district</defaultValue>
 		<description>
 			DHIS2 Password, Organization account is preferred
 		</description>
