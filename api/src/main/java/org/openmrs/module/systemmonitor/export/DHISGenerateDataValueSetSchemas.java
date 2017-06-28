@@ -449,7 +449,10 @@ public class DHISGenerateDataValueSetSchemas {
 			JSONObject metric = Context.getService(SystemMonitorService.class)
 					.getIndicatorOrMetricOrDataElement(metricId);
 			if (metric != null) {
-				return metric.getString("name");
+				if(metric.has("name"))
+					return metric.getString("name");
+				else
+					return metric.getString("displayName");
 			}
 		}
 		return null;
@@ -458,17 +461,20 @@ public class DHISGenerateDataValueSetSchemas {
 	private static String convertJSONToCleanString(JSONObject locationsJson, JSONArray modulesJson) {
 		String string = null;
 		String region = "";
+		String hostname = "";
 
 		if (locationsJson != null && modulesJson == null) {// is Location
 			try {
 				region = "Region: " + locationsJson.getString("region") + "; ";
+				hostname = "Hostname: " + locationsJson.getString("hostname");
 			} catch (JSONException e) {
-				if (e.getMessage().indexOf("region") > 0) {
+				if (e.getMessage().indexOf("region") > 0)
 					region = "";
-				}
+				else if(e.getMessage().indexOf("hostname") > 0)
+					hostname = "";
 			}
-			string = region + "Hostname: " + locationsJson.getString("hostname") + "; ISP: "
-					+ locationsJson.getString("org") + "; Country: " + locationsJson.getString("country") + "; City: "
+			string = region + hostname + "; ISP: " + locationsJson.getString("org")
+					+ "; Country: " + locationsJson.getString("country") + "; City: "
 					+ locationsJson.getString("city") + "; IP Address: " + locationsJson.getString("ip")
 					+ "; Location(Latitude,Longitude): " + locationsJson.getString("loc");
 		} else if (modulesJson != null && locationsJson == null) {
