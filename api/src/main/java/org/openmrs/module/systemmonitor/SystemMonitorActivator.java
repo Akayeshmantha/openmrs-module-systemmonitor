@@ -18,8 +18,6 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.Activator;
-import org.openmrs.scheduler.SchedulerException;
-import org.openmrs.scheduler.TaskDefinition;
 
 /**
  * This class contains the logic that is run every time this module is either
@@ -66,7 +64,7 @@ public class SystemMonitorActivator implements Activator {
 			dhisPass.setPropertyValue("SphDataEntry123");
 			Context.getAdministrationService().saveGlobalProperty(dhisPass);
 		}
-
+/*
 		TaskDefinition pushTask = Context.getSchedulerService().getTaskByName("Push System Monitored Data to DHIS");
 		TaskDefinition metadataTask = Context.getSchedulerService()
 				.getTaskByName("Update Locally Stored DHIS Metadata");
@@ -98,6 +96,6 @@ public class SystemMonitorActivator implements Activator {
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
-
+*/
 	}
 }
