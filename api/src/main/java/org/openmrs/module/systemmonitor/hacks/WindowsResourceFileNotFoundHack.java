@@ -1,10 +1,10 @@
 package org.openmrs.module.systemmonitor.hacks;
 
-import java.io.IOException;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.openmrs.module.systemmonitor.SystemMonitorConstants;
+
+import java.io.IOException;
 
 public class WindowsResourceFileNotFoundHack {
 	/**
@@ -24,9 +24,11 @@ public class WindowsResourceFileNotFoundHack {
 			+ "\nDATA-ELEMENT_primaryCareDays=rb9ef1D53Fv" + "\nDATA-ELEMENT_primaryCareHours=VDEnb2bEQH3"
 			+ "\nDATA-ELEMENT_totalEncounters=RYe2tuO9njZ" + "\nDATA-ELEMENT_totalObservations=NorJph8rRjt"
 			+ "\nDATA-ELEMENT_totalUsers=GKi8zBGuC3p" + "\nDATA-ELEMENT_totalVisits=nqGCy0uyzm8"
-			+ "\nDATA-ELEMENT_totalPatientsNew=aGdN2xl9nUj" + "\nDATA-ELEMENT_totalPatientsActive=hk0HYxaBPtz"
+			+ "\nDATA-ELEMENT_totalPatientsNew=aGdN2xl9nUj"
+			+ "\nDATA-ELEMENT_totalPatientsActive=hk0HYxaBPtz"
 			+ "\nDATA-ELEMENT_openmrsUptime=OBJQIpvppBt" + "\nDATA-ELEMENT_systemUptime-thisWeek=CrZDptrDUqA"
-			+ "\nDATA-ELEMENT_systemUptime-lastWeek=h08FIw8cVUD" + "\nDATA-ELEMENT_systemUptime-lastMonth=q9MRIo5DX4I"
+			+ "\nDATA-ELEMENT_systemUptime-lastWeek=h08FIw8cVUD"
+			+ "\nDATA-ELEMENT_systemUptime-lastMonth=q9MRIo5DX4I"
 			+ "\nDATA-ELEMENT_totalMemory=FRANuyR9bKI" + "\nDATA-ELEMENT_usedMemory=QZMqiNLOZNH"
 			+ "\nDATA-ELEMENT_freeMemory=ZPrLSHvWDm8" + "\nDATA-ELEMENT_systemStartupCounts=q8LwlSrBOSj"
 			+ "\nDATA-ELEMENT_patientsViralLoadTestResults_ever=AB7Nj3FNvR6"
@@ -35,18 +37,22 @@ public class WindowsResourceFileNotFoundHack {
 			+ "\nDATA-ELEMENT_systemInfo_operatingSystemName=CRThksbOPAd"
 			+ "\nDATA-ELEMENT_systemInfo_operatingSystemVersion=l76OuWQxBYa"
 			+ "\nDATA-ELEMENT_systemInfo_operatingSystemArch=EFfJ4CVvac2"
-			+ "\nDATA-ELEMENT_systemInfo_javaVersion=FmjhhJQyLoy" + "\nDATA-ELEMENT_systemInfo_javaVendor=TuBY7HgyJ7J"
-			+ "\nDATA-ELEMENT_systemInfo_jvmVersion=RgJN8fbRRuW" + "\nDATA-ELEMENT_systemInfo_jvmVendor=yIMQP0rsprI"
+			+ "\nDATA-ELEMENT_systemInfo_javaVersion=FmjhhJQyLoy"
+			+ "\nDATA-ELEMENT_systemInfo_javaVendor=TuBY7HgyJ7J"
+			+ "\nDATA-ELEMENT_systemInfo_jvmVersion=RgJN8fbRRuW"
+			+ "\nDATA-ELEMENT_systemInfo_jvmVendor=yIMQP0rsprI"
 			+ "\nDATA-ELEMENT_systemInfo_javaRuntimeName=SrKrLKmigUg"
 			+ "\nDATA-ELEMENT_systemInfo_javaRuntimeVersion=ixpB1MGxTOt"
-			+ "\nDATA-ELEMENT_systemInfo_userName=KiOmWTYmc4F" + "\nDATA-ELEMENT_systemInfo_systemLanguage=RHNugiFzCnz"
+			+ "\nDATA-ELEMENT_systemInfo_userName=KiOmWTYmc4F"
+			+ "\nDATA-ELEMENT_systemInfo_systemLanguage=RHNugiFzCnz"
 			+ "\nDATA-ELEMENT_systemInfo_systemTimezone=GldPX7AtrxQ"
 			+ "\nDATA-ELEMENT_systemInfo_systemDateTime=vXlzpA8wi6K"
 			+ "\nDATA-ELEMENT_systemInfo_fileSystemEncoding=RlDJSS2SRXL"
 			+ "\nDATA-ELEMENT_systemInfo_userDirectory=Fy0lelr1WAB"
 			+ "\nDATA-ELEMENT_systemInfo_tempDirectory=FveZHUNsC1o"
 			+ "\nDATA-ELEMENT_systemInfo_openMRSVersion=Gnpcar514A3"
-			+ "\nDATA-ELEMENT_systemInfo_installedModules=ICTGPRAVZVZ" + "\nDATA-ELEMENT_systemRealLocation=hKJXqpumYZ6"
+			+ "\nDATA-ELEMENT_systemInfo_installedModules=ICTGPRAVZVZ"
+			+ "\nDATA-ELEMENT_systemRealLocation=hKJXqpumYZ6"
 			+ "\nDATA-ELEMENT_patientsCD4CountTestResults_ever=UEfoD5rcZbC"
 			+ "\nDATA-ELEMENT_patientsCD4CountTestResults_last6Months=d3XqMIFIoz6"
 			+ "\nDATA-ELEMENT_patientsCD4CountTestResults_LastYear=GHq0YsrAsaf"
@@ -59,7 +65,8 @@ public class WindowsResourceFileNotFoundHack {
 			+ "\nDATA-ELEMENT_newEncounters_pedsreturn=CdlLkU6tqSX"
 			+ "\nDATA-ELEMENT_patientsCD4CountTestResults_new=QoIyYyc7Z36"
 			+ "\nDATA-ELEMENT_patientsViralLoadTestResults_new=uaUc1zJbaEC"
-			+ "\nDATA-ELEMENT_dataForLastBackup=v3Pww13i2r1" + "\nDATA-ELEMENT_newTotalPatientsNew=JNsXijeCdIx"
+			+ "\nDATA-ELEMENT_dataForLastBackup=v3Pww13i2r1"
+			+ "\nDATA-ELEMENT_newTotalPatientsNew=JNsXijeCdIx"
 			+ "\nDATA-ELEMENT_newTotalPatientsActive=GCC9L1LGFBH"
 			+ "\nDATA-ELEMENT_activePatient20=SWpmUA95Gtv"
 			+ "\nDATA-ELEMENT_activePatient8=m21uNOTO7Tp"
@@ -75,6 +82,12 @@ public class WindowsResourceFileNotFoundHack {
 			+ "\nDATA-ELEMENT_downTimeMinutes=q5K2raiuqQh"
 			+ "\nDATA-ELEMENT_downTimeIntervals=uzD2FZ52RFK"
 			+ "\nDATA-ELEMENT_upTimeIntervals=YjIxaOR1Vtj"
+			+ "\nDATA-ELEMENT_previousWeekEncounters=BBB69AiiuZU"
+			+ "\nDATA-ELEMENT_previousMonthEncounters=BBB69AiiuAA"
+			+ "\nDATA-ELEMENT_previousWeekObservations=BBB69AiiuCC"
+			+ "\nDATA-ELEMENT_previousMonthObservations=BBB69AiiuDD"
+			+ "\nDATA-ELEMENT_previousWeekPatients=BBB69AiiuEE"
+			+ "\nDATA-ELEMENT_previousMonthPatients=BBB69AiiuFF"
 			+ "\n------------------------------------------------------------------------------------" + "\n\n"
 			+ "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 			+ "\n## MAPPING DHIS SUPPORTED ORGANISATION UNITS"

@@ -447,6 +447,42 @@
       "created": "2016-05-16T08:16:32.720+0000",
       "name": "User Name",
       "id": "KiOmWTYmc4F"
+    },
+    {
+      "lastUpdated": "2017-08-28T08:17:37.731+0000",
+      "created": "2017-08-28T08:17:37.731+0000",
+      "name": "Previous Week Encounters",
+      "id": "BBB69AiiuZU"
+    },
+    {
+      "lastUpdated": "2017-08-28T08:17:37.731+0000",
+      "created": "2017-08-28T08:17:37.731+0000",
+      "name": "Previous Month Encounters",
+      "id": "BBB69AiiuAA"
+    },
+    {
+      "lastUpdated": "2017-08-28T08:17:37.731+0000",
+      "created": "2017-08-28T08:17:37.731+0000",
+      "name": "Previous Week Observations",
+      "id": "BBB69AiiuCC"
+    },
+    {
+      "lastUpdated": "2017-08-28T08:17:37.731+0000",
+      "created": "2017-08-28T08:17:37.731+0000",
+      "name": "Previous Month Observations",
+      "id": "BBB69AiiuDD"
+    },
+    {
+      "lastUpdated": "2017-08-28T08:17:37.731+0000",
+      "created": "2017-08-28T08:17:37.731+0000",
+      "name": "Previous Week Patients",
+      "id": "BBB69AiiuEE"
+    },
+    {
+      "lastUpdated": "2017-08-28T08:17:37.731+0000",
+      "created": "2017-08-28T08:17:37.731+0000",
+      "name": "Previous Month Patients",
+      "id": "BBB69AiiuFF"
     }
   ]
 }

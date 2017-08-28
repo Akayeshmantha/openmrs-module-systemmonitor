@@ -1,12 +1,5 @@
 package org.openmrs.module.systemmonitor.export;
 
-import java.io.File;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +16,13 @@ import org.openmrs.module.systemmonitor.memory.MemoryAggregation;
 import org.openmrs.module.systemmonitor.uptime.OpenmrsUpAndDownTracker;
 import org.openmrs.module.systemmonitor.uptime.UpOrDownTimeInterval;
 import org.openmrs.web.WebConstants;
+
+import java.io.File;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 
 public class DHISGenerateDataValueSetSchemas {
 
@@ -273,6 +273,18 @@ public class DHISGenerateDataValueSetSchemas {
 					systemMonitorService.getDHISYesterdayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newUsers", newUsers,
 					systemMonitorService.getDHISYesterdayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_previousWeekEncounters", systemMonitorService.fetchTotalEncountersCountPreviousWeek(),
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_previousMonthEncounters", systemMonitorService.fetchTotalEncountersCountPreviousMonth(),
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_previousWeekObservations", systemMonitorService.fetchTotalObservationsCountPreviousWeek(),
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_previousMonthObservations", systemMonitorService.fetchTotalObservationsCountPreviousMonth(),
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_previousWeekPatients", systemMonitorService.fetchTotalPatientsCountPreviousWeek(),
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_previousMonthPatients", systemMonitorService.fetchTotalPatientsCountPreviousMonth(),
+					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_adultinitial",
 					newAdultInitialEncounters, systemMonitorService.getDHISYesterdayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters_adultreturn",

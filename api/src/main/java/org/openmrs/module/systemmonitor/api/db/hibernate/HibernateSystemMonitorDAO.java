@@ -13,15 +13,6 @@
  */
 package org.openmrs.module.systemmonitor.api.db.hibernate;
 
-import java.lang.reflect.Field;
-import java.math.BigInteger;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,6 +40,15 @@ import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
 import org.openmrs.scheduler.TaskDefinition;
 import org.springframework.orm.ObjectRetrievalFailureException;
+
+import java.lang.reflect.Field;
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * It is a default implementation of {@link SystemMonitorDAO}.
@@ -396,6 +396,34 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public Integer getTotalEncountersLastMonth(Boolean includeRetired) {
 		return fetchTotalOpenMRSObjectCountLastMonth(includeRetired, Encounter.class, "distinct patient_id");
+	}
+
+	@Override
+	public Integer fetchTotalEncountersCountPreviousWeek() {
+		return fetchTotalOpenMRSObjectCountPreviousWeek(false, Encounter.class, "distinct patient_id");
+	}
+
+	@Override
+	public Integer fetchTotalEncountersCountPreviousMonth() {
+		return fetchTotalOpenMRSObjectCountPreviousMonth(false, Encounter.class, "distinct patient_id");
+	}
+
+	@Override
+	public Integer fetchTotalObservationsCountPreviousWeek() {
+		return fetchTotalOpenMRSObjectCountPreviousWeek(false, Obs.class, "distinct person_id");
+	}
+
+	@Override
+	public Integer fetchTotalObservationsCountPreviousMonth() {
+		return fetchTotalOpenMRSObjectCountPreviousMonth(false, Obs.class, "distinct person_id");
+	}
+
+	public Integer fetchTotalPatientsCountPreviousWeek() {
+		return fetchTotalOpenMRSObjectCountPreviousMonth(false, Patient.class, "distinct patient_id");
+	}
+
+	public Integer fetchTotalPatientsCountPreviousMonth() {
+		return fetchTotalOpenMRSObjectCountPreviousMonth(false, Patient.class, "distinct patient_id");
 	}
 
 	@Override
@@ -969,6 +997,30 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		} else {
 			sql += ")";
 		}
+
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
+
+		return count;
+	}
+
+	private Integer fetchTotalOpenMRSObjectCountPreviousWeek(Boolean includeRetired,
+														  @SuppressWarnings("rawtypes") Class clazz, String distinctFilter) {
+		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+		String sql = "select count(" + distinctFilter + ") from " + getObjectTableNameFromClass(clazz) + " where "
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and (date_created >= DATE(" + sdf.format(getEvaluationAndReportingDate()) + ") - INTERVAL 1 WEEK)";
+
+		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+				.intValue();
+
+		return count;
+	}
+
+	private Integer fetchTotalOpenMRSObjectCountPreviousMonth(Boolean includeRetired,
+															  @SuppressWarnings("rawtypes") Class clazz, String distinctFilter) {
+		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
+		String sql = "select count(" + distinctFilter + ") from " + getObjectTableNameFromClass(clazz) + " where "
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and (date_created >= DATE(" + sdf.format(getEvaluationAndReportingDate()) + ") - INTERVAL 1 MONTH)";
 
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();

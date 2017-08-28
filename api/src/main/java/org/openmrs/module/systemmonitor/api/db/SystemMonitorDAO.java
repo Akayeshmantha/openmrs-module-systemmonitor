@@ -13,15 +13,15 @@
  */
 package org.openmrs.module.systemmonitor.api.db;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.openmrs.Concept;
 import org.openmrs.Person;
 import org.openmrs.Program;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.scheduler.TaskDefinition;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Database methods for {@link SystemMonitorService}.
@@ -299,4 +299,16 @@ public interface SystemMonitorDAO {
 	Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneViralLoad_LastYear();
 
 	Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear();
+
+	public Integer fetchTotalEncountersCountPreviousWeek();
+
+	public Integer fetchTotalEncountersCountPreviousMonth();
+
+	public Integer fetchTotalObservationsCountPreviousWeek();
+
+	public Integer fetchTotalObservationsCountPreviousMonth();
+
+	public Integer fetchTotalPatientsCountPreviousWeek();
+
+	public Integer fetchTotalPatientsCountPreviousMonth();
 }

@@ -13,22 +13,6 @@
  */
 package org.openmrs.module.systemmonitor.api.impl;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -55,6 +39,22 @@ import org.openmrs.module.systemmonitor.mapping.DHISMapping;
 import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.util.OpenmrsUtil;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * It is a default implementation of {@link SystemMonitorService}.
@@ -1443,5 +1443,33 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	@Override
 	public Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear() {
 		return dao.rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear();
+	}
+
+	@Override
+	public Integer fetchTotalEncountersCountPreviousWeek() {
+		return dao.fetchTotalEncountersCountPreviousWeek();
+	}
+
+	@Override
+	public Integer fetchTotalEncountersCountPreviousMonth() {
+		return dao.fetchTotalEncountersCountPreviousMonth();
+	}
+
+	@Override
+	public Integer fetchTotalObservationsCountPreviousWeek() {
+		return dao.fetchTotalObservationsCountPreviousWeek();
+	}
+
+	@Override
+	public Integer fetchTotalObservationsCountPreviousMonth() {
+		return dao.fetchTotalObservationsCountPreviousMonth();
+	}
+
+	public Integer fetchTotalPatientsCountPreviousWeek() {
+		return dao.fetchTotalPatientsCountPreviousWeek();
+	}
+
+	public Integer fetchTotalPatientsCountPreviousMonth() {
+		return dao.fetchTotalPatientsCountPreviousMonth();
 	}
 }
