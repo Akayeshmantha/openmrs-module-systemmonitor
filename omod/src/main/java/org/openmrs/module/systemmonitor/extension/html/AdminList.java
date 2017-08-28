@@ -13,11 +13,11 @@
  */
 package org.openmrs.module.systemmonitor.extension.html;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.openmrs.module.Extension;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * This class defines the links that will appear on the administration page under the
@@ -49,7 +49,7 @@ public class AdminList extends AdministrationSectionExt {
 		map.put("/module/systemmonitor/configurations.form", "systemmonitor.configurations");
 		map.put("/module/systemmonitor/localReport.form", "systemmonitor.localReport");
 		map.put("/module/systemmonitor/runAsSoonAsStarted.form", "systemmonitor.runAsSoonAsStarted");
-		map.put("/module/systemmonitor/activityMonitor.form", "systemmonitor.activityMonitor");
+		//map.put("/module/systemmonitor/activityMonitor.form", "systemmonitor.activityMonitor");
 		return map;
 	}
 	

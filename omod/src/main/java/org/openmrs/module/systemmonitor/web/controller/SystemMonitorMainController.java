@@ -13,12 +13,6 @@
  */
 package org.openmrs.module.systemmonitor.web.controller;
 
-import java.lang.management.ManagementFactory;
-import java.util.Calendar;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.json.JSONObject;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.systemmonitor.ConfigureGPs;
@@ -33,7 +27,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.lang.management.ManagementFactory;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * The main controller.
@@ -105,12 +103,12 @@ public class SystemMonitorMainController {
 		request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "systemmonitor.runAsSoonAsStarted.success");
 	}
 
-	@RequestMapping(value = "/module/systemmonitor/activityMonitorInfo", method = RequestMethod.GET)
-	public @ResponseBody String getActiveMonitorInfo() {
+	/*@RequestMapping(value = "/module/systemmonitor/activityMonitorInfo", method = RequestMethod.GET)
+	public String String getActiveMonitorInfo() {
 		JSONObject json = createClientActivityMonitorInfor();
 
 		return json.toString();
-	}
+	}*/
 
 	private JSONObject createClientActivityMonitorInfor() {
 		JSONObject json = new JSONObject();
