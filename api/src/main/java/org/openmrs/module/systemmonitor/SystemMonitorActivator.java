@@ -17,7 +17,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.Activator;
+import org.openmrs.module.ModuleActivator;
+import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.TaskDefinition;
 
@@ -25,17 +26,17 @@ import org.openmrs.scheduler.TaskDefinition;
  * This class contains the logic that is run every time this module is either
  * started or stopped.
  */
-public class SystemMonitorActivator implements Activator {
+public class SystemMonitorActivator implements ModuleActivator {
 
 	protected Log log = LogFactory.getLog(getClass());
 
 	@Override
-	public void shutdown() {
+	public void stopped() {
 		log.info("Shutting down System Monitor Module");
 	}
 
 	@Override
-	public void startup() {
+	public void started() {
 		Context.addProxyPrivilege("Manage Global Properties");
 		Context.addProxyPrivilege("Manage Scheduler");
 
@@ -48,7 +49,7 @@ public class SystemMonitorActivator implements Activator {
 		GlobalProperty dhisPass = Context.getAdministrationService()
 				.getGlobalPropertyObject("systemmonitor.DHISPASSWORD");
 
-		log.info("Starting System Monitor Module");
+		log.info("Started System Monitor Module");
 
 		if (numberOfSecondsAtOpenMRSStartupGp != null) {
 			numberOfSecondsAtOpenMRSStartupGp.setPropertyValue(Long.toString(System.currentTimeMillis() / 1000));
@@ -98,6 +99,30 @@ public class SystemMonitorActivator implements Activator {
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
+		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
+	}
+
+	/**
+	 * @see ModuleActivator#willRefreshContext()
+	 */
+	public void willRefreshContext() {
+
+	}
+	/**
+	 * @see ModuleActivator#contextRefreshed()
+	 */
+	public void contextRefreshed() {
+
+	}
+
+	/**
+	 * @see ModuleActivator#willStart()
+	 */
+	public void willStart() {
+
+	}
+
+	public void willStop() {
 
 	}
 }
