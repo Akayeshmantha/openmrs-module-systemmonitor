@@ -1,13 +1,12 @@
 package org.openmrs.module.systemmonitor;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Reads and persists configurations which are supported as global properties,
@@ -112,7 +111,8 @@ public class ConfigureGPs {
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.MONTHS_TO_STORE_LOGSANDDATA);
 		addedLocalDHISMappingsGp = Context.getAdministrationService()
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.ADDED_LOCAL_DHISMAPPINGS);
-		smtOnOrOffGp = Context.getAdministrationService()
+		if(smtOnOrOffGp != null)
+			smtOnOrOffGp = Context.getAdministrationService()
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.TOGGLE_SMT_EVALUATIONANDREPORTING_ONOROFF);
 
 		if (mustConfigureSchedulerAccount()) {
@@ -156,7 +156,8 @@ public class ConfigureGPs {
 		numberOfMonthsBeforeDeletingLogsAndDataGp
 				.setPropertyValue(request.getParameter("numberOfMonthsBeforeDeletingLogsAndData"));
 		addedLocalDHISMappingsGp.setPropertyValue(request.getParameter("addedLocalDHISMappings"));
-		smtOnOrOffGp.setPropertyValue(request.getParameter("smtOnOrOff"));
+		if(smtOnOrOffGp != null)
+			smtOnOrOffGp.setPropertyValue(request.getParameter("smtOnOrOff"));
 
 		if (mustConfigureSchedulerAccount()) {
 			gps.add(schedulerUsernameGp);
@@ -183,7 +184,8 @@ public class ConfigureGPs {
 		gps.add(backupFolderPathOrNameGp);
 		gps.add(numberOfMonthsBeforeDeletingLogsAndDataGp);
 		gps.add(addedLocalDHISMappingsGp);
-		gps.add(smtOnOrOffGp);
+		if(smtOnOrOffGp != null)
+			gps.add(smtOnOrOffGp);
 
 		Context.getAdministrationService().saveGlobalProperties(gps);
 	}

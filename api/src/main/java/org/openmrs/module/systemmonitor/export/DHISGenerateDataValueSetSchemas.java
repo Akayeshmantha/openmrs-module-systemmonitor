@@ -241,7 +241,7 @@ public class DHISGenerateDataValueSetSchemas {
 				.getGlobalProperty(ConfigurableGlobalProperties.TOGGLE_SMT_EVALUATIONANDREPORTING_ONOROFF);
 
 		if (mappingsFile.exists() && mappingsFile.isFile() && date.get(Calendar.HOUR_OF_DAY) >= openingHour
-				&& date.get(Calendar.HOUR_OF_DAY) < closingHour && "on".equals(evaluationAndReportingIsAllowed)) {
+				&& date.get(Calendar.HOUR_OF_DAY) < closingHour && (StringUtils.isBlank(evaluationAndReportingIsAllowed) || "on".equals(evaluationAndReportingIsAllowed))) {
 			JSONObject systemRealLocationDataElementJSON = new JSONObject();
 			JSONObject installedModulesDataElementJSON = new JSONObject();
 			JSONObject systemRealLocationDataElementJSON2 = new JSONObject();
