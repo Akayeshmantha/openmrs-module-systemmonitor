@@ -419,7 +419,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	}
 
 	public Integer fetchTotalPatientsCountPreviousWeek() {
-		return fetchTotalOpenMRSObjectCountPreviousMonth(false, Patient.class, "distinct patient_id");
+		return fetchTotalOpenMRSObjectCountPreviousWeek(false, Patient.class, "distinct patient_id");
 	}
 
 	public Integer fetchTotalPatientsCountPreviousMonth() {
