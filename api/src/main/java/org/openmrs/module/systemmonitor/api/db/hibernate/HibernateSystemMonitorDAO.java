@@ -1008,7 +1008,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 														  @SuppressWarnings("rawtypes") Class clazz, String distinctFilter) {
 		String voidedOrRetiredParameterName = isPropertyCalledRetiredOrVoided(clazz);
 		String sql = "select count(" + distinctFilter + ") from " + getObjectTableNameFromClass(clazz) + " where "
-				+ voidedOrRetiredParameterName + "=" + includeRetired + " and (date_created >= DATE('" + sdf.format(getEvaluationAndReportingDate()) + "'') - INTERVAL 1 WEEK)";
+				+ voidedOrRetiredParameterName + "=" + includeRetired + " and (date_created >= DATE('" + sdf.format(getEvaluationAndReportingDate()) + "') - INTERVAL 1 WEEK)";
 
 		Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 				.intValue();

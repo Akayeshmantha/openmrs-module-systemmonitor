@@ -100,6 +100,8 @@ public class SystemMonitorActivator implements ModuleActivator {
 			e.printStackTrace();
 		}
 		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
+		Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
+		Context.getService(SystemMonitorService.class).rebootSystemMonitorTasks();
 	}
 
 	/**
