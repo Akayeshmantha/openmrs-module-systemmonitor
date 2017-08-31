@@ -13,6 +13,22 @@
  */
 package org.openmrs.module.systemmonitor.api.impl;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -39,22 +55,6 @@ import org.openmrs.module.systemmonitor.mapping.DHISMapping;
 import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.util.OpenmrsUtil;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 /**
  * It is a default implementation of {@link SystemMonitorService}.
@@ -815,17 +815,15 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	private File getSystemLogFile() {
-		return new File(SystemMonitorConstants.SYSTEMMONITOR_LOGS_DIRECTORYPATH
-				+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_LOGS_PREFIX + new SimpleDateFormat("yyyyMMdd")
-						.format(getEvaluationAndReportingDate())
-				+ ".log");
+		return new File(SystemMonitorConstants.SYSTEMMONITOR_LOGS_DIRECTORYPATH + File.separator
+				+ SystemMonitorConstants.SYSTEMMONITOR_LOGS_PREFIX
+				+ new SimpleDateFormat("yyyyMMdd").format(getEvaluationAndReportingDate()) + ".log");
 	}
 
 	private File getSystemBackUpFile() {
-		return new File(SystemMonitorConstants.SYSTEMMONITOR_DATA_DIRECTORYPATH
-				+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_DATA_PREFIX + new SimpleDateFormat("yyyyMMdd")
-						.format(getEvaluationAndReportingDate())
-				+ ".json");
+		return new File(SystemMonitorConstants.SYSTEMMONITOR_DATA_DIRECTORYPATH + File.separator
+				+ SystemMonitorConstants.SYSTEMMONITOR_DATA_PREFIX
+				+ new SimpleDateFormat("yyyyMMdd").format(getEvaluationAndReportingDate()) + ".json");
 	}
 
 	@Override
@@ -1377,38 +1375,35 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	 */
 	private void updatePreviouslySubmittedSMTData() {
 		try {
-			SimpleDateFormat sdf = dao.getSdf();
+			SimpleDateFormat sdf = dao.getSdf() != null ? dao.getSdf() : new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			Date supportedUntil = sdf.parse("2017-03-31 00:00:00");
 			Calendar date = Calendar.getInstance(Context.getLocale());
 			Calendar today = Calendar.getInstance(Context.getLocale());
 			GlobalProperty evalDateGp = Context.getAdministrationService()
 					.getGlobalPropertyObject(ConfigurableGlobalProperties.EVALUATION_AND_REPORTING_DATE);
 			File smtBackUpDirectory = SystemMonitorConstants.SYSTEMMONITOR_DIRECTORY;
-			File smtBackUpDataDirectory = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
-			File smtBackUpLogsDirectory = SystemMonitorConstants.SYSTEMMONITOR_LOGSFOLDER;
-			String dateStr = evalDateGp.getPropertyValue();
+			if (evalDateGp != null) {
+				String dateStr = evalDateGp.getPropertyValue();
 
-			if (evalDateGp != null && StringUtils.isNotBlank(dateStr) && smtBackUpDirectory.exists()
-					&& smtBackUpDirectory.isDirectory() && smtBackUpDirectory.listFiles().length > 0
-					&& ((smtBackUpLogsDirectory.exists() && smtBackUpLogsDirectory.isDirectory())
-							|| (smtBackUpDataDirectory.exists() && smtBackUpDataDirectory.isDirectory()))
-					&& (smtBackUpLogsDirectory.listFiles().length > 0 || smtBackUpDataDirectory.listFiles().length > 0)
-					&& supportedUntil.after(today.getTime())) {
+				if (supportedUntil != null && smtBackUpDirectory != null && StringUtils.isNotBlank(dateStr)
+						&& smtBackUpDirectory.exists() && smtBackUpDirectory.isDirectory()
+						&& supportedUntil.after(today.getTime())) {
 
-				date.setTime(sdf.parse(dateStr));
-				while (today.after(date)) {
-					// eliminate weekend days
-					if (date.get(Calendar.DAY_OF_WEEK) != 1 && date.get(Calendar.DAY_OF_WEEK) != 7) {
-						runSMTEvaluatorAndLogOrPushData();
+					date.setTime(sdf.parse(dateStr));
+					while (today.after(date)) {
+						// eliminate weekend days
+						if (date.get(Calendar.DAY_OF_WEEK) != 1 && date.get(Calendar.DAY_OF_WEEK) != 7) {
+							runSMTEvaluatorAndLogOrPushData();
+						}
+						date.add(Calendar.DAY_OF_YEAR, 1);
+						dateStr = sdf.format(date.getTime());
+						evalDateGp.setPropertyValue(dateStr);
+						Context.getAdministrationService().saveGlobalProperty(evalDateGp);
 					}
-					date.add(Calendar.DAY_OF_YEAR, 1);
-					dateStr = sdf.format(date.getTime());
-					evalDateGp.setPropertyValue(dateStr);
+					// finally
+					evalDateGp.setPropertyValue("");
 					Context.getAdministrationService().saveGlobalProperty(evalDateGp);
 				}
-				// finally
-				evalDateGp.setPropertyValue("");
-				Context.getAdministrationService().saveGlobalProperty(evalDateGp);
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();

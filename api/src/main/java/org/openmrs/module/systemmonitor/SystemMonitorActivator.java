@@ -34,9 +34,31 @@ public class SystemMonitorActivator implements ModuleActivator {
 	public void stopped() {
 		log.info("Shutting down System Monitor Module");
 	}
-
+	
 	@Override
 	public void started() {
+		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
+		Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
+		Context.getService(SystemMonitorService.class).rebootSystemMonitorTasks();
+	}
+
+	/**
+	 * @see ModuleActivator#willRefreshContext()
+	 */
+	public void willRefreshContext() {
+
+	}
+	/**
+	 * @see ModuleActivator#contextRefreshed()
+	 */
+	public void contextRefreshed() {
+
+	}
+
+	/**
+	 * @see ModuleActivator#willStart()
+	 */
+	public void willStart() {
 		Context.addProxyPrivilege("Manage Global Properties");
 		Context.addProxyPrivilege("Manage Scheduler");
 
@@ -99,29 +121,6 @@ public class SystemMonitorActivator implements ModuleActivator {
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
-		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
-		Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
-		Context.getService(SystemMonitorService.class).rebootSystemMonitorTasks();
-	}
-
-	/**
-	 * @see ModuleActivator#willRefreshContext()
-	 */
-	public void willRefreshContext() {
-
-	}
-	/**
-	 * @see ModuleActivator#contextRefreshed()
-	 */
-	public void contextRefreshed() {
-
-	}
-
-	/**
-	 * @see ModuleActivator#willStart()
-	 */
-	public void willStart() {
-
 	}
 
 	public void willStop() {

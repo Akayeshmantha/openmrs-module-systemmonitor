@@ -140,11 +140,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 		Assert.assertEquals(Integer.valueOf(1), systemMonitorService.getTotalEncountersToday(false));
 		Assert.assertEquals(Integer.valueOf(0), systemMonitorService.getTotalEncountersLastYear(false));
 
-		encounterService.saveEncounter(buildEncounter(lastWeek.getTime(), null));// adds
-																					// to
-																					// this/current
-																					// //
-																					// month
+		encounterService.saveEncounter(buildEncounter(lastWeek.getTime(), null));
 		encounterService.saveEncounter(buildEncounter(lastMonth.getTime(), null));
 		encounterService.saveEncounter(buildEncounter(lastMonth.getTime(), null));
 		encounterService.saveEncounter(buildEncounter(lastYear.getTime(), null));

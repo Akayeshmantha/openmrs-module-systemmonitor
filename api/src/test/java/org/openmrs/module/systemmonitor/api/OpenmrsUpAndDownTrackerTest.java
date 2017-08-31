@@ -1,7 +1,11 @@
 package org.openmrs.module.systemmonitor.api;
 
-import junit.framework.Assert;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
@@ -10,10 +14,9 @@ import org.openmrs.module.systemmonitor.uptime.OpenmrsUpAndDownTracker;
 import org.openmrs.module.systemmonitor.uptime.UpOrDownTimeInterval;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import junit.framework.Assert;
 
+@Ignore
 public class OpenmrsUpAndDownTrackerTest extends BaseModuleContextSensitiveTest {
 	String to;
 
@@ -24,7 +27,7 @@ public class OpenmrsUpAndDownTrackerTest extends BaseModuleContextSensitiveTest 
 	@Before
 	public void init() {
 		to = Long.toString(System.currentTimeMillis()).substring(0,
-				Math.min(Long.toString(System.currentTimeMillis()).length(), 5));;
+				Math.min(Long.toString(System.currentTimeMillis()).length(), 5));
 		upAndownContent = to + "14500000:down;523," + to + "14800000:up;5," + to + "15100000:up;5," + to
 				+ "15400000:up;5," + to + "15700000:up;5," + to + "16000000:up;5" + "," + to + "16300000:down;5," + to
 				+ "17500000:down;20" + "," + to + "17800000:up;5" + "," + to + "18100000:down;1" + "," + to
