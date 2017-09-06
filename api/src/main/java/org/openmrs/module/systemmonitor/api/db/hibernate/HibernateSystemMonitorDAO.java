@@ -13,6 +13,15 @@
  */
 package org.openmrs.module.systemmonitor.api.db.hibernate;
 
+import java.lang.reflect.Field;
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,15 +49,6 @@ import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
 import org.openmrs.scheduler.TaskDefinition;
 import org.springframework.orm.ObjectRetrievalFailureException;
-
-import java.lang.reflect.Field;
-import java.math.BigInteger;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 /**
  * It is a default implementation of {@link SystemMonitorDAO}.
@@ -320,16 +320,18 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		Calendar today = Calendar.getInstance(Context.getLocale());
 		GlobalProperty evalDate = Context.getAdministrationService()
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.EVALUATION_AND_REPORTING_DATE);
-
+		
 		if (evalDate != null && StringUtils.isNotBlank(evalDate.getPropertyValue())) {
 			try {
+				SimpleDateFormat sdf = getSdf() != null ? getSdf() : new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				Date supportedUntil = sdf.parse(Context.getAdministrationService().getGlobalProperty("systemmonitor.evaluationAndReportingSToday_supportedUntil"));
 				Calendar evalD = Calendar.getInstance();
 				Date d = sdf.parse(evalDate.getPropertyValue());
 
 				evalD.setTime(d);
 				// resetDateTimes(today);
 				// resetDateTimes(evalD);
-				if (d != null && evalD.getTime().before(today.getTime())) {
+				if (d != null && evalD.getTime().before(today.getTime()) && evalD.before(supportedUntil)) {
 					return evalD.getTime();
 				}
 			} catch (ParseException e) {

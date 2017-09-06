@@ -1376,7 +1376,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	private void updatePreviouslySubmittedSMTData() {
 		try {
 			SimpleDateFormat sdf = dao.getSdf() != null ? dao.getSdf() : new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-			Date supportedUntil = sdf.parse("2017-03-31 00:00:00");
+			Date supportedUntil = sdf.parse(Context.getAdministrationService().getGlobalProperty("systemmonitor.evaluationAndReportingSToday_supportedUntil"));
 			Calendar date = Calendar.getInstance(Context.getLocale());
 			Calendar today = Calendar.getInstance(Context.getLocale());
 			GlobalProperty evalDateGp = Context.getAdministrationService()
