@@ -260,12 +260,12 @@ public class DHISGenerateDataValueSetSchemas {
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemRealLocation"));
 			systemRealLocationDataElementJSON2.put("period", systemMonitorService.getDHISCurrentMonthPeriod());
 			systemRealLocationDataElementJSON2.put("value", serverRealLocation != null
-					? convertJSONToCleanString(serverRealLocation, null) : "No Internet Connection");
+					? convertLocationJSONToCleanString(serverRealLocation, null) : "No Internet Connection");
 			installedModulesDataElementJSON2.put("dataElement",
 					DHISMapping.getDHISMappedObjectValue("DATA-ELEMENT_systemInfo_installedModules"));
 			installedModulesDataElementJSON2.put("period", systemMonitorService.getDHISCurrentMonthPeriod());
 			installedModulesDataElementJSON2.put("value",
-					convertJSONToCleanString(null, systemMonitorService.getInstalledModules()));
+					convertLocationJSONToCleanString(null, systemMonitorService.getInstalledModules()));
 
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_newEncounters", encountersYesterday,
 					systemMonitorService.getDHISYesterdayPeriod()));
@@ -470,25 +470,32 @@ public class DHISGenerateDataValueSetSchemas {
 		return null;
 	}
 
-	private static String convertJSONToCleanString(JSONObject locationsJson, JSONArray modulesJson) {
+	private static String convertLocationJSONToCleanString(JSONObject locationsJson, JSONArray modulesJson) {
 		String string = null;
 		String region = "";
 		String hostname = "";
-
+		String country = "";
+		String city = "";
+		String org = "";
+		String ip = "";
+		String loc = "";
+		
 		if (locationsJson != null && modulesJson == null) {// is Location
 			try {
 				region = "Region: " + locationsJson.getString("region") + "; ";
 				hostname = "Hostname: " + locationsJson.getString("hostname");
+				city = locationsJson.getString("city");
+				ip = locationsJson.getString("ip");
+				country = locationsJson.getString("country");
+				org = locationsJson.getString("org");
+				loc = locationsJson.getString("loc");
 			} catch (JSONException e) {
-				if (e.getMessage().indexOf("region") > 0)
-					region = "";
-				else if(e.getMessage().indexOf("hostname") > 0)
-					hostname = "";
+				e.printStackTrace();
 			}
-			string = region + hostname + "; ISP: " + locationsJson.getString("org")
-					+ "; Country: " + locationsJson.getString("country") + "; City: "
-					+ locationsJson.getString("city") + "; IP Address: " + locationsJson.getString("ip")
-					+ "; Location(Latitude,Longitude): " + locationsJson.getString("loc");
+			string = region + hostname + "; ISP: " + org
+					+ "; Country: " + country + "; City: "
+					+ city + "; IP Address: " + ip
+					+ "; Location(Latitude,Longitude): " + loc;
 		} else if (modulesJson != null && locationsJson == null) {
 			string = "";
 
