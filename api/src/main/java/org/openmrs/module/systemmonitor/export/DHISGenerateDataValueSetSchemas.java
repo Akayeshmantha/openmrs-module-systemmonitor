@@ -81,10 +81,10 @@ public class DHISGenerateDataValueSetSchemas {
 
 		List<UpOrDownTimeInterval> downIntervals = (List<UpOrDownTimeInterval>) openmrsUpAndDownTime[3];
 
-		Integer openMRsUpTimePercentage = openmrsUptime != null ? (openmrsUptime * 100) / workingMinutesDifference
+		Integer openMRsUpTimePercentage = openmrsUptime != null && openmrsUptime >= 0 && openmrsUptime <= 100 ? (openmrsUptime * 100) / workingMinutesDifference
 				: null;
 
-		Integer openMRsDownTimePercentage = openmrsDowntime != null ? (openmrsDowntime * 100) / workingMinutesDifference
+		Integer openMRsDownTimePercentage = openmrsDowntime != null && openmrsDowntime >= 0 && openmrsDowntime <= 100 ? (openmrsDowntime * 100) / workingMinutesDifference
 				: null;
 
 		String upIntervalString = convertUpOrDownTimeIntervalsToString(upIntervals);
@@ -415,6 +415,8 @@ public class DHISGenerateDataValueSetSchemas {
 					javaRuntimeVersion, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_systemDateTime",
 					systemDateTime, systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_executionDateTime",
+					date.getTime().toString(), systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_fileSystemEncoding",
 					fileSystemEncoding, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_openMRSVersion",
