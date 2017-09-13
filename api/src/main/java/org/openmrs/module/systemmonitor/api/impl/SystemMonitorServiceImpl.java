@@ -1375,35 +1375,36 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	 */
 	private void updatePreviouslySubmittedSMTData() {
 		try {
-			SimpleDateFormat sdf = dao.getSdf() != null ? dao.getSdf() : new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-			Date supportedUntil = sdf.parse(Context.getAdministrationService().getGlobalProperty("systemmonitor.evaluationAndReportingSToday_supportedUntil"));
+			SimpleDateFormat sdf = dao.getSdf();
+			Date supportedUntil = sdf.parse("2017-03-31 00:00:00");
 			Calendar date = Calendar.getInstance(Context.getLocale());
 			Calendar today = Calendar.getInstance(Context.getLocale());
 			GlobalProperty evalDateGp = Context.getAdministrationService()
 					.getGlobalPropertyObject(ConfigurableGlobalProperties.EVALUATION_AND_REPORTING_DATE);
 			File smtBackUpDirectory = SystemMonitorConstants.SYSTEMMONITOR_DIRECTORY;
-			if (evalDateGp != null) {
-				String dateStr = evalDateGp.getPropertyValue();
+			File smtBackUpDataDirectory = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
+			String dateStr = evalDateGp.getPropertyValue();
 
-				if (supportedUntil != null && smtBackUpDirectory != null && StringUtils.isNotBlank(dateStr)
-						&& smtBackUpDirectory.exists() && smtBackUpDirectory.isDirectory()
-						&& supportedUntil.after(today.getTime())) {
+			if (evalDateGp != null && StringUtils.isNotBlank(dateStr) && smtBackUpDirectory.exists()
+					&& (smtBackUpDirectory.isDirectory() && smtBackUpDirectory.listFiles().length > 0)
+					&& ((smtBackUpDataDirectory.exists() && smtBackUpDataDirectory.isDirectory()))
+					&& (smtBackUpDataDirectory.listFiles().length > 0)
+					&& supportedUntil.after(today.getTime())) {
 
-					date.setTime(sdf.parse(dateStr));
-					while (today.after(date)) {
-						// eliminate weekend days
-						if (date.get(Calendar.DAY_OF_WEEK) != 1 && date.get(Calendar.DAY_OF_WEEK) != 7) {
-							runSMTEvaluatorAndLogOrPushData();
-						}
-						date.add(Calendar.DAY_OF_YEAR, 1);
-						dateStr = sdf.format(date.getTime());
-						evalDateGp.setPropertyValue(dateStr);
-						Context.getAdministrationService().saveGlobalProperty(evalDateGp);
+				date.setTime(sdf.parse(dateStr));
+				while (today.after(date)) {
+					// eliminate weekend days
+					if (date.get(Calendar.DAY_OF_WEEK) != 1 && date.get(Calendar.DAY_OF_WEEK) != 7) {
+						runSMTEvaluatorAndLogOrPushData();
 					}
-					// finally
-					evalDateGp.setPropertyValue("");
+					date.add(Calendar.DAY_OF_YEAR, 1);
+					dateStr = sdf.format(date.getTime());
+					evalDateGp.setPropertyValue(dateStr);
 					Context.getAdministrationService().saveGlobalProperty(evalDateGp);
 				}
+				// finally
+				evalDateGp.setPropertyValue("");
+				Context.getAdministrationService().saveGlobalProperty(evalDateGp);
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();

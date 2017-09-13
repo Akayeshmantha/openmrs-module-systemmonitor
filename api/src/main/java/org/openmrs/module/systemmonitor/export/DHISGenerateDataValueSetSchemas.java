@@ -415,6 +415,8 @@ public class DHISGenerateDataValueSetSchemas {
 					javaRuntimeVersion, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_systemDateTime",
 					systemDateTime, systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_executionDateTime",
+					date.getTime().toString(), systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_fileSystemEncoding",
 					fileSystemEncoding, systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemInfo_openMRSVersion",

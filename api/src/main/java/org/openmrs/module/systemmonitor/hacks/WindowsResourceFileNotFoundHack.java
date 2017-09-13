@@ -88,6 +88,7 @@ public class WindowsResourceFileNotFoundHack {
 			+ "\nDATA-ELEMENT_previousMonthObservations=BBB69AiiuDD"
 			+ "\nDATA-ELEMENT_previousWeekPatients=BBB69AiiuEE"
 			+ "\nDATA-ELEMENT_previousMonthPatients=BBB69AiiuFF"
+			+ "\nDATA-ELEMENT_executionDateTime=BAB69AiiuZZ"
 			+ "\n------------------------------------------------------------------------------------" + "\n\n"
 			+ "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 			+ "\n## MAPPING DHIS SUPPORTED ORGANISATION UNITS"
