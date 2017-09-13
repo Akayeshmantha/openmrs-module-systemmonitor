@@ -1385,14 +1385,12 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 					.getGlobalPropertyObject(ConfigurableGlobalProperties.EVALUATION_AND_REPORTING_DATE);
 			File smtBackUpDirectory = SystemMonitorConstants.SYSTEMMONITOR_DIRECTORY;
 			File smtBackUpDataDirectory = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
-			File smtBackUpLogsDirectory = SystemMonitorConstants.SYSTEMMONITOR_LOGSFOLDER;
-			String dateStr = evalDateGp.getPropertyValue();
+			String dateStr = evalDateGp != null ? evalDateGp.getPropertyValue() : null;
 
-			if (evalDateGp != null && StringUtils.isNotBlank(dateStr) && smtBackUpDirectory.exists()
-					&& smtBackUpDirectory.isDirectory() && smtBackUpDirectory.listFiles().length > 0
-					&& ((smtBackUpLogsDirectory.exists() && smtBackUpLogsDirectory.isDirectory())
-							|| (smtBackUpDataDirectory.exists() && smtBackUpDataDirectory.isDirectory()))
-					&& (smtBackUpLogsDirectory.listFiles().length > 0 || smtBackUpDataDirectory.listFiles().length > 0)
+			if (StringUtils.isNotBlank(dateStr) && smtBackUpDirectory.exists()
+					&& (smtBackUpDirectory.isDirectory() && smtBackUpDirectory.listFiles().length > 0)
+					&& ((smtBackUpDataDirectory.exists() && smtBackUpDataDirectory.isDirectory()))
+					&& (smtBackUpDataDirectory.listFiles().length > 0)
 					&& supportedUntil.after(today.getTime())) {
 
 				date.setTime(sdf.parse(dateStr));
