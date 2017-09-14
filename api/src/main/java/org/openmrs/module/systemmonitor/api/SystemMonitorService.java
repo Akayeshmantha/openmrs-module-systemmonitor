@@ -13,6 +13,9 @@
  */
 package org.openmrs.module.systemmonitor.api;
 
+import java.io.File;
+import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openmrs.Concept;
@@ -23,9 +26,6 @@ import org.openmrs.api.OpenmrsService;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.scheduler.TaskDefinition;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.File;
-import java.util.Date;
 
 /**
  * This service exposes module's core functionality. It is a Spring managed bean
@@ -269,7 +269,7 @@ public interface SystemMonitorService extends OpenmrsService {
 
 	Integer unitTestingTheseMetrics();
 
-	JSONObject pushMonitoredDataToDHIS();
+	String pushMonitoredDataToDHIS();
 
 	JSONObject getDataToPushToDHIS();
 
@@ -391,4 +391,8 @@ public interface SystemMonitorService extends OpenmrsService {
 	public Integer fetchTotalPatientsCountPreviousWeek();
 
 	public Integer fetchTotalPatientsCountPreviousMonth();
+	
+	void updatePreviouslySubmittedOrMissedSMTData();
+
+	Integer numberofBackedUpDataFiles();
 }

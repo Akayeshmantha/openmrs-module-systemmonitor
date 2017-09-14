@@ -45,6 +45,8 @@ public class DWRSystemMonitorService {
 	}
 
 	private JSONObject prepareClientMonitoredData() {
+		Context.getService(SystemMonitorService.class).updatePreviouslySubmittedOrMissedSMTData();
+		
 		JSONObject allDataValues = new JSONObject();
 		JSONArray dataToBePushedOrExported = Context.getService(SystemMonitorService.class)
 				.fetchDataToBePushedAtClientLevelOrExported();

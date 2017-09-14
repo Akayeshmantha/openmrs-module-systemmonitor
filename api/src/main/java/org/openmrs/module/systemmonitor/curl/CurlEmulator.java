@@ -48,11 +48,12 @@ public class CurlEmulator {
 				WebResource webResource = client.resource(urlString);
 				ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
 				if (response.getStatus() != 200) {
-					throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-				}
-
-				return new JSONObject(response.getEntity(String.class));
-
+					if(response.getStatus() == 429) {
+						//too many requests
+					} else
+						throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+				} else
+					return new JSONObject(response.getEntity(String.class));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

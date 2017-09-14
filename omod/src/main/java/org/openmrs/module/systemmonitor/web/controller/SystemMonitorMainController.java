@@ -13,6 +13,12 @@
  */
 package org.openmrs.module.systemmonitor.web.controller;
 
+import java.lang.management.ManagementFactory;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONObject;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.systemmonitor.ConfigureGPs;
@@ -27,11 +33,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.servlet.http.HttpServletRequest;
-import java.lang.management.ManagementFactory;
-import java.util.Calendar;
-import java.util.List;
 
 /**
  * The main controller.
@@ -48,12 +49,14 @@ public class SystemMonitorMainController {
 	@RequestMapping(value = "/module/systemmonitor/pushToDHIS", method = RequestMethod.GET)
 	public void renderPushToDHIS(ModelMap model) {
 		model.addAttribute("response", "");
+		model.addAttribute("numberofBackedUps", Context.getService(SystemMonitorService.class).numberofBackedUpDataFiles());
 	}
 
 	@RequestMapping(value = "/module/systemmonitor/pushToDHIS", method = RequestMethod.POST)
 	public void pushToDHIS(ModelMap model) {
-		JSONObject response = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
+		String response = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
 
+		model.addAttribute("numberofBackedUps", Context.getService(SystemMonitorService.class).numberofBackedUpDataFiles());
 		model.addAttribute("response", response != null ? response
 				: Context.getMessageSourceService().getMessage("systemmonitor.pushToDHIS.serverInternetFailure"));
 	}

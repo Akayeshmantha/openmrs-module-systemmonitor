@@ -13,6 +13,18 @@
  */
 package org.openmrs.module.systemmonitor.api.impl;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -33,28 +45,11 @@ import org.openmrs.module.systemmonitor.SystemMonitorConstants;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
 import org.openmrs.module.systemmonitor.curl.CurlEmulator;
-import org.openmrs.module.systemmonitor.export.DHISGenerateDataValueSetSchemas;
 import org.openmrs.module.systemmonitor.hacks.WindowsResourceFileNotFoundHack;
 import org.openmrs.module.systemmonitor.mapping.DHISMapping;
 import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.util.OpenmrsUtil;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 /**
  * It is a default implementation of {@link SystemMonitorService}.
@@ -82,542 +77,542 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 
 	@Override
 	public String getYesterdayStartDate() {
-		return dao.getYesterdayStartDate();
+		return getDao().getYesterdayStartDate();
 	}
 
 	@Override
 	public String getYesterdayEndDate() {
-		return dao.getYesterdayEndDate();
+		return getDao().getYesterdayEndDate();
 	}
 
 	@Override
 	public String getThisWeekEndDate() {
-		return dao.getThisWeekEndDate();
+		return getDao().getThisWeekEndDate();
 	}
 
 	@Override
 	public String getThisWeekStartDate() {
-		return dao.getThisWeekStartDate();
+		return getDao().getThisWeekStartDate();
 	}
 
 	@Override
 	public String getToday() {
-		return dao.getToday();
+		return getDao().getToday();
 	}
 
 	@Override
 	public String getLastWeekStartDate() {
-		return dao.getLastWeekStartDate();
+		return getDao().getLastWeekStartDate();
 	}
 
 	@Override
 	public String getLastYearEndDate() {
-		return dao.getLastYearEndDate();
+		return getDao().getLastYearEndDate();
 	}
 
 	@Override
 	public String getLastYearStartDate() {
-		return dao.getLastYearStartDate();
+		return getDao().getLastYearStartDate();
 	}
 
 	@Override
 	public String getThisYearEndDate() {
-		return dao.getThisYearEndDate();
+		return getDao().getThisYearEndDate();
 	}
 
 	@Override
 	public String getThisYearStartDate() {
-		return dao.getThisYearStartDate();
+		return getDao().getThisYearStartDate();
 	}
 
 	@Override
 	public String getLastMonthEndDate() {
-		return dao.getLastMonthEndDate();
+		return getDao().getLastMonthEndDate();
 	}
 
 	@Override
 	public String getLastMonthStartDate() {
-		return dao.getLastMonthStartDate();
+		return getDao().getLastMonthStartDate();
 	}
 
 	@Override
 	public String getThisMonthEndDate() {
-		return dao.getThisMonthEndDate();
+		return getDao().getThisMonthEndDate();
 	}
 
 	@Override
 	public String getThisMonthStartDate() {
-		return dao.getThisMonthStartDate();
+		return getDao().getThisMonthStartDate();
 	}
 
 	@Override
 	public String getLastWeekEndDate() {
-		return dao.getLastWeekEndDate();
+		return getDao().getLastWeekEndDate();
 	}
 
 	@Override
 	public Integer getTotalPatientsToday(Boolean includeRetired) {
-		return dao.getTotalPatientsToday(includeRetired);
+		return getDao().getTotalPatientsToday(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalVisitsToday(Boolean includeRetired) {
-		return dao.getTotalVisitsToday(includeRetired);
+		return getDao().getTotalVisitsToday(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalObservationsToday(Boolean includeRetired) {
-		return dao.getTotalObservationsToday(includeRetired);
+		return getDao().getTotalObservationsToday(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalUsersToday(Boolean includeRetired) {
-		return dao.getTotalUsersToday(includeRetired);
+		return getDao().getTotalUsersToday(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalEncountersToday(Boolean includeRetired) {
-		return dao.getTotalEncountersToday(includeRetired);
+		return getDao().getTotalEncountersToday(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalEncountersThisWeek(Boolean includeRetired) {
-		return dao.getTotalEncountersThisWeek(includeRetired);
+		return getDao().getTotalEncountersThisWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalEncountersLastWeek(Boolean includeRetired) {
-		return dao.getTotalEncountersLastWeek(includeRetired);
+		return getDao().getTotalEncountersLastWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalEncountersLastMonth(Boolean includeRetired) {
-		return dao.getTotalEncountersLastMonth(includeRetired);
+		return getDao().getTotalEncountersLastMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalEncountersThisMonth(Boolean includeRetired) {
-		return dao.getTotalEncountersThisMonth(includeRetired);
+		return getDao().getTotalEncountersThisMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalEncountersThisYear(Boolean includeRetired) {
-		return dao.getTotalEncountersThisYear(includeRetired);
+		return getDao().getTotalEncountersThisYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalEncountersLastYear(Boolean includeRetired) {
-		return dao.getTotalEncountersLastYear(includeRetired);
+		return getDao().getTotalEncountersLastYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalUsersThisWeek(Boolean includeRetired) {
-		return dao.getTotalUsersThisWeek(includeRetired);
+		return getDao().getTotalUsersThisWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalUsersLastWeek(Boolean includeRetired) {
-		return dao.getTotalUsersLastWeek(includeRetired);
+		return getDao().getTotalUsersLastWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalUsersLastMonth(Boolean includeRetired) {
-		return dao.getTotalUsersLastMonth(includeRetired);
+		return getDao().getTotalUsersLastMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalUsersThisMonth(Boolean includeRetired) {
-		return dao.getTotalUsersThisMonth(includeRetired);
+		return getDao().getTotalUsersThisMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalUsersThisYear(Boolean includeRetired) {
-		return dao.getTotalUsersThisYear(includeRetired);
+		return getDao().getTotalUsersThisYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalUsersLastYear(Boolean includeRetired) {
-		return dao.getTotalUsersLastYear(includeRetired);
+		return getDao().getTotalUsersLastYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalObservationsThisWeek(Boolean includeRetired) {
-		return dao.getTotalObservationsThisWeek(includeRetired);
+		return getDao().getTotalObservationsThisWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalObservationsLastWeek(Boolean includeRetired) {
-		return dao.getTotalObservationsLastWeek(includeRetired);
+		return getDao().getTotalObservationsLastWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalObservationsLastMonth(Boolean includeRetired) {
-		return dao.getTotalObservationsLastMonth(includeRetired);
+		return getDao().getTotalObservationsLastMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalObservationsThisMonth(Boolean includeRetired) {
-		return dao.getTotalObservationsThisMonth(includeRetired);
+		return getDao().getTotalObservationsThisMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalObservationsThisYear(Boolean includeRetired) {
-		return dao.getTotalObservationsThisYear(includeRetired);
+		return getDao().getTotalObservationsThisYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalObservationsLastYear(Boolean includeRetired) {
-		return dao.getTotalObservationsLastYear(includeRetired);
+		return getDao().getTotalObservationsLastYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalVisitsThisWeek(Boolean includeRetired) {
-		return dao.getTotalVisitsThisWeek(includeRetired);
+		return getDao().getTotalVisitsThisWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalVisitsLastWeek(Boolean includeRetired) {
-		return dao.getTotalVisitsLastWeek(includeRetired);
+		return getDao().getTotalVisitsLastWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalVisitsThisMonth(Boolean includeRetired) {
-		return dao.getTotalVisitsThisMonth(includeRetired);
+		return getDao().getTotalVisitsThisMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalVisitsLastMonth(Boolean includeRetired) {
-		return dao.getTotalVisitsLastMonth(includeRetired);
+		return getDao().getTotalVisitsLastMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalVisitsThisYear(Boolean includeRetired) {
-		return dao.getTotalVisitsThisYear(includeRetired);
+		return getDao().getTotalVisitsThisYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalVisitsLastYear(Boolean includeRetired) {
-		return dao.getTotalVisitsLastYear(includeRetired);
+		return getDao().getTotalVisitsLastYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalPatientsThisWeek(Boolean includeRetired) {
-		return dao.getTotalPatientsThisWeek(includeRetired);
+		return getDao().getTotalPatientsThisWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalPatientsLastWeek(Boolean includeRetired) {
-		return dao.getTotalPatientsLastWeek(includeRetired);
+		return getDao().getTotalPatientsLastWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalPatientsLastMonth(Boolean includeRetired) {
-		return dao.getTotalPatientsLastMonth(includeRetired);
+		return getDao().getTotalPatientsLastMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalPatientsThisMonth(Boolean includeRetired) {
-		return dao.getTotalPatientsThisMonth(includeRetired);
+		return getDao().getTotalPatientsThisMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalPatientsThisYear(Boolean includeRetired) {
-		return dao.getTotalPatientsThisYear(includeRetired);
+		return getDao().getTotalPatientsThisYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalPatientsLastYear(Boolean includeRetired) {
-		return dao.getTotalPatientsLastYear(includeRetired);
+		return getDao().getTotalPatientsLastYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalLocationsToday(Boolean includeRetired) {
-		return dao.getTotalLocationsToday(includeRetired);
+		return getDao().getTotalLocationsToday(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalLocationsThisWeek(Boolean includeRetired) {
-		return dao.getTotalLocationsThisWeek(includeRetired);
+		return getDao().getTotalLocationsThisWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalLocationsLastWeek(Boolean includeRetired) {
-		return dao.getTotalLocationsLastWeek(includeRetired);
+		return getDao().getTotalLocationsLastWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalLocationsLastMonth(Boolean includeRetired) {
-		return dao.getTotalLocationsLastMonth(includeRetired);
+		return getDao().getTotalLocationsLastMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalLocationsThisMonth(Boolean includeRetired) {
-		return dao.getTotalLocationsThisMonth(includeRetired);
+		return getDao().getTotalLocationsThisMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalLocationsThisYear(Boolean includeRetired) {
-		return dao.getTotalLocationsThisYear(includeRetired);
+		return getDao().getTotalLocationsThisYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalLocationsLastYear(Boolean includeRetired) {
-		return dao.getTotalLocationsLastYear(includeRetired);
+		return getDao().getTotalLocationsLastYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalConceptsLastYear(Boolean includeRetired) {
-		return dao.getTotalConceptsLastYear(includeRetired);
+		return getDao().getTotalConceptsLastYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalConceptsToday(Boolean includeRetired) {
-		return dao.getTotalConceptsToday(includeRetired);
+		return getDao().getTotalConceptsToday(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalConceptsThisWeek(Boolean includeRetired) {
-		return dao.getTotalConceptsThisWeek(includeRetired);
+		return getDao().getTotalConceptsThisWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalConceptsLastWeek(Boolean includeRetired) {
-		return dao.getTotalConceptsLastWeek(includeRetired);
+		return getDao().getTotalConceptsLastWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalConceptsLastMonth(Boolean includeRetired) {
-		return dao.getTotalConceptsLastMonth(includeRetired);
+		return getDao().getTotalConceptsLastMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalConceptsThisMonth(Boolean includeRetired) {
-		return dao.getTotalConceptsThisMonth(includeRetired);
+		return getDao().getTotalConceptsThisMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalConceptsThisYear(Boolean includeRetired) {
-		return dao.getTotalConceptsThisYear(includeRetired);
+		return getDao().getTotalConceptsThisYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalFormsLastYear(Boolean includeRetired) {
-		return dao.getTotalFormsLastYear(includeRetired);
+		return getDao().getTotalFormsLastYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalFormsToday(Boolean includeRetired) {
-		return dao.getTotalFormsToday(includeRetired);
+		return getDao().getTotalFormsToday(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalFormsThisWeek(Boolean includeRetired) {
-		return dao.getTotalFormsThisWeek(includeRetired);
+		return getDao().getTotalFormsThisWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalFormsLastWeek(Boolean includeRetired) {
-		return dao.getTotalFormsLastWeek(includeRetired);
+		return getDao().getTotalFormsLastWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalFormsLastMonth(Boolean includeRetired) {
-		return dao.getTotalFormsLastMonth(includeRetired);
+		return getDao().getTotalFormsLastMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalFormsThisMonth(Boolean includeRetired) {
-		return dao.getTotalFormsThisMonth(includeRetired);
+		return getDao().getTotalFormsThisMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalFormsThisYear(Boolean includeRetired) {
-		return dao.getTotalFormsThisYear(includeRetired);
+		return getDao().getTotalFormsThisYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalOrdersLastYear(Boolean includeRetired) {
-		return dao.getTotalOrdersLastYear(includeRetired);
+		return getDao().getTotalOrdersLastYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalOrdersToday(Boolean includeRetired) {
-		return dao.getTotalOrdersToday(includeRetired);
+		return getDao().getTotalOrdersToday(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalOrdersThisWeek(Boolean includeRetired) {
-		return dao.getTotalOrdersThisWeek(includeRetired);
+		return getDao().getTotalOrdersThisWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalOrdersLastWeek(Boolean includeRetired) {
-		return dao.getTotalOrdersLastWeek(includeRetired);
+		return getDao().getTotalOrdersLastWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalOrdersLastMonth(Boolean includeRetired) {
-		return dao.getTotalOrdersLastMonth(includeRetired);
+		return getDao().getTotalOrdersLastMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalOrdersThisMonth(Boolean includeRetired) {
-		return dao.getTotalOrdersThisMonth(includeRetired);
+		return getDao().getTotalOrdersThisMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalProvidersLastYear(Boolean includeRetired) {
-		return dao.getTotalProvidersLastYear(includeRetired);
+		return getDao().getTotalProvidersLastYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalProvidersToday(Boolean includeRetired) {
-		return dao.getTotalProvidersToday(includeRetired);
+		return getDao().getTotalProvidersToday(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalProvidersThisWeek(Boolean includeRetired) {
-		return dao.getTotalProvidersThisWeek(includeRetired);
+		return getDao().getTotalProvidersThisWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalProvidersLastWeek(Boolean includeRetired) {
-		return dao.getTotalProvidersLastWeek(includeRetired);
+		return getDao().getTotalProvidersLastWeek(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalProvidersLastMonth(Boolean includeRetired) {
-		return dao.getTotalProvidersLastMonth(includeRetired);
+		return getDao().getTotalProvidersLastMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalProvidersThisMonth(Boolean includeRetired) {
-		return dao.getTotalProvidersThisMonth(includeRetired);
+		return getDao().getTotalProvidersThisMonth(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalProvidersThisYear(Boolean includeRetired) {
-		return dao.getTotalProvidersThisYear(includeRetired);
+		return getDao().getTotalProvidersThisYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalOrdersThisYear(Boolean includeRetired) {
-		return dao.getTotalOrdersThisYear(includeRetired);
+		return getDao().getTotalOrdersThisYear(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalEncounters(Boolean includeRetired) {
-		return dao.getTotalEncounters(includeRetired);
+		return getDao().getTotalEncounters(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalUsers(Boolean includeRetired) {
-		return dao.getTotalUsers(includeRetired);
+		return getDao().getTotalUsers(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalObservations(Boolean includeRetired) {
-		return dao.getTotalObservations(includeRetired);
+		return getDao().getTotalObservations(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalVisits(Boolean includeRetired) {
-		return dao.getTotalVisits(includeRetired);
+		return getDao().getTotalVisits(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalPatients(Boolean includeRetired) {
-		return dao.getTotalPatients(includeRetired);
+		return getDao().getTotalPatients(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalLocations(Boolean includeRetired) {
-		return dao.getTotalLocations(includeRetired);
+		return getDao().getTotalLocations(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalConcepts(Boolean includeRetired) {
-		return dao.getTotalConcepts(includeRetired);
+		return getDao().getTotalConcepts(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalForms(Boolean includeRetired) {
-		return dao.getTotalForms(includeRetired);
+		return getDao().getTotalForms(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalOrders(Boolean includeRetired) {
-		return dao.getTotalOrders(includeRetired);
+		return getDao().getTotalOrders(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalProviders(Boolean includeRetired) {
-		return dao.getTotalProviders(includeRetired);
+		return getDao().getTotalProviders(includeRetired);
 	}
 
 	@Override
 	public Integer getTotalViralLoadTestsEver() {
-		return dao.getTotalViralLoadTestsEver();
+		return getDao().getTotalViralLoadTestsEver();
 	}
 
 	@Override
 	public Integer getTotalViralLoadTestsLastSixMonths() {
-		return dao.getTotalViralLoadTestsLastSixMonths();
+		return getDao().getTotalViralLoadTestsLastSixMonths();
 	}
 
 	@Override
 	public Integer getTotalViralLoadTestsLastYear() {
-		return dao.getTotalViralLoadTestsLastYear();
+		return getDao().getTotalViralLoadTestsLastYear();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalVisits() {
-		return dao.rwandaPIHEMTGetTotalVisits();
+		return getDao().rwandaPIHEMTGetTotalVisits();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalActivePatients() {
-		return dao.rwandaPIHEMTGetTotalActivePatients();
+		return getDao().rwandaPIHEMTGetTotalActivePatients();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalNewPatients() {
-		return dao.rwandaPIHEMTGetTotalNewPatients();
+		return getDao().rwandaPIHEMTGetTotalNewPatients();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalEncounters() {
-		return dao.rwandaPIHEMTGetTotalEncounters();
+		return getDao().rwandaPIHEMTGetTotalEncounters();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalEncountersForYesterday() {
-		return dao.rwandaPIHEMTGetTotalEncountersForYesterday();
+		return getDao().rwandaPIHEMTGetTotalEncountersForYesterday();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalObservations() {
-		return dao.rwandaPIHEMTGetTotalObservations();
+		return getDao().rwandaPIHEMTGetTotalObservations();
 	}
 
 	@Override
 	public String getOneYearBackDate() {
-		return dao.getOneYearBackDate();
+		return getDao().getOneYearBackDate();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalUsers() {
-		return dao.rwandaPIHEMTGetTotalUsers();
+		return getDao().rwandaPIHEMTGetTotalUsers();
 	}
 
 	@Override
 	public Person[] getAllPersonsWhoArePatients() {
-		return dao.getAllPersonsWhoArePatients();
+		return getDao().getAllPersonsWhoArePatients();
 	}
 
 	@Override
 	public String getOneHalfYearBackDate() {
-		return dao.getOneHalfYearBackDate();
+		return getDao().getOneHalfYearBackDate();
 	}
 
 	@Override
@@ -719,160 +714,26 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 
 	@Override
 	public Integer unitTestingTheseMetrics() {
-		return dao.unitTestingTheseMetrics();
+		return getDao().unitTestingTheseMetrics();
 	}
 
 	@Override
 	public JSONObject getDataToPushToDHIS() {
-		return DHISGenerateDataValueSetSchemas.generateRwandaSPHEMTDHISDataValueSets().length() > 0
-				? DHISGenerateDataValueSetSchemas.generateRwandaSPHEMTDHISDataValueSets().getJSONObject("toBePushed")
-				: null;
+		return getDao().getDataToPushToDHIS();
 	}
 
 	@Override
-	public JSONObject pushMonitoredDataToDHIS() {
+	public String pushMonitoredDataToDHIS() {
 		updatePreviouslySubmittedOrMissedSMTData();
-		return runSMTEvaluatorAndLogOrPushData();
-	}
-
-	private JSONObject runSMTEvaluatorAndLogOrPushData() {
-		JSONObject response = null;
-		JSONObject dataToBePushed = getDataToPushToDHIS();
-
-		String dhisUserName = Context.getAdministrationService()
-				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
-		String dhisPassword = Context.getAdministrationService()
-				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_PASSWORD);
-		String dhisPostUrl = (Context.getAdministrationService()
-				.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)) != null
-						? Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)
-								+ SystemMonitorConstants.DHIS_API_DATAVALUES_URL
-						: null;
-		File backupFile = getSystemBackUpFile();
-
-		if (StringUtils.isNotBlank(dhisPostUrl) && StringUtils.isNotBlank(dhisPassword)
-				&& StringUtils.isNotBlank(dhisUserName) && dataToBePushed != null && dataToBePushed.length() > 0
-				&& dataToBePushed.getJSONArray("dataValues") != null
-				&& dataToBePushed.getJSONArray("dataValues").length() > 0) {
-			try {
-				response = CurlEmulator.post(dhisPostUrl, dataToBePushed, dhisUserName, dhisPassword);
-				if (response != null) {
-					logCurlEmulatorPostResponse(response.toString());
-					if (backupFile.exists()) {
-						backupFile.delete();
-					}
-					pushPreviouslyFailedDataWhenOutOfInternet();
-				} else {
-					backupSystemMonitorDataToPush(dataToBePushed);
-				}
-
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-			} catch (SocketException e) {
-				e.printStackTrace();
-			}
-		}
-		return response;
-	}
-
-	private void pushPreviouslyFailedDataWhenOutOfInternet() {
-		File dataDir = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
-		String dhisUserName = Context.getAdministrationService()
-				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
-		String dhisPassword = Context.getAdministrationService()
-				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_PASSWORD);
-		String dhisPostUrl = (Context.getAdministrationService()
-				.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)) != null
-						? Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)
-								+ SystemMonitorConstants.DHIS_API_DATAVALUES_URL
-						: null;
-		JSONObject response = null;
-		if (dataDir.exists() && dataDir.isDirectory() && dataDir.listFiles().length > 0) {
-			for (int i = 0; i < dataDir.listFiles().length; i++) {
-				File backup = dataDir.listFiles()[i];
-
-				if (backup.getPath().startsWith(SystemMonitorConstants.SYSTEMMONITOR_DATA_PREFIX)
-						&& backup.getPath().endsWith(".json") && backup.length() > 0) {
-					JSONObject data = new JSONObject(readFileToString(backup));
-
-					try {
-						response = CurlEmulator.post(dhisPostUrl, data, dhisUserName, dhisPassword);
-						if (response != null) {
-							logCurlEmulatorPostResponse(response.toString());
-							backup.delete();
-						}
-
-					} catch (UnknownHostException e) {
-						e.printStackTrace();
-					} catch (SocketException e) {
-						e.printStackTrace();
-					}
-				}
-				if (backup.length() == 0)
-					backup.delete();
-			}
-		}
-	}
-
-	private File getSystemLogFile() {
-		return new File(SystemMonitorConstants.SYSTEMMONITOR_LOGS_DIRECTORYPATH
-				+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_LOGS_PREFIX + new SimpleDateFormat("yyyyMMdd")
-						.format(getEvaluationAndReportingDate())
-				+ ".log");
-	}
-
-	private File getSystemBackUpFile() {
-		return new File(SystemMonitorConstants.SYSTEMMONITOR_DATA_DIRECTORYPATH
-				+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_DATA_PREFIX + new SimpleDateFormat("yyyyMMdd")
-						.format(getEvaluationAndReportingDate())
-				+ ".json");
+		String resp = getDao().pushPreviouslyFailedDataWhenOutOfInternet();
+		JSONObject r2 = getDao().runSMTEvaluatorAndLogOrPushData();
+		
+		return (StringUtils.isNotBlank(resp) ? resp : "") + (r2 != null ? r2.toString() : "");
 	}
 
 	@Override
 	public void backupSystemMonitorDataToPush(JSONObject dhisValues) {
-		if (dhisValues != null && dhisValues.length() > 0) {
-			File backupFolder = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
-			File backupFile = getSystemBackUpFile();
-
-			try {
-				if (!backupFolder.exists()) {
-					backupFolder.mkdirs();
-				}
-				if (!backupFile.exists()) {
-					backupFile.createNewFile();
-				}
-
-				FileWriter fileWritter = new FileWriter(backupFile);
-				BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-				bufferWritter.write(dhisValues.toString());
-				bufferWritter.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private void logCurlEmulatorPostResponse(String response) {
-		if (response != null && response.length() > 0) {
-			File logsFolder = SystemMonitorConstants.SYSTEMMONITOR_LOGSFOLDER;
-			File logsFile = getSystemLogFile();
-
-			try {
-				if (!logsFolder.exists()) {
-					logsFolder.mkdirs();
-				}
-				if (!logsFile.exists()) {
-					logsFile.createNewFile();
-				}
-
-				FileWriter fileWritter = new FileWriter(logsFile, true);
-				BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-				bufferWritter.write(getEvaluationAndReportingDate().toString() + "\n" + response + "\n\n");
-				bufferWritter.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		getDao().backupSystemMonitorDataToPush(dhisValues);
 	}
 
 	@Override
@@ -923,28 +784,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 
 	private String readFileToString(File file) {
-		String string = "";
-		if (file != null && file.isFile()) {
-			BufferedReader br = null;
-
-			try {
-				String line;
-				br = new BufferedReader(new FileReader(file));
-				while ((line = br.readLine()) != null) {
-					string += line + "\n";
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					if (br != null)
-						br.close();
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
-			}
-		}
-		return string;
+		return getDao().readFileToString(file);
 	}
 
 	@Override
@@ -1063,82 +903,82 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 
 	@Override
 	public Integer getTotalCD4CountTestsEver() {
-		return dao.getTotalCD4CountTestsEver();
+		return getDao().getTotalCD4CountTestsEver();
 	}
 
 	@Override
 	public Integer getTotalCD4CountTestsLastSixMonths() {
-		return dao.getTotalCD4CountTestsLastSixMonths();
+		return getDao().getTotalCD4CountTestsLastSixMonths();
 	}
 
 	@Override
 	public Integer getTotalCD4CountTestsLastYear() {
-		return dao.getTotalCD4CountTestsLastYear();
+		return getDao().getTotalCD4CountTestsLastYear();
 	}
 
 	@Override
 	public Program getHIVProgram() {
-		return dao.getHIVProgram();
+		return getDao().getHIVProgram();
 	}
 
 	@Override
 	public Concept getReasonForExitingCareConcept() {
-		return dao.getReasonForExitingCareConcept();
+		return getDao().getReasonForExitingCareConcept();
 	}
 
 	@Override
 	public Concept getCD4CountConcept() {
-		return dao.getCD4CountConcept();
+		return getDao().getCD4CountConcept();
 	}
 
 	@Override
 	public Concept getViralLoadsConcept() {
-		return dao.getViralLoadsConcept();
+		return getDao().getViralLoadsConcept();
 	}
 
 	@Override
 	public Concept getARVDrugsConceptSet() {
-		return dao.getARVDrugsConceptSet();
+		return getDao().getARVDrugsConceptSet();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalObservationsForYesterday() {
-		return dao.rwandaPIHEMTGetTotalObservationsForYesterday();
+		return getDao().rwandaPIHEMTGetTotalObservationsForYesterday();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalUsersForYesterday() {
-		return dao.rwandaPIHEMTGetTotalUsersForYesterday();
+		return getDao().rwandaPIHEMTGetTotalUsersForYesterday();
 	}
 
 	@Override
 	public Integer getTotalViralLoadTestsForYesterday() {
-		return dao.getTotalViralLoadTestsForYesterday();
+		return getDao().getTotalViralLoadTestsForYesterday();
 	}
 
 	@Override
 	public Integer getTotalCD4CountTestsForYesterday() {
-		return dao.getTotalCD4CountTestsForYesterday();
+		return getDao().getTotalCD4CountTestsForYesterday();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalAdultInitialEncountersForYesterday() {
-		return dao.rwandaPIHEMTGetTotalAdultInitialEncountersForYesterday();
+		return getDao().rwandaPIHEMTGetTotalAdultInitialEncountersForYesterday();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalAdultReturnEncountersForYesterday() {
-		return dao.rwandaPIHEMTGetTotalAdultReturnEncountersForYesterday();
+		return getDao().rwandaPIHEMTGetTotalAdultReturnEncountersForYesterday();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalPedsInitialEncountersForYesterday() {
-		return dao.rwandaPIHEMTGetTotalPedsInitialEncountersForYesterday();
+		return getDao().rwandaPIHEMTGetTotalPedsInitialEncountersForYesterday();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalPedsReturnEncountersForYesterday() {
-		return dao.rwandaPIHEMTGetTotalPedsReturnEncountersForYesterday();
+		return getDao().rwandaPIHEMTGetTotalPedsReturnEncountersForYesterday();
 	}
 
 	@Override
@@ -1233,12 +1073,12 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalNewPatientsForYesterday() {
-		return dao.rwandaPIHEMTGetTotalNewPatientsForYesterday();
+		return getDao().rwandaPIHEMTGetTotalNewPatientsForYesterday();
 	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalActivePatientsForYesterday() {
-		return dao.rwandaPIHEMTGetTotalActivePatientsForYesterday();
+		return getDao().rwandaPIHEMTGetTotalActivePatientsForYesterday();
 	}
 
 	@Override
@@ -1268,7 +1108,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 
 	@Override
 	public Date getEvaluationAndReportingDate() {
-		return dao.getEvaluationAndReportingDate();
+		return getDao().getEvaluationAndReportingDate();
 	}
 
 	@Override
@@ -1307,7 +1147,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 
 	@Override
 	public TaskDefinition getTaskByClass(String taskClass) throws DAOException {
-		return dao.getTaskByClass(taskClass);
+		return getDao().getTaskByClass(taskClass);
 	}
 
 	@Override
@@ -1370,108 +1210,71 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		return newDataValues;
 	}
 
-	/**
-	 * this must only run once for Sites where SMT had been installed already,
-	 * this functionality can only run until 31st/march/2016 which means by this
-	 * date all Sites must have been upgraded
-	 */
-	private void updatePreviouslySubmittedOrMissedSMTData() {
-		try {
-			SimpleDateFormat sdf = dao.getSdf();
-			String s = Context.getAdministrationService().getGlobalProperty(SystemMonitorConstants.SMT_EVAL_SD_SUPPORT_TO);
-			Date supportedUntil = StringUtils.isNotBlank(s) ? sdf.parse(s) : null;
-			Calendar date = Calendar.getInstance(Context.getLocale());
-			Calendar today = Calendar.getInstance(Context.getLocale());
-			GlobalProperty evalDateGp = Context.getAdministrationService()
-					.getGlobalPropertyObject(ConfigurableGlobalProperties.EVALUATION_AND_REPORTING_DATE);
-			File smtBackUpDirectory = SystemMonitorConstants.SYSTEMMONITOR_DIRECTORY;
-			File smtBackUpDataDirectory = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
-			String dateStr = evalDateGp != null ? evalDateGp.getPropertyValue() : null;
-
-			if(smtBackUpDirectory == null || !smtBackUpDirectory.exists())
-				smtBackUpDirectory.mkdir();
-			if(smtBackUpDataDirectory == null || !smtBackUpDataDirectory.exists())
-				smtBackUpDataDirectory.mkdirs();
-				
-			if (supportedUntil != null && StringUtils.isNotBlank(dateStr) && supportedUntil.before(today.getTime())) {
-				date.setTime(sdf.parse(dateStr));
-				while (today.after(date)) {
-					// eliminate weekend days
-					if (date.get(Calendar.DAY_OF_WEEK) != 1 && date.get(Calendar.DAY_OF_WEEK) != 7) {
-						System.out.println("\nINFO - Running SMT for Date: " + dateStr);
-						runSMTEvaluatorAndLogOrPushData();
-					}
-					date.add(Calendar.DAY_OF_YEAR, 1);
-					dateStr = sdf.format(date.getTime());
-					evalDateGp.setPropertyValue(dateStr);
-					Context.getAdministrationService().saveGlobalProperty(evalDateGp);
-				}
-				// finally
-				evalDateGp.setPropertyValue("");
-				Context.getAdministrationService().saveGlobalProperty(evalDateGp);
-			} else {
-				System.out.println("FAILURE:::::::" + supportedUntil + ":::::" + dateStr);
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-	}
-
 	@Override
 	public Integer rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment() {
-		return dao.rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment();
+		return getDao().rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment();
 	}
 
 	@Override
 	public Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment() {
-		return dao.rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment();
+		return getDao().rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment();
 	}
 
 	@Override
 	public Integer rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneViralLoad_InEMR() {
-		return dao.rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneViralLoad_InEMR();
+		return getDao().rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneViralLoad_InEMR();
 	}
 
 	@Override
 	public Integer rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneCD4Count_InEMR() {
-		return dao.rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneCD4Count_InEMR();
+		return getDao().rwandaGetTotalActivePatients_AtleastEightMonthsARVTreatment_AtleastOneCD4Count_InEMR();
 	}
 
 	@Override
 	public Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneViralLoad_LastYear() {
-		return dao.rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneViralLoad_LastYear();
+		return getDao().rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneViralLoad_LastYear();
 	}
 
 	@Override
 	public Integer rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear() {
-		return dao.rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear();
+		return getDao().rwandaGetTotalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneCD4Count_LastYear();
 	}
 
 	@Override
 	public Integer fetchTotalEncountersCountPreviousWeek() {
-		return dao.fetchTotalEncountersCountPreviousWeek();
+		return getDao().fetchTotalEncountersCountPreviousWeek();
 	}
 
 	@Override
 	public Integer fetchTotalEncountersCountPreviousMonth() {
-		return dao.fetchTotalEncountersCountPreviousMonth();
+		return getDao().fetchTotalEncountersCountPreviousMonth();
 	}
 
 	@Override
 	public Integer fetchTotalObservationsCountPreviousWeek() {
-		return dao.fetchTotalObservationsCountPreviousWeek();
+		return getDao().fetchTotalObservationsCountPreviousWeek();
 	}
 
 	@Override
 	public Integer fetchTotalObservationsCountPreviousMonth() {
-		return dao.fetchTotalObservationsCountPreviousMonth();
+		return getDao().fetchTotalObservationsCountPreviousMonth();
 	}
 
 	public Integer fetchTotalPatientsCountPreviousWeek() {
-		return dao.fetchTotalPatientsCountPreviousWeek();
+		return getDao().fetchTotalPatientsCountPreviousWeek();
 	}
 
 	public Integer fetchTotalPatientsCountPreviousMonth() {
-		return dao.fetchTotalPatientsCountPreviousMonth();
+		return getDao().fetchTotalPatientsCountPreviousMonth();
+	}
+	
+	@Override
+	public void updatePreviouslySubmittedOrMissedSMTData() {
+		getDao().updatePreviouslySubmittedOrMissedSMTData();
+	}
+	
+	@Override
+	public Integer numberofBackedUpDataFiles() {
+		return getDao().numberofBackedUpDataFiles();
 	}
 }

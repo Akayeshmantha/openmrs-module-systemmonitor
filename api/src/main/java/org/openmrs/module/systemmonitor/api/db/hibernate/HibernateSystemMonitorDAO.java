@@ -13,6 +13,23 @@
  */
 package org.openmrs.module.systemmonitor.api.db.hibernate;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.math.BigInteger;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,6 +38,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.loader.OuterJoinLoader;
+import org.json.JSONObject;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
@@ -39,17 +57,10 @@ import org.openmrs.api.db.DAOException;
 import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
 import org.openmrs.module.systemmonitor.SystemMonitorConstants;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
+import org.openmrs.module.systemmonitor.curl.CurlEmulator;
+import org.openmrs.module.systemmonitor.export.DHISGenerateDataValueSetSchemas;
 import org.openmrs.scheduler.TaskDefinition;
 import org.springframework.orm.ObjectRetrievalFailureException;
-
-import java.lang.reflect.Field;
-import java.math.BigInteger;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 /**
  * It is a default implementation of {@link SystemMonitorDAO}.
@@ -60,6 +71,8 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	private SessionFactory sessionFactory;
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	private Date evaluationAndReportingDate;
 
 	@Override
 	public SimpleDateFormat getSdf() {
@@ -246,8 +259,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		calendar.add(Calendar.MONTH, -1);
-		// set DATE to 1, so first date of previous month
-		calendar.set(Calendar.DATE, 1);
+		
 		return sdf.format(calendar.getTime());
 	}
 
@@ -311,13 +323,19 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		calendar.setTime(getEvaluationAndReportingDate());
 		resetDateTimes(calendar);
 		calendar.add(Calendar.YEAR, -1);
-		calendar.set(Calendar.DAY_OF_YEAR, 1);
 
 		return sdf.format(calendar.getTime());
+	}
+	
+	public void setEvaluationAndReportingDate(Date evaluationAndReportingDate) {
+		this.evaluationAndReportingDate = evaluationAndReportingDate;
 	}
 
 	@Override
 	public Date getEvaluationAndReportingDate() {
+		if(this.evaluationAndReportingDate != null)
+			return this.evaluationAndReportingDate;
+		
 		Calendar today = Calendar.getInstance(Context.getLocale());
 		GlobalProperty evalDate = Context.getAdministrationService()
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.EVALUATION_AND_REPORTING_DATE);
@@ -1558,4 +1576,253 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		}
 		return task;
 	}
+	
+	/**
+	 * this must only run once for Sites where SMT had been installed already,
+	 * this functionality can only run until 31st/march/2016 which means by this
+	 * date all Sites must have been upgraded
+	 */
+	@Override
+	public void updatePreviouslySubmittedOrMissedSMTData() {
+		try {
+			SimpleDateFormat sdf = getSdf();
+			String s = Context.getAdministrationService().getGlobalProperty(SystemMonitorConstants.SMT_EVAL_SD_SUPPORT_TO);
+			Date supportedUntil = StringUtils.isNotBlank(s) ? sdf.parse(s) : null;
+			Calendar date = Calendar.getInstance(Context.getLocale());
+			Calendar today = Calendar.getInstance(Context.getLocale());
+			GlobalProperty evalDateGp = Context.getAdministrationService()
+					.getGlobalPropertyObject(ConfigurableGlobalProperties.EVALUATION_AND_REPORTING_DATE);
+			File smtBackUpDirectory = SystemMonitorConstants.SYSTEMMONITOR_DIRECTORY;
+			File smtBackUpDataDirectory = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
+			String dateStr = evalDateGp != null ? evalDateGp.getPropertyValue() : null;
+
+			if(smtBackUpDirectory == null || !smtBackUpDirectory.exists())
+				smtBackUpDirectory.mkdir();
+			if(smtBackUpDataDirectory == null || !smtBackUpDataDirectory.exists())
+				smtBackUpDataDirectory.mkdirs();
+				
+			if (supportedUntil != null && StringUtils.isNotBlank(dateStr) && supportedUntil.before(today.getTime())) {
+				date.setTime(sdf.parse(dateStr));
+				
+				while (date.getTime().before(supportedUntil) && date.getTime().before(today.getTime())) {
+					// eliminate weekend days
+					setEvaluationAndReportingDate(date.getTime());
+					if (date.get(Calendar.DAY_OF_WEEK) != 1 && date.get(Calendar.DAY_OF_WEEK) != 7) {
+						System.out.println("\nINFO - Running SMT for Date: " + dateStr);
+						runSMTEvaluatorAndLogOrPushData();
+					}
+					date.add(Calendar.DAY_OF_YEAR, 1);
+					dateStr = sdf.format(date.getTime());
+					evalDateGp.setPropertyValue(dateStr);
+					Context.getAdministrationService().saveGlobalProperty(evalDateGp);
+				}
+				// finally
+				evalDateGp.setPropertyValue("");
+				Context.getAdministrationService().saveGlobalProperty(evalDateGp);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public JSONObject runSMTEvaluatorAndLogOrPushData() {
+		JSONObject response = null;
+		JSONObject dataToBePushed = getDataToPushToDHIS();
+
+		String dhisUserName = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
+		String dhisPassword = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_PASSWORD);
+		String dhisPostUrl = (Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)) != null
+						? Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)
+								+ SystemMonitorConstants.DHIS_API_DATAVALUES_URL
+						: null;
+		File backupFile = getSystemBackUpFile();
+
+		if (StringUtils.isNotBlank(dhisPostUrl) && StringUtils.isNotBlank(dhisPassword)
+				&& StringUtils.isNotBlank(dhisUserName) && dataToBePushed != null && dataToBePushed.length() > 0
+				&& dataToBePushed.getJSONArray("dataValues") != null
+				&& dataToBePushed.getJSONArray("dataValues").length() > 0) {
+			try {
+				response = CurlEmulator.post(dhisPostUrl, dataToBePushed, dhisUserName, dhisPassword);
+				if (response != null) {
+					logCurlEmulatorPostResponse(response.toString());
+					if (backupFile.exists()) {
+						backupFile.delete();
+					}
+				} else {
+					backupSystemMonitorDataToPush(dataToBePushed);
+				}
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			} catch (SocketException e) {
+				e.printStackTrace();
+			}
+		}
+		return response;
+	}
+	
+	@Override
+	public JSONObject getDataToPushToDHIS() {
+		JSONObject data = DHISGenerateDataValueSetSchemas.generateRwandaSPHEMTDHISDataValueSets();
+	
+		return data.length() > 0
+				? data.getJSONObject("toBePushed")
+				: null;
+	}
+	
+	private File getSystemBackUpFile() {
+		return new File(SystemMonitorConstants.SYSTEMMONITOR_DATA_DIRECTORYPATH
+				+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_DATA_PREFIX + new SimpleDateFormat("yyyyMMdd")
+						.format(getEvaluationAndReportingDate())
+				+ ".json");
+	}
+
+	@Override
+	public void backupSystemMonitorDataToPush(JSONObject dhisValues) {
+		if (dhisValues != null && dhisValues.length() > 0) {
+			File backupFolder = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
+			File backupFile = getSystemBackUpFile();
+
+			System.out.println("INFO-SMT: Creating: " + backupFile);
+			try {
+				if (!backupFolder.exists()) {
+					backupFolder.mkdirs();
+				}
+				if (!backupFile.exists()) {
+					backupFile.createNewFile();
+				}
+
+				FileWriter fileWritter = new FileWriter(backupFile);
+				BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+				
+				bufferWritter.write(dhisValues.toString());
+				bufferWritter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void logCurlEmulatorPostResponse(String response) {
+		if (response != null && response.length() > 0) {
+			File logsFolder = SystemMonitorConstants.SYSTEMMONITOR_LOGSFOLDER;
+			File logsFile = getSystemLogFile();
+
+			try {
+				if (!logsFolder.exists()) {
+					logsFolder.mkdirs();
+				}
+				if (!logsFile.exists()) {
+					logsFile.createNewFile();
+				}
+
+				FileWriter fileWritter = new FileWriter(logsFile, true);
+				BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+				bufferWritter.write(getEvaluationAndReportingDate().toString() + "\n" + response + "\n\n");
+				bufferWritter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@Override
+	public Integer numberofBackedUpDataFiles() {
+		File dataDir = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
+		Integer count = 0;
+		
+		if(dataDir != null && dataDir.isDirectory()) {
+			for (int i = 0; i < dataDir.listFiles().length; i++) {
+				File backup = dataDir.listFiles()[i];
+				
+				if (backup != null && backup.getName().startsWith(SystemMonitorConstants.SYSTEMMONITOR_DATA_PREFIX)
+						&& backup.getName().endsWith(".json") && backup.length() > 0) {
+					count += 1;
+				}
+			}
+		}
+		return count;
+	}
+
+	@Override
+	public String pushPreviouslyFailedDataWhenOutOfInternet() {
+		String resp = "";
+		File dataDir = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
+		String dhisUserName = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_USERNAME);
+		String dhisPassword = Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHIS_PASSWORD);
+		String dhisPostUrl = (Context.getAdministrationService()
+				.getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)) != null
+						? Context.getAdministrationService().getGlobalProperty(ConfigurableGlobalProperties.DHISAPI_URL)
+								+ SystemMonitorConstants.DHIS_API_DATAVALUES_URL
+						: null;
+		JSONObject response = null;
+		if (dataDir.exists() && dataDir.isDirectory() && dataDir.listFiles().length > 0) {
+			System.out.println("\nINFO - SMT: starting to push existing monitored data in " + dataDir.getAbsolutePath());
+			for (int i = 0; i < dataDir.listFiles().length; i++) {
+				File backup = dataDir.listFiles()[i];
+
+				if (backup != null && backup.getName().startsWith(SystemMonitorConstants.SYSTEMMONITOR_DATA_PREFIX)
+						&& backup.getName().endsWith(".json") && backup.length() > 0) {
+					JSONObject data = new JSONObject(readFileToString(backup));
+
+					System.out.println("INFO - SMT: pushing " + backup.getAbsolutePath());
+					try {
+						response = CurlEmulator.post(dhisPostUrl, data, dhisUserName, dhisPassword);
+						if (response != null) {
+							resp += response.toString();
+							logCurlEmulatorPostResponse(response.toString());
+							backup.delete();
+						}
+
+					} catch (UnknownHostException e) {
+						e.printStackTrace();
+					} catch (SocketException e) {
+						e.printStackTrace();
+					}
+				}
+				if (backup.length() == 0)
+					backup.delete();
+			}
+		}
+		return resp;
+	}
+
+	private File getSystemLogFile() {
+		return new File(SystemMonitorConstants.SYSTEMMONITOR_LOGS_DIRECTORYPATH
+				+ File.separator + SystemMonitorConstants.SYSTEMMONITOR_LOGS_PREFIX + new SimpleDateFormat("yyyyMMdd")
+						.format(getEvaluationAndReportingDate())
+				+ ".log");
+	}
+
+	@Override
+	public String readFileToString(File file) {
+		String string = "";
+		if (file != null && file.isFile()) {
+			BufferedReader br = null;
+
+			try {
+				String line;
+				br = new BufferedReader(new FileReader(file));
+				while ((line = br.readLine()) != null) {
+					string += line + "\n";
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (br != null)
+						br.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+		return string;
+	}
+
 }

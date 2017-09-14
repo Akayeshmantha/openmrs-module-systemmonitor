@@ -12,8 +12,9 @@
 </h3>
 
 <form method="post">
-<input type="submit" value='<spring:message code="systemmonitor.pushOrSendData"/>'>
+	<input type="submit" value='<spring:message code="systemmonitor.pushOrSendData"/>'>
 </form>
+You have <b>${numberofBackedUps}</b> backed up data to push before current if you push from server
 <br /><br />
 <a id="downloadAnchorElem" style="display:none"></a>
 <input type="button" id="dhis-push-from-client" value='<spring:message code="systemmonitor.clientPushing.pushFromClient" />' />

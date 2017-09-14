@@ -13,15 +13,17 @@
  */
 package org.openmrs.module.systemmonitor.api.db;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.json.JSONObject;
 import org.openmrs.Concept;
 import org.openmrs.Person;
 import org.openmrs.Program;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.systemmonitor.api.SystemMonitorService;
 import org.openmrs.scheduler.TaskDefinition;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Database methods for {@link SystemMonitorService}.
@@ -311,4 +313,18 @@ public interface SystemMonitorDAO {
 	public Integer fetchTotalPatientsCountPreviousWeek();
 
 	public Integer fetchTotalPatientsCountPreviousMonth();
+	
+	JSONObject runSMTEvaluatorAndLogOrPushData();
+	
+	void updatePreviouslySubmittedOrMissedSMTData();
+	
+	JSONObject getDataToPushToDHIS();
+	
+	void backupSystemMonitorDataToPush(JSONObject dhisValues);
+	
+	String readFileToString(File file);
+	
+	public String pushPreviouslyFailedDataWhenOutOfInternet();
+	
+	public Integer numberofBackedUpDataFiles();
 }

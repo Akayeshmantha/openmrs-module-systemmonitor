@@ -24,7 +24,6 @@ import java.util.Date;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -210,12 +209,7 @@ public class SystemMonitorServiceTest extends BaseModuleContextSensitiveTest {
 
 	@Ignore
 	public void testPushingDataToDHIS() {
-		JSONObject serverResponse = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
-		System.out.print("serverResponseString::::::::::" + serverResponse);
-
-		if (serverResponse != null) {
-			System.out.println("SERVER STATUS: " + serverResponse.getString("status"));
-		}
+		
 	}
 
 	@Test
