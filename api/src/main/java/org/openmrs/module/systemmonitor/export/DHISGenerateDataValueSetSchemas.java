@@ -81,10 +81,10 @@ public class DHISGenerateDataValueSetSchemas {
 
 		List<UpOrDownTimeInterval> downIntervals = (List<UpOrDownTimeInterval>) openmrsUpAndDownTime[3];
 
-		Integer openMRsUpTimePercentage = openmrsUptime != null ? (openmrsUptime * 100) / workingMinutesDifference
+		Integer openMRsUpTimePercentage = openmrsUptime != null && openmrsUptime >= 0 && openmrsUptime <= 100 ? (openmrsUptime * 100) / workingMinutesDifference
 				: null;
 
-		Integer openMRsDownTimePercentage = openmrsDowntime != null ? (openmrsDowntime * 100) / workingMinutesDifference
+		Integer openMRsDownTimePercentage = openmrsDowntime != null && openmrsDowntime >= 0 && openmrsDowntime <= 100 ? (openmrsDowntime * 100) / workingMinutesDifference
 				: null;
 
 		String upIntervalString = convertUpOrDownTimeIntervalsToString(upIntervals);
@@ -241,7 +241,7 @@ public class DHISGenerateDataValueSetSchemas {
 				.getGlobalProperty(ConfigurableGlobalProperties.TOGGLE_SMT_EVALUATIONANDREPORTING_ONOROFF);
 
 		if (mappingsFile.exists() && mappingsFile.isFile() && date.get(Calendar.HOUR_OF_DAY) >= openingHour
-				&& date.get(Calendar.HOUR_OF_DAY) < closingHour && "on".equals(evaluationAndReportingIsAllowed)) {
+				&& date.get(Calendar.HOUR_OF_DAY) < closingHour && (StringUtils.isBlank(evaluationAndReportingIsAllowed) || "on".equals(evaluationAndReportingIsAllowed))) {
 			JSONObject systemRealLocationDataElementJSON = new JSONObject();
 			JSONObject installedModulesDataElementJSON = new JSONObject();
 			JSONObject systemRealLocationDataElementJSON2 = new JSONObject();

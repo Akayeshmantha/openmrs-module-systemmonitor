@@ -97,4 +97,5 @@ public class SystemMonitorConstants {
 	public static File OPENMRS_UPANDDOWNTIME_FILE = new File(
 			SYSTEMMONITOR_DATA_DIRECTORYPATH + File.separator + OPENMRS_UPANDDOWNTIME_FILE_NAME);
 
+	public static String SMT_EVAL_SD_SUPPORT_TO = "systemmonitor.evaluationAndReportingSToday_supportedUntil";
 }

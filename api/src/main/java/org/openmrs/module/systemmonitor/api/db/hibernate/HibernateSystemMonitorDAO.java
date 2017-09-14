@@ -46,6 +46,7 @@ import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
+import org.openmrs.module.systemmonitor.SystemMonitorConstants;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
 import org.openmrs.scheduler.TaskDefinition;
 import org.springframework.orm.ObjectRetrievalFailureException;
@@ -324,7 +325,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		if (evalDate != null && StringUtils.isNotBlank(evalDate.getPropertyValue())) {
 			try {
 				SimpleDateFormat sdf = getSdf() != null ? getSdf() : new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-				Date supportedUntil = sdf.parse(Context.getAdministrationService().getGlobalProperty("systemmonitor.evaluationAndReportingSToday_supportedUntil"));
+				Date supportedUntil = sdf.parse(Context.getAdministrationService().getGlobalProperty(SystemMonitorConstants.SMT_EVAL_SD_SUPPORT_TO));
 				Calendar evalD = Calendar.getInstance();
 				Date d = sdf.parse(evalDate.getPropertyValue());
 
