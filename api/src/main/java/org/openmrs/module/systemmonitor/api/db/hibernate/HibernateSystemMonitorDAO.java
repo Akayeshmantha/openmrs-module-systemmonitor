@@ -37,6 +37,7 @@ import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.systemmonitor.ConfigurableGlobalProperties;
+import org.openmrs.module.systemmonitor.SystemMonitorConstants;
 import org.openmrs.module.systemmonitor.api.db.SystemMonitorDAO;
 import org.openmrs.scheduler.TaskDefinition;
 import org.springframework.orm.ObjectRetrievalFailureException;
@@ -320,16 +321,18 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		Calendar today = Calendar.getInstance(Context.getLocale());
 		GlobalProperty evalDate = Context.getAdministrationService()
 				.getGlobalPropertyObject(ConfigurableGlobalProperties.EVALUATION_AND_REPORTING_DATE);
-
+		
 		if (evalDate != null && StringUtils.isNotBlank(evalDate.getPropertyValue())) {
 			try {
 				Calendar evalD = Calendar.getInstance();
 				Date d = sdf.parse(evalDate.getPropertyValue());
-
+				SimpleDateFormat sdf = getSdf() != null ? getSdf() : new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				Date supportedUntil = sdf.parse(Context.getAdministrationService().getGlobalProperty(SystemMonitorConstants.SMT_EVAL_SD_SUPPORT_TO));
+				
 				evalD.setTime(d);
 				// resetDateTimes(today);
 				// resetDateTimes(evalD);
-				if (d != null && evalD.getTime().before(today.getTime())) {
+				if (d != null && evalD.getTime().before(today.getTime()) && evalD.before(supportedUntil)) {
 					return evalD.getTime();
 				}
 			} catch (ParseException e) {

@@ -731,7 +731,7 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 
 	@Override
 	public JSONObject pushMonitoredDataToDHIS() {
-		updatePreviouslySubmittedSMTData();
+		updatePreviouslySubmittedOrMissedSMTData();
 		return runSMTEvaluatorAndLogOrPushData();
 	}
 
@@ -1375,10 +1375,11 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	 * this functionality can only run until 31st/march/2016 which means by this
 	 * date all Sites must have been upgraded
 	 */
-	private void updatePreviouslySubmittedSMTData() {
+	private void updatePreviouslySubmittedOrMissedSMTData() {
 		try {
 			SimpleDateFormat sdf = dao.getSdf();
-			Date supportedUntil = sdf.parse("2017-03-31 00:00:00");
+			String s = Context.getAdministrationService().getGlobalProperty(SystemMonitorConstants.SMT_EVAL_SD_SUPPORT_TO);
+			Date supportedUntil = StringUtils.isNotBlank(s) ? sdf.parse(s) : null;
 			Calendar date = Calendar.getInstance(Context.getLocale());
 			Calendar today = Calendar.getInstance(Context.getLocale());
 			GlobalProperty evalDateGp = Context.getAdministrationService()
@@ -1387,16 +1388,17 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 			File smtBackUpDataDirectory = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
 			String dateStr = evalDateGp != null ? evalDateGp.getPropertyValue() : null;
 
-			if (StringUtils.isNotBlank(dateStr) && smtBackUpDirectory.exists()
-					&& (smtBackUpDirectory.isDirectory() && smtBackUpDirectory.listFiles().length > 0)
-					&& ((smtBackUpDataDirectory.exists() && smtBackUpDataDirectory.isDirectory()))
-					&& (smtBackUpDataDirectory.listFiles().length > 0)
-					&& supportedUntil.after(today.getTime())) {
-
+			if(smtBackUpDirectory == null || !smtBackUpDirectory.exists())
+				smtBackUpDirectory.mkdir();
+			if(smtBackUpDataDirectory == null || !smtBackUpDataDirectory.exists())
+				smtBackUpDataDirectory.mkdirs();
+				
+			if (supportedUntil != null && StringUtils.isNotBlank(dateStr) && supportedUntil.before(today.getTime())) {
 				date.setTime(sdf.parse(dateStr));
 				while (today.after(date)) {
 					// eliminate weekend days
 					if (date.get(Calendar.DAY_OF_WEEK) != 1 && date.get(Calendar.DAY_OF_WEEK) != 7) {
+						System.out.println("\nINFO - Running SMT for Date: " + dateStr);
 						runSMTEvaluatorAndLogOrPushData();
 					}
 					date.add(Calendar.DAY_OF_YEAR, 1);
@@ -1407,6 +1409,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				// finally
 				evalDateGp.setPropertyValue("");
 				Context.getAdministrationService().saveGlobalProperty(evalDateGp);
+			} else {
+				System.out.println("FAILURE:::::::" + supportedUntil + ":::::" + dateStr);
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();

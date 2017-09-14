@@ -209,5 +209,10 @@
 		<defaultValue>on</defaultValue>
 		<description>Set to either on or off, if set to on SMT evaluation and reporting/pushing is possible but impossible when set to off</description>
 	</globalProperty>
+	<globalProperty>
+ 		<property>systemmonitor.evaluationAndReportingSToday_supportedUntil</property>
+ 		<defaultValue>2017-08-15 12:00:00</defaultValue>
+ 		<description>evaluation Reporting start Date supported until, use same date format, must never be empty</description>
+ 	</globalProperty>
 
 </module>

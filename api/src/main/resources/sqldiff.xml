@@ -112,7 +112,7 @@
 		<date>Aug 6th 2017</date>
 		<description>Update evaluationAndReporting datetime to mid-day</description>
 		<sql>
-			UPDATE global_property SET property_value = '2017-07-21 12:00:00' WHERE property = 'systemmonitor.evaluationAndReportingSToday';
+			UPDATE global_property SET property_value = '2017-05-01 12:00:00' WHERE property = 'systemmonitor.evaluationAndReportingSToday';
 		</sql>
 	</diff>
 	
