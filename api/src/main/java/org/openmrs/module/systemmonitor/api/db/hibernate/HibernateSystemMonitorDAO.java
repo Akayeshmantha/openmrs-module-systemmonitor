@@ -1583,7 +1583,9 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	 * date all Sites must have been upgraded
 	 */
 	@Override
-	public void updatePreviouslySubmittedOrMissedSMTData() {
+	public String updatePreviouslySubmittedOrMissedSMTData() {
+		String response = "";
+		
 		try {
 			SimpleDateFormat sdf = getSdf();
 			String s = Context.getAdministrationService().getGlobalProperty(SystemMonitorConstants.SMT_EVAL_SD_SUPPORT_TO);
@@ -1595,7 +1597,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 			File smtBackUpDirectory = SystemMonitorConstants.SYSTEMMONITOR_DIRECTORY;
 			File smtBackUpDataDirectory = SystemMonitorConstants.SYSTEMMONITOR_BACKUPFOLDER;
 			String dateStr = evalDateGp != null ? evalDateGp.getPropertyValue() : null;
-
+			
 			if(smtBackUpDirectory == null || !smtBackUpDirectory.exists())
 				smtBackUpDirectory.mkdir();
 			if(smtBackUpDataDirectory == null || !smtBackUpDataDirectory.exists())
@@ -1609,7 +1611,11 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 					setEvaluationAndReportingDate(date.getTime());
 					if (date.get(Calendar.DAY_OF_WEEK) != 1 && date.get(Calendar.DAY_OF_WEEK) != 7) {
 						System.out.println("\nINFO - Running SMT for Date: " + dateStr);
-						runSMTEvaluatorAndLogOrPushData();
+						JSONObject o = runSMTEvaluatorAndLogOrPushData();
+						
+						if(o != null) {
+							response += o.toString();
+						}
 					}
 					date.add(Calendar.DAY_OF_YEAR, 1);
 					dateStr = sdf.format(date.getTime());
@@ -1623,6 +1629,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		return response;
 	}
 	
 	@Override

@@ -316,7 +316,7 @@ public interface SystemMonitorDAO {
 	
 	JSONObject runSMTEvaluatorAndLogOrPushData();
 	
-	void updatePreviouslySubmittedOrMissedSMTData();
+	String updatePreviouslySubmittedOrMissedSMTData();
 	
 	JSONObject getDataToPushToDHIS();
 	

@@ -116,4 +116,14 @@
 		</sql>
 	</diff>
 	
+	<diff>
+		<version>1.9</version>
+		<author>k-joseph</author>
+		<date>Aug 6th 2017</date>
+		<description>...</description>
+		<sql>
+			UPDATE global_property SET property_value = '1900' WHERE property = 'systemmonitor.configurations.closingHour';
+		</sql>
+	</diff>
+	
 </sqldiff>

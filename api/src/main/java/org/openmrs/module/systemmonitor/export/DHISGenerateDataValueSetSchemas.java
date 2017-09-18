@@ -128,6 +128,7 @@ public class DHISGenerateDataValueSetSchemas {
 					: (totalActivePatients_AtleastTwentyMonthsARVTreatment_AtleastOneViralLoad_LastYear * 100)
 							/ totalActivePatients_AtleastTwentyMonthsARVTreatment;
 
+			//TODO fall back to memory aggregation usage and fix
 			Long totalMemory = Runtime.getRuntime().maxMemory() / 1024;
 
 			Long freeMemory = Runtime.getRuntime().freeMemory()/ 1024;

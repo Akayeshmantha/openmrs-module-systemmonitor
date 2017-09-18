@@ -392,7 +392,7 @@ public interface SystemMonitorService extends OpenmrsService {
 
 	public Integer fetchTotalPatientsCountPreviousMonth();
 	
-	void updatePreviouslySubmittedOrMissedSMTData();
+	String updatePreviouslySubmittedOrMissedSMTData();
 
 	Integer numberofBackedUpDataFiles();
 }

@@ -22,6 +22,7 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -724,11 +725,11 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 
 	@Override
 	public String pushMonitoredDataToDHIS() {
-		updatePreviouslySubmittedOrMissedSMTData();
+		String r1 = updatePreviouslySubmittedOrMissedSMTData();
 		String resp = getDao().pushPreviouslyFailedDataWhenOutOfInternet();
 		JSONObject r2 = getDao().runSMTEvaluatorAndLogOrPushData();
 		
-		return (StringUtils.isNotBlank(resp) ? resp : "") + (r2 != null ? r2.toString() : "");
+		return (StringUtils.isNotBlank(r1) ? r1 : "") + (StringUtils.isNotBlank(resp) ? resp : "") + (r2 != null ? r2.toString() : "");
 	}
 
 	@Override
@@ -1127,17 +1128,16 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 
 	@Override
 	public void rebootSystemMonitorTasks() {
-		TaskDefinition localCleanerTask = getTaskByClass(SystemMonitorConstants.SCHEDULER_TASKCLASS_LOCALCLEANER);
-		TaskDefinition pushToDHISTask = getTaskByClass(SystemMonitorConstants.SCHEDULER_TASKCLASS_PUSH);
-		TaskDefinition updateLocalDHISMetadataTask = getTaskByClass(
-				SystemMonitorConstants.SCHEDULER_TASKCLASS_UPDATESHISMETADATA);
+		Collection<TaskDefinition> tasks = Context.getSchedulerService().getRegisteredTasks(); 
+		
 		try {
-			if (localCleanerTask != null)
-				Context.getSchedulerService().scheduleTask(localCleanerTask);
-			if (pushToDHISTask != null)
-				Context.getSchedulerService().scheduleTask(pushToDHISTask);
-			if (updateLocalDHISMetadataTask != null)
-				Context.getSchedulerService().scheduleTask(updateLocalDHISMetadataTask);
+			if(tasks !=null) {
+				for(TaskDefinition task : tasks) {
+					if(task != null && StringUtils.isNotBlank(task.getTaskClass()) && task.getTaskClass().startsWith("org.openmrs.module.systemmonitor.scheduler.")) {
+						Context.getSchedulerService().scheduleTask(task);
+					}
+				}
+			}
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		} catch (APIAuthenticationException e) {
@@ -1269,8 +1269,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	}
 	
 	@Override
-	public void updatePreviouslySubmittedOrMissedSMTData() {
-		getDao().updatePreviouslySubmittedOrMissedSMTData();
+	public String updatePreviouslySubmittedOrMissedSMTData() {
+		return getDao().updatePreviouslySubmittedOrMissedSMTData();
 	}
 	
 	@Override
