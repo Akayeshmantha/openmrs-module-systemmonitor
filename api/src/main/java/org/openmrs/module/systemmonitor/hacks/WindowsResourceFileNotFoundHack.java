@@ -134,8 +134,7 @@ public class WindowsResourceFileNotFoundHack {
 			+ "\n642=eSHZKaW3za9" + "\n66=R8EQIcE1Dax" + "\n68=dThqqqyqcYY" + "\n69=MTmFtwBz8" + "\n72=ZtTXsxuFh2S"
 			+ "\n76=PxVTxBRyI2B" + "\n79=zwQEjVnk7ie" + "\n80=hTpfGsBvZOu" + "\n86=rtDQKWYjVZc" + "\n87=uAIewYJZEq2"
 			+ "\n88=tGC8GzJw1WK" + "\n89=T3DlBaAEL6K" + "\n9=Z0mivz38syU" + "\n91=sJGSKHvEPS9" + "\n92=VtHqSAme8CZ"
-			+ "\n93=XrYSh1ygwyf" + "\n94=Qp6EM25AmgR" + "\n96=UNpU4eA39Nv" + "\n97=aOFSTk9Ri7k" +
-			"\n35=bVJHpGUoRsl" + "\n20=T7NTuNlOvPN" + "\nJEMBI=vjFcsoL24z5"
+			+ "\n93=XrYSh1ygwyf" + "\n94=Qp6EM25AmgR" + "\n96=UNpU4eA39Nv" + "\n97=aOFSTk9Ri7k" + "\nJEMBI=vjFcsoL24z5"
 			+ "\n------------------------------------------------------------------------------------";
 
 	/**

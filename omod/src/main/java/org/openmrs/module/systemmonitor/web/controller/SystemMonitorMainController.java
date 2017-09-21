@@ -54,7 +54,7 @@ public class SystemMonitorMainController {
 
 	@RequestMapping(value = "/module/systemmonitor/pushToDHIS", method = RequestMethod.POST)
 	public void pushToDHIS(ModelMap model) {
-		JSONObject response = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
+		String response = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
 
 		model.addAttribute("response", response != null ? response
 				: Context.getMessageSourceService().getMessage("systemmonitor.pushToDHIS.serverInternetFailure"));
