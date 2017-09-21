@@ -126,4 +126,15 @@
 		</sql>
 	</diff>
 	
+	<diff>
+		<version>2.0</version>
+		<author>k-joseph</author>
+		<date>Sept 21st 2017</date>
+		<description>Update evaluationAndReporting datetime to mid-day</description>
+		<sql>
+			UPDATE global_property SET property_value = '' WHERE property = 'systemmonitor.evaluationAndReportingSToday';
+		</sql>
+	</diff>
+	
+	
 </sqldiff>
