@@ -232,10 +232,15 @@ public class OSAndHardwareIndicators {
 				&& StringUtils.isBlank(p.getName())) {
 			String[] cmds = { "/bin/sh", "-c", "cat /proc/cpuinfo | grep 'name' | uniq" };
 
-			return executeCommand(cmds).replace("model name", "").replace(": ", "").replace(">", "");
+			try {
+				return executeCommand(cmds).replace("model name", "").replace(": ", "").replace(">", "");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
 			return p != null ? p.getName() : "";
 		}
+		return "";
 	}
 
 	private CentralProcessor getCentralProcessor() {
