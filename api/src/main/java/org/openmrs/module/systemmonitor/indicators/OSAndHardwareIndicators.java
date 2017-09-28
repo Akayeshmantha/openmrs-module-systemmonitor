@@ -1,9 +1,19 @@
 package org.openmrs.module.systemmonitor.indicators;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.management.ManagementFactory;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openmrs.module.systemmonitor.curl.CurlEmulator;
+
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
@@ -13,15 +23,6 @@ import oshi.hardware.NetworkIF;
 import oshi.hardware.PowerSource;
 import oshi.software.os.OperatingSystem;
 import oshi.software.os.OperatingSystemVersion;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.management.ManagementFactory;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 public class OSAndHardwareIndicators {
 	private SystemInfo si = new SystemInfo();
@@ -39,8 +40,6 @@ public class OSAndHardwareIndicators {
 	private PowerSource[] psArr = /*
 									 * si.getHardware().getPowerSources( )
 									 */null;;
-
-	public String PROCESSOR_NAME = getLinuxProcessorName();
 
 	/**
 	 * Total Physical Memory (RAM) in Megabytes(MB)
@@ -191,8 +190,7 @@ public class OSAndHardwareIndicators {
 				sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
 			}
 			macAdd = sb.toString();
-		}
-		catch (NoClassDefFoundError e) {
+		} catch (NoClassDefFoundError e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -233,7 +231,7 @@ public class OSAndHardwareIndicators {
 		return json;
 	}
 
-	public String getLinuxProcessorName() {
+	public String getLinuxProcessorName() throws IOException {
 		if (p != null && "Linux".equals(System.getProperties().getProperty("os.name"))
 				&& StringUtils.isBlank(p.getName())) {
 			String[] cmds = { "/bin/sh", "-c", "cat /proc/cpuinfo | grep 'name' | uniq" };

@@ -1,6 +1,7 @@
 package org.openmrs.module.systemmonitor.export;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
@@ -19,7 +20,6 @@ import org.openmrs.module.systemmonitor.curl.CurlEmulator;
 import org.openmrs.module.systemmonitor.indicators.OSAndHardwareIndicators;
 import org.openmrs.module.systemmonitor.indicators.SystemPropertiesIndicators;
 import org.openmrs.module.systemmonitor.mapping.DHISMapping;
-import org.openmrs.module.systemmonitor.memory.MemoryAggregation;
 import org.openmrs.module.systemmonitor.uptime.OpenmrsUpAndDownTracker;
 import org.openmrs.module.systemmonitor.uptime.UpOrDownTimeInterval;
 import org.openmrs.web.WebConstants;
@@ -70,7 +70,13 @@ public class DHISGenerateDataValueSetSchemas {
 
 			Integer uptime = osshi.PROCESSOR_SYSTEM_UPTIME.intValue();
 
-			String processor = osshi.getLinuxProcessorName();
+			String processor = "";
+			
+			try {
+				processor = osshi.getLinuxProcessorName();
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
 
 			Integer numberOfDownTimes = OpenmrsUpAndDownTracker.getNumberOfOpenMRSDownTimesToday();
 
