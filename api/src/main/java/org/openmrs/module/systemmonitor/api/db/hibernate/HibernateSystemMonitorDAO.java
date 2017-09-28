@@ -1607,15 +1607,12 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 				date.setTime(sdf.parse(dateStr));
 				
 				while (date.getTime().before(supportedUntil) && date.getTime().before(today.getTime())) {
-					// eliminate weekend days
 					setEvaluationAndReportingDate(date.getTime());
-					if (date.get(Calendar.DAY_OF_WEEK) != 1 && date.get(Calendar.DAY_OF_WEEK) != 7) {
-						System.out.println("\nINFO - Running SMT for Date: " + dateStr);
-						JSONObject o = runSMTEvaluatorAndLogOrPushData();
-						
-						if(o != null) {
-							response += o.toString();
-						}
+					System.out.println("\nINFO - Running SMT for Date: " + dateStr);
+					JSONObject o = runSMTEvaluatorAndLogOrPushData();
+					
+					if(o != null) {
+						response += o.toString();
 					}
 					date.add(Calendar.DAY_OF_YEAR, 1);
 					dateStr = sdf.format(date.getTime());
