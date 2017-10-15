@@ -327,4 +327,8 @@ public interface SystemMonitorDAO {
 	public String pushPreviouslyFailedDataWhenOutOfInternet();
 	
 	public Integer numberofBackedUpDataFiles();
+
+	Integer basicOpenMRSObjectCount(@SuppressWarnings("rawtypes") Class clazz);
+
+	Integer basicOpenMRSObjectCountCreatedLast24Hours(@SuppressWarnings("rawtypes") Class clazz);
 }

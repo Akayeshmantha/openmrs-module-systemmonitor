@@ -1277,4 +1277,14 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	public Integer numberofBackedUpDataFiles() {
 		return getDao().numberofBackedUpDataFiles();
 	}
+
+	@Override
+	public Integer basicOpenMRSObjectCount(@SuppressWarnings("rawtypes") Class clazz) {
+		return getDao().basicOpenMRSObjectCount(clazz);
+	}
+
+	@Override
+	public Integer basicOpenMRSObjectCountCreatedLast24Hours(@SuppressWarnings("rawtypes") Class clazz) {
+		return getDao().basicOpenMRSObjectCountCreatedLast24Hours(clazz);
+	}
 }
