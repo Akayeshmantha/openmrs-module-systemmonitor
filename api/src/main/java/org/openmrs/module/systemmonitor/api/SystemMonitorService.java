@@ -395,4 +395,8 @@ public interface SystemMonitorService extends OpenmrsService {
 	String updatePreviouslySubmittedOrMissedSMTData();
 
 	Integer numberofBackedUpDataFiles();
+	
+	Integer basicOpenMRSObjectCount(@SuppressWarnings("rawtypes") Class clazz);
+
+	Integer basicOpenMRSObjectCountCreatedLast24Hours(@SuppressWarnings("rawtypes") Class clazz);
 }

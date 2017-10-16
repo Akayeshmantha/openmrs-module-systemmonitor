@@ -1483,6 +1483,30 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 
 		return count;
 	}
+	
+	@Override
+	public Integer basicOpenMRSObjectCount(@SuppressWarnings("rawtypes") Class clazz) {
+		if(StringUtils.isNotBlank(getObjectTableNameFromClass(clazz))) {
+			String sql = "select count(*) from " + getObjectTableNameFromClass(clazz);
+			Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+					.intValue();
+	
+			return count;
+		}
+		return 0;
+	}
+	
+	@Override
+	public Integer basicOpenMRSObjectCountCreatedLast24Hours(@SuppressWarnings("rawtypes") Class clazz) {
+		if(StringUtils.isNotBlank(getObjectTableNameFromClass(clazz))) {
+			String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where date_created >= DATE_SUB(NOW(), INTERVAL 24 HOUR) AND date_created <= NOW()";
+			Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+					.intValue();
+	
+			return count;
+		}
+		return 0;
+	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalEncountersForYesterday() {

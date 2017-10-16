@@ -1,488 +1,549 @@
 {
-  "pager": {
-    "page": 1,
-    "pageSize": 100
-  },
-  "dataElements": [
-  	{
-      "lastUpdated": "2016-12-15T10:05:32.356+0000",
-      "created": "2016-12-15T10:05:32.336+0000",
-      "name": "Initial CD4 Count",
-      "id": "RQTlblrf6eR"
-    },
-    {
-      "lastUpdated": "2016-12-15T10:05:05.566+0000",
-      "created": "2016-12-15T10:05:05.383+0000",
-      "name": "Initial viral load",
-      "id": "fEgFipkmtNq"
-    },
-    {
-      "lastUpdated": "2016-12-15T10:05:46.712+0000",
-      "created": "2016-12-15T10:05:46.703+0000",
-      "name": "Followup CD4 Count",
-      "id": "lj3Wh3XwgVu"
-    },
-    {
-      "lastUpdated": "2016-12-15T10:05:18.147+0000",
-      "created": "2016-12-15T10:05:18.133+0000",
-      "name": "Followup viral load",
-      "id": "oRuD83Dnoqd"
-    },
-    {
-      "lastUpdated": "2016-12-15T09:26:21.503+0000",
-      "created": "2016-12-15T09:26:21.470+0000",
-      "name": "active patient - 20m",
-      "id": "SWpmUA95Gtv"
-    },
-    {
-      "lastUpdated": "2016-12-15T09:31:16.943+0000",
-      "created": "2016-12-15T09:31:16.912+0000",
-      "name": "active patient - 20m - CD4 (Last Year)",
-      "id": "SVwRZ9dSTdb"
-    },
-    {
-      "lastUpdated": "2016-12-15T09:31:36.084+0000",
-      "created": "2016-12-15T09:31:36.058+0000",
-      "name": "active patient - 20m - VL (Last Year)",
-      "id": "HMCX3fD2CkG"
-    },
-    {
-      "lastUpdated": "2016-12-15T09:26:05.619+0000",
-      "created": "2016-12-15T09:26:05.453+0000",
-      "name": "active patient - 8m",
-      "id": "m21uNOTO7Tp"
-    },
-    {
-      "lastUpdated": "2016-12-15T09:28:11.258+0000",
-      "created": "2016-12-15T09:28:11.236+0000",
-      "name": "active patient - 8m - CD4 (EMR)",
-      "id": "nD2alAworkZ"
-    },
-    {
-      "lastUpdated": "2016-12-15T09:27:52.509+0000",
-      "created": "2016-12-15T09:27:52.486+0000",
-      "name": "active patient - 8m - VL (EMR)",
-      "id": "wHr69AiiuZU"
-    },
-    {
-      "lastUpdated": "2016-09-05T12:56:54.231+0000",
-      "created": "2016-07-13T06:45:38.841+0000",
-      "name": "Date for last backup",
-      "id": "v3Pww13i2r1"
-    },
-    {
-      "lastUpdated": "2016-09-05T12:57:15.893+0000",
-      "created": "2016-05-16T08:31:01.125+0000",
-      "name": "File System Encoding",
-      "id": "RlDJSS2SRXL"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:03:32.458+0000",
-      "created": "2016-02-21T11:27:03.298+0000",
-      "name": "Free Memory (MB)",
-      "id": "ZPrLSHvWDm8"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:00:52.706+0000",
-      "created": "2016-05-16T08:48:46.325+0000",
-      "name": "Installed Modules",
-      "id": "ICTGPRAVZVZ"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:01:08.759+0000",
-      "created": "2016-05-16T08:13:48.730+0000",
-      "name": "Java Runtime Name",
-      "id": "SrKrLKmigUg"
-    },
-    {
-      "lastUpdated": "2016-05-16T08:14:28.986+0000",
-      "created": "2016-05-16T08:14:28.979+0000",
-      "name": "Java Runtime Version",
-      "id": "ixpB1MGxTOt"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:01:20.646+0000",
-      "created": "2016-05-16T08:11:15.932+0000",
-      "name": "Java Vendor",
-      "id": "TuBY7HgyJ7J"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:01:34.065+0000",
-      "created": "2016-05-16T08:09:19.753+0000",
-      "name": "Java Version",
-      "id": "FmjhhJQyLoy"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:01:45.953+0000",
-      "created": "2016-05-16T08:12:31.363+0000",
-      "name": "JVM Vendor",
-      "id": "yIMQP0rsprI"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:02:01.169+0000",
-      "created": "2016-05-16T08:11:50.273+0000",
-      "name": "JVM Version",
-      "id": "RgJN8fbRRuW"
-    },
-    {
-      "lastUpdated": "2016-11-07T11:11:55.247+0000",
-      "created": "2016-11-07T11:11:55.204+0000",
-      "name": "MICRO FILARIA",
-      "id": "iQBSB57LFCv"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:03:56.940+0000",
-      "created": "2016-07-11T09:01:58.001+0000",
-      "name": "New Adult Initial Encounters",
-      "id": "HkctO4QQgte"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:08:29.714+0000",
-      "created": "2016-07-11T09:03:50.692+0000",
-      "name": "New Adult Return Encounters",
-      "id": "aHYdS1cNuam"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:03:16.713+0000",
-      "created": "2016-07-11T09:00:14.506+0000",
-      "name": "New  Observations",
-      "id": "BHXAiiCvX5K"
-    },
-    {
-      "lastUpdated": "2016-09-02T09:57:00.368+0000",
-      "created": "2016-07-06T16:33:19.037+0000",
-      "name": "New Total Encounters",
-      "id": "oUoKdxhelRG"
-    },
-    {
-      "lastUpdated": "2016-09-02T09:57:32.455+0000",
-      "created": "2016-07-11T09:05:03.038+0000",
-      "name": "New Total Paediatrics Initial Encounters",
-      "id": "UidOuL65vMw"
-    },
-    {
-      "lastUpdated": "2016-09-02T09:54:25.775+0000",
-      "created": "2016-07-14T07:47:53.944+0000",
-      "name": "New Total Patients - Active",
-      "id": "GCC9L1LGFBH"
-    },
-    {
-      "lastUpdated": "2016-09-02T09:54:48.897+0000",
-      "created": "2016-07-14T07:48:16.876+0000",
-      "name": "New Total Patients - New",
-      "id": "JNsXijeCdIx"
-    },
-    {
-      "lastUpdated": "2016-09-02T09:56:02.670+0000",
-      "created": "2016-07-11T09:00:44.485+0000",
-      "name": "New Total Users",
-      "id": "luKfl7hZZek"
-    },
-    {
-      "lastUpdated": "2017-01-04T12:42:04.253+0000",
-      "created": "2016-02-21T07:54:24.177+0000",
-      "name": "Number Of OpenMRS DownTimes",
-      "id": "q8LwlSrBOSj"
-    },
-    {
-      "lastUpdated": "2017-01-05T13:00:36.115+0000",
-      "created": "2017-01-05T13:00:36.030+0000",
-      "name": "OpenMRS Downtime (%)",
-      "id": "e9VBv3quDim"
-    },
-    {
-      "lastUpdated": "2017-01-05T13:00:14.923+0000",
-      "created": "2017-01-05T13:00:13.309+0000",
-      "name": "OpenMRS Downtime (minutes)",
-      "id": "q5K2raiuqQh"
-    },
-    {
-      "lastUpdated": "2017-01-05T13:25:59.171+0000",
-      "created": "2017-01-05T13:25:59.066+0000",
-      "name": "OpenMRS DownTime Intervals",
-      "id": "uzD2FZ52RFK"
-    },
-    {
-      "lastUpdated": "2017-01-05T13:26:16.691+0000",
-      "created": "2017-01-05T13:26:16.675+0000",
-      "name": "OpenMRS UpTime Intervals",
-      "id": "YjIxaOR1Vtj"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:10:59.307+0000",
-      "created": "2016-02-22T09:58:12.277+0000",
-      "name": "OpenMRS App Name",
-      "id": "ec9fC1xmg8R"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:11:32.142+0000",
-      "created": "2016-02-21T11:53:20.730+0000",
-      "name": "OpenMRS Uptime (%)",
-      "id": "OBJQIpvppBt"
-    },
-    {
-      "lastUpdated": "2016-12-08T09:04:30.060+0000",
-      "created": "2016-07-01T04:52:08.802+0000",
-      "name": "OpenMRS Uptime (minutes)",
-      "id": "WdPwtuNKhcd"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:12:02.754+0000",
-      "created": "2016-05-16T08:34:04.808+0000",
-      "name": "OpenMRS Version",
-      "id": "Gnpcar514A3"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:12:19.397+0000",
-      "created": "2016-05-16T08:06:28.206+0000",
-      "name": "Operating System",
-      "id": "CRThksbOPAd"
-    },
-    {
-      "lastUpdated": "2016-05-16T08:10:20.972+0000",
-      "created": "2016-05-16T08:07:30.528+0000",
-      "name": "Operating System Arch",
-      "id": "EFfJ4CVvac2"
-    },
-    {
-      "lastUpdated": "2016-05-16T08:10:32.087+0000",
-      "created": "2016-05-16T08:08:37.421+0000",
-      "name": "Operating System Version",
-      "id": "l76OuWQxBYa"
-    },
-    {
-      "lastUpdated": "2016-10-13T07:26:00.564+0000",
-      "created": "2016-10-13T07:26:00.397+0000",
-      "name": "Patient  CD4 Count  Test Results",
-      "id": "RxpqOFZRSDt"
-    },
-    {
-      "lastUpdated": "2016-09-05T12:56:13.950+0000",
-      "created": "2016-06-30T19:50:28.943+0000",
-      "name": "Patient CD4 Count Test Results - All",
-      "id": "UEfoD5rcZbC"
-    },
-    {
-      "lastUpdated": "2016-09-05T12:55:33.193+0000",
-      "created": "2016-06-30T19:50:56.520+0000",
-      "name": "Patient  CD4 Count  Test Results - Last 6 Months",
-      "id": "d3XqMIFIoz6"
-    },
-    {
-      "lastUpdated": "2016-09-05T12:56:03.536+0000",
-      "created": "2016-06-30T19:51:19.308+0000",
-      "name": "Patient  CD4 Count  Test Results - Last Year",
-      "id": "GHq0YsrAsaf"
-    },
-    {
-      "lastUpdated": "2016-09-12T08:02:55.515+0000",
-      "created": "2016-07-11T09:06:52.731+0000",
-      "name": "Patient CD4 Count Test Results - New",
-      "id": "QoIyYyc7Z36"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:13:43.900+0000",
-      "created": "2016-05-01T17:52:05.436+0000",
-      "name": "Patient Viral Load Test Results - All",
-      "id": "AB7Nj3FNvR6"
-    },
-    {
-      "lastUpdated": "2016-09-05T12:27:58.097+0000",
-      "created": "2016-05-01T17:52:39.723+0000",
-      "name": "Patient Viral Load Test Results - Last 6 Months",
-      "id": "TIdLXyneWYd"
-    },
-    {
-      "lastUpdated": "2016-09-05T09:16:17.952+0000",
-      "created": "2016-05-01T17:53:15.982+0000",
-      "name": "Patient Viral Load Test Results - Last Year",
-      "id": "D30SnV0TGws"
-    },
-    {
-      "lastUpdated": "2016-09-12T08:03:12.438+0000",
-      "created": "2016-07-11T09:07:21.967+0000",
-      "name": "Patient Viral Load Test Results - New",
-      "id": "uaUc1zJbaEC"
-    },
-    {
-      "lastUpdated": "2016-08-27T09:49:50.763+0000",
-      "created": "2016-02-22T10:00:21.919+0000",
-      "name": "Primary Clinic Days",
-      "id": "rb9ef1D53Fv"
-    },
-    {
-      "lastUpdated": "2016-08-27T09:51:38.579+0000",
-      "created": "2016-02-22T10:01:28.294+0000",
-      "name": "Primary Clinic Hours",
-      "id": "VDEnb2bEQH3"
-    },
-    {
-      "lastUpdated": "2016-07-03T08:22:16.698+0000",
-      "created": "2016-07-03T08:22:16.679+0000",
-      "name": "Processor",
-      "id": "xr3kif2Vuzu"
-    },
-    {
-      "lastUpdated": "2016-02-22T09:57:43.364+0000",
-      "created": "2016-02-22T09:57:43.346+0000",
-      "name": "Server Id",
-      "id": "yBHJmoeteNR"
-    },
-    {
-      "lastUpdated": "2016-06-15T23:39:37.239+0000",
-      "created": "2016-06-15T23:39:36.920+0000",
-      "name": "Server's Real Location",
-      "id": "hKJXqpumYZ6"
-    },
-    {
-      "lastUpdated": "2016-12-08T09:04:51.642+0000",
-      "created": "2016-07-01T04:51:28.393+0000",
-      "name": "Server Uptime (minutes)",
-      "id": "RiyIySUEl1W"
-    },
-    {
-      "lastUpdated": "2016-05-16T12:26:00.679+0000",
-      "created": "2016-05-16T08:24:23.282+0000",
-      "name": "System DateTime",
-      "id": "vXlzpA8wi6K"
-    },
-    {
-      "lastUpdated": "2016-05-16T08:17:52.006+0000",
-      "created": "2016-05-16T08:17:51.995+0000",
-      "name": "System Language",
-      "id": "RHNugiFzCnz"
-    },
-    {
-      "lastUpdated": "2016-05-16T08:19:02.190+0000",
-      "created": "2016-05-16T08:19:02.180+0000",
-      "name": "System Timezone",
-      "id": "GldPX7AtrxQ"
-    },
-    {
-      "lastUpdated": "2016-08-27T09:47:01.971+0000",
-      "created": "2016-02-21T07:53:47.279+0000",
-      "name": "System Uptime - LastMonth (%)",
-      "id": "q9MRIo5DX4I"
-    },
-    {
-      "lastUpdated": "2016-08-27T09:47:19.671+0000",
-      "created": "2016-02-21T07:53:05.307+0000",
-      "name": "System Uptime - LastWeek (%)",
-      "id": "h08FIw8cVUD"
-    },
-    {
-      "lastUpdated": "2016-08-27T09:47:39.927+0000",
-      "created": "2016-02-21T07:52:49.030+0000",
-      "name": "System Uptime - ThisWeek (%)",
-      "id": "CrZDptrDUqA"
-    },
-    {
-      "lastUpdated": "2016-05-16T08:32:40.970+0000",
-      "created": "2016-05-16T08:32:40.965+0000",
-      "name": "Temporary Directory",
-      "id": "FveZHUNsC1o"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:18:27.876+0000",
-      "created": "2016-02-10T10:19:34.196+0000",
-      "name": "Total Encounters",
-      "id": "RYe2tuO9njZ"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:18:44.630+0000",
-      "created": "2016-02-21T11:26:42.724+0000",
-      "name": "Total Memory (MB)",
-      "id": "FRANuyR9bKI"
-    },
-    {
-      "lastUpdated": "2016-07-14T13:51:51.914+0000",
-      "created": "2016-02-10T10:19:47.725+0000",
-      "name": "Total Observations",
-      "id": "NorJph8rRjt"
-    },
-    {
-      "lastUpdated": "2016-09-02T09:53:45.787+0000",
-      "created": "2016-07-11T09:05:33.184+0000",
-      "name": "Total Paediatrics Return Encounters",
-      "id": "CdlLkU6tqSX"
-    },
-    {
-      "lastUpdated": "2016-07-14T13:51:33.976+0000",
-      "created": "2016-02-10T10:20:23.671+0000",
-      "name": "Total Patients - Active",
-      "id": "hk0HYxaBPtz"
-    },
-    {
-      "lastUpdated": "2016-07-14T13:51:23.167+0000",
-      "created": "2016-02-10T10:20:35.935+0000",
-      "name": "Total Patients - New",
-      "id": "aGdN2xl9nUj"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:19:28.692+0000",
-      "created": "2016-02-10T10:20:05.289+0000",
-      "name": "Total Users",
-      "id": "GKi8zBGuC3p"
-    },
-    {
-      "lastUpdated": "2016-07-14T13:51:04.575+0000",
-      "created": "2016-02-10T10:21:00.277+0000",
-      "name": "Total Visits",
-      "id": "nqGCy0uyzm8"
-    },
-    {
-      "lastUpdated": "2016-09-05T13:19:59.391+0000",
-      "created": "2016-02-21T15:36:08.574+0000",
-      "name": "Used Memory (MB)",
-      "id": "QZMqiNLOZNH"
-    },
-    {
-      "lastUpdated": "2016-05-16T08:31:53.663+0000",
-      "created": "2016-05-16T08:31:53.659+0000",
-      "name": "User Directory",
-      "id": "Fy0lelr1WAB"
-    },
-    {
-      "lastUpdated": "2016-05-16T08:16:32.731+0000",
-      "created": "2016-05-16T08:16:32.720+0000",
-      "name": "User Name",
-      "id": "KiOmWTYmc4F"
-    },
-    {
-      "lastUpdated": "2017-08-28T08:17:37.731+0000",
-      "created": "2017-08-28T08:17:37.731+0000",
-      "name": "Previous Week Encounters",
-      "id": "BBB69AiiuZU"
-    },
-    {
-      "lastUpdated": "2017-08-28T08:17:37.731+0000",
-      "created": "2017-08-28T08:17:37.731+0000",
-      "name": "Previous Month Encounters",
-      "id": "BBB69AiiuAA"
-    },
-    {
-      "lastUpdated": "2017-08-28T08:17:37.731+0000",
-      "created": "2017-08-28T08:17:37.731+0000",
-      "name": "Previous Week Observations",
-      "id": "BBB69AiiuCC"
-    },
-    {
-      "lastUpdated": "2017-08-28T08:17:37.731+0000",
-      "created": "2017-08-28T08:17:37.731+0000",
-      "name": "Previous Month Observations",
-      "id": "BBB69AiiuDD"
-    },
-    {
-      "lastUpdated": "2017-08-28T08:17:37.731+0000",
-      "created": "2017-08-28T08:17:37.731+0000",
-      "name": "Previous Week Patients",
-      "id": "BBB69AiiuEE"
-    },
-    {
-      "lastUpdated": "2017-08-28T08:17:37.731+0000",
-      "created": "2017-08-28T08:17:37.731+0000",
-      "name": "Previous Month Patients",
-      "id": "BBB69AiiuFF"
-    }
-  ]
+   "dataElements":[
+      {
+         "lastUpdated":"2017-09-12T05:29:55.287",
+         "code":"Execution_DateTime",
+         "created":"2017-08-28T08:17:37.731",
+         "name":"Execution DateTime",
+         "id":"BAB69AiiuZZ"
+      },
+      {
+         "lastUpdated":"2016-05-16T04:17:52.006",
+         "created":"2016-05-16T04:17:51.995",
+         "name":"System Language",
+         "id":"RHNugiFzCnz"
+      },
+      {
+         "lastUpdated":"2016-09-05T09:01:08.759",
+         "created":"2016-05-16T04:13:48.730",
+         "name":"Java Runtime Name",
+         "id":"SrKrLKmigUg"
+      },
+      {
+         "lastUpdated":"2017-08-30T08:06:59.072",
+         "code":"Previous_Week_Encounters",
+         "created":"2017-08-28T08:17:37.731",
+         "name":"Previous Week Encounters",
+         "id":"BBB69AiiuZU"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:35:34.477",
+         "created":"2016-06-30T15:51:19.308",
+         "name":"Patient  CD4 Count  Test Results - Last Year",
+         "id":"GHq0YsrAsaf"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:43:30.186",
+         "created":"2016-12-15T04:28:11.236",
+         "name":"active patient - 8m - CD4 (EMR)",
+         "id":"nD2alAworkZ"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:36:22.736",
+         "created":"2016-07-01T00:52:08.802",
+         "name":"OpenMRS Uptime (minutes)",
+         "id":"WdPwtuNKhcd"
+      },
+      {
+         "lastUpdated":"2017-08-30T08:07:25.693",
+         "code":"Previous_Week_Observations",
+         "created":"2017-08-28T08:17:37.731",
+         "name":"Previous Week Observations",
+         "id":"BBB69AiiuCC"
+      },
+      {
+         "lastUpdated":"2017-10-15T03:39:18.649",
+         "created":"2016-07-14T03:47:53.944",
+         "name":"New Total Patients - Active (Rwanda)",
+         "id":"GCC9L1LGFBH"
+      },
+      {
+         "lastUpdated":"2017-10-15T14:44:19.508",
+         "code":"totalNewUsersOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total New Users (OpenMRS)",
+         "id":"ZZB69AiiuWE"
+      },
+      {
+         "lastUpdated":"2017-08-30T08:19:41.245",
+         "created":"2016-07-13T02:45:38.841",
+         "name":"Date for last backup",
+         "id":"v3Pww13i2r1"
+      },
+      {
+         "lastUpdated":"2016-05-16T04:31:53.663",
+         "created":"2016-05-16T04:31:53.659",
+         "name":"User Directory",
+         "id":"Fy0lelr1WAB"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:42:56.753",
+         "created":"2016-12-15T04:31:36.058",
+         "name":"active patient - 20m - VL (Last Year)",
+         "id":"HMCX3fD2CkG"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:35:01.616",
+         "created":"2016-06-30T15:50:28.943",
+         "name":"Patient CD4 Count Test Results - All",
+         "id":"UEfoD5rcZbC"
+      },
+      {
+         "lastUpdated":"2016-05-16T04:10:20.972",
+         "created":"2016-05-16T04:07:30.528",
+         "name":"Operating System Arch",
+         "id":"EFfJ4CVvac2"
+      },
+      {
+         "lastUpdated":"2016-12-19T06:20:45.801",
+         "created":"2016-12-15T05:05:46.703",
+         "name":"Followup CD4 Count",
+         "id":"lj3Wh3XwgVu"
+      },
+      {
+         "lastUpdated":"2017-06-28T07:45:10.438",
+         "created":"2016-05-16T04:34:04.808",
+         "name":"OpenMRS Version",
+         "id":"Gnpcar514A3"
+      },
+      {
+         "lastUpdated":"2017-08-30T08:19:52.068",
+         "created":"2017-01-05T08:26:16.675",
+         "name":"OpenMRS UpTime Intervals",
+         "id":"YjIxaOR1Vtj"
+      },
+      {
+         "lastUpdated":"2017-10-15T03:39:31.858",
+         "created":"2016-07-14T03:48:16.876",
+         "name":"New Total Patients - New (Rwanda)",
+         "id":"JNsXijeCdIx"
+      },
+      {
+         "lastUpdated":"2017-10-15T03:39:54.964",
+         "created":"2016-02-10T05:19:34.196",
+         "name":"Total Encounters (Rwanda)",
+         "id":"RYe2tuO9njZ"
+      },
+      {
+         "lastUpdated":"2017-10-15T03:41:04.192",
+         "created":"2016-02-10T05:21:00.277",
+         "name":"Total Visits (Rwanda)",
+         "id":"nqGCy0uyzm8"
+      },
+      {
+         "lastUpdated":"2017-09-14T12:27:43.966",
+         "created":"2016-02-21T02:54:24.177",
+         "name":"Number Of OpenMRS DownTimes",
+         "id":"q8LwlSrBOSj"
+      },
+      {
+         "lastUpdated":"2017-10-15T03:39:44.737",
+         "created":"2016-07-11T05:00:44.485",
+         "name":"New Total Users (Rwanda)",
+         "id":"luKfl7hZZek"
+      },
+      {
+         "lastUpdated":"2016-05-16T04:14:28.986",
+         "created":"2016-05-16T04:14:28.979",
+         "name":"Java Runtime Version",
+         "id":"ixpB1MGxTOt"
+      },
+      {
+         "lastUpdated":"2017-09-14T12:28:18.019",
+         "created":"2016-05-01T13:53:15.982",
+         "name":"Patient Viral Load Test Results - Last Year",
+         "id":"D30SnV0TGws"
+      },
+      {
+         "lastUpdated":"2017-09-14T12:28:05.946",
+         "created":"2016-05-01T13:52:39.723",
+         "name":"Patient Viral Load Test Results - Last 6 Months",
+         "id":"TIdLXyneWYd"
+      },
+      {
+         "lastUpdated":"2017-05-16T17:45:33.902",
+         "created":"2016-02-21T10:36:08.574",
+         "name":"Used Memory (MB)",
+         "id":"QZMqiNLOZNH"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:39:03.034",
+         "created":"2016-07-11T05:03:50.692",
+         "name":"New Adult Return Encounters",
+         "id":"aHYdS1cNuam"
+      },
+      {
+         "lastUpdated":"2017-10-15T14:41:13.904",
+         "code":"totalOUsersOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total Users (OpenMRS)",
+         "id":"ZZB69AiiuRT"
+      },
+      {
+         "lastUpdated":"2016-08-27T05:49:50.763",
+         "created":"2016-02-22T05:00:21.919",
+         "name":"Primary Clinic Days",
+         "id":"rb9ef1D53Fv"
+      },
+      {
+         "lastUpdated":"2017-08-30T08:19:17.116",
+         "created":"2017-01-05T08:25:59.066",
+         "name":"OpenMRS DownTime Intervals",
+         "id":"uzD2FZ52RFK"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:42:31.884",
+         "created":"2016-12-15T04:26:05.453",
+         "name":"active patient - 8m",
+         "id":"m21uNOTO7Tp"
+      },
+      {
+         "lastUpdated":"2017-10-15T03:40:46.294",
+         "created":"2016-02-10T05:20:35.935",
+         "name":"Total Patients - New (Rwanda)",
+         "id":"aGdN2xl9nUj"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:35:22.831",
+         "created":"2016-06-30T15:50:56.520",
+         "name":"Patient  CD4 Count  Test Results - Last 6 Months",
+         "id":"d3XqMIFIoz6"
+      },
+      {
+         "lastUpdated":"2016-12-19T06:21:01.814",
+         "created":"2016-12-15T05:05:18.133",
+         "name":"Followup viral load",
+         "id":"oRuD83Dnoqd"
+      },
+      {
+         "lastUpdated":"2017-05-16T17:40:33.864",
+         "created":"2016-05-01T13:52:05.436",
+         "name":"Patient Viral Load Test Results - All",
+         "id":"AB7Nj3FNvR6"
+      },
+      {
+         "lastUpdated":"2016-09-05T09:01:20.646",
+         "created":"2016-05-16T04:11:15.932",
+         "name":"Java Vendor",
+         "id":"TuBY7HgyJ7J"
+      },
+      {
+         "lastUpdated":"2017-06-28T07:43:21.356",
+         "created":"2016-05-16T04:06:28.206",
+         "name":"Operating System",
+         "id":"CRThksbOPAd"
+      },
+      {
+         "lastUpdated":"2017-09-14T12:26:27.880",
+         "created":"2016-02-21T02:52:49.030",
+         "name":"System Uptime - ThisWeek (%)",
+         "id":"CrZDptrDUqA"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:38:47.401",
+         "created":"2016-07-11T05:01:58.001",
+         "name":"New Adult Initial Encounters",
+         "id":"HkctO4QQgte"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:39:46.328",
+         "created":"2016-07-11T05:06:52.731",
+         "name":"Patient CD4 Count Test Results - New",
+         "id":"QoIyYyc7Z36"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:42:44.016",
+         "created":"2016-12-15T04:31:16.912",
+         "name":"active patient - 20m - CD4 (Last Year)",
+         "id":"SVwRZ9dSTdb"
+      },
+      {
+         "lastUpdated":"2017-06-28T07:46:54.982",
+         "created":"2016-05-16T04:24:23.282",
+         "name":"System DateTime",
+         "id":"vXlzpA8wi6K"
+      },
+      {
+         "lastUpdated":"2016-12-19T06:20:26.600",
+         "created":"2016-12-15T05:05:05.383",
+         "name":"Initial viral load",
+         "id":"fEgFipkmtNq"
+      },
+      {
+         "lastUpdated":"2017-09-14T12:26:37.219",
+         "created":"2016-02-21T02:53:05.307",
+         "name":"System Uptime - LastWeek (%)",
+         "id":"h08FIw8cVUD"
+      },
+      {
+         "lastUpdated":"2016-05-16T04:16:32.731",
+         "created":"2016-05-16T04:16:32.720",
+         "name":"User Name",
+         "id":"KiOmWTYmc4F"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:37:13.704",
+         "created":"2016-07-11T05:00:14.506",
+         "name":"New  Observations",
+         "id":"BHXAiiCvX5K"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:42:12.803",
+         "created":"2016-12-15T04:26:21.470",
+         "name":"active patient - 20m",
+         "id":"SWpmUA95Gtv"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:40:38.975",
+         "created":"2016-07-11T05:07:21.967",
+         "name":"Patient Viral Load Test Results - New",
+         "id":"uaUc1zJbaEC"
+      },
+      {
+         "lastUpdated":"2017-10-15T14:44:58.361",
+         "code":"totalNewPatientsOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total Patient Visits (OpenMRS)",
+         "id":"ZZB69AiiuTT"
+      },
+      {
+         "lastUpdated":"2017-10-15T14:43:02.948",
+         "code":"totalPatientsOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total Patients (OpenMRS)",
+         "id":"ZZB69AiiuUU"
+      },
+      {
+         "lastUpdated":"2017-10-15T14:40:18.127",
+         "code":"totalEncountersOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total Encounters (OpenMRS)",
+         "id":"ZZB69AiiuAA"
+      },
+      {
+         "lastUpdated":"2016-09-05T09:01:34.065",
+         "created":"2016-05-16T04:09:19.753",
+         "name":"Java Version",
+         "id":"FmjhhJQyLoy"
+      },
+      {
+         "lastUpdated":"2017-10-15T03:40:36.961",
+         "created":"2016-02-10T05:20:23.671",
+         "name":"Total Patients - Active (Rwanda)",
+         "id":"hk0HYxaBPtz"
+      },
+      {
+         "lastUpdated":"2016-09-05T09:02:01.169",
+         "created":"2016-05-16T04:11:50.273",
+         "name":"JVM Version",
+         "id":"RgJN8fbRRuW"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:44:23.509",
+         "created":"2017-01-05T08:00:36.030",
+         "name":"OpenMRS Downtime (%)",
+         "id":"e9VBv3quDim"
+      },
+      {
+         "lastUpdated":"2016-08-27T05:51:38.579",
+         "created":"2016-02-22T05:01:28.294",
+         "name":"Primary Clinic Hours",
+         "id":"VDEnb2bEQH3"
+      },
+      {
+         "lastUpdated":"2016-09-05T09:10:59.307",
+         "created":"2016-02-22T04:58:12.277",
+         "name":"OpenMRS App Name",
+         "id":"ec9fC1xmg8R"
+      },
+      {
+         "lastUpdated":"2017-08-30T08:08:45.810",
+         "code":"Previous_Month_Observations",
+         "created":"2017-08-28T08:17:37.731",
+         "name":"Previous Month Observations",
+         "id":"BBB69AiiuDD"
+      },
+      {
+         "lastUpdated":"2017-06-28T07:41:52.462",
+         "created":"2016-05-16T04:19:02.180",
+         "name":"System Timezone",
+         "id":"GldPX7AtrxQ"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:43:55.228",
+         "created":"2016-12-15T05:05:32.336",
+         "name":"Initial CD4 Count",
+         "id":"RQTlblrf6eR"
+      },
+      {
+         "lastUpdated":"2017-08-30T08:09:08.548",
+         "created":"2017-01-05T08:00:13.309",
+         "name":"OpenMRS Downtime (minutes)",
+         "id":"q5K2raiuqQh"
+      },
+      {
+         "lastUpdated":"2017-10-15T14:43:59.774",
+         "code":"totalNewObservationsOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total New Observations (OpenMRS)",
+         "id":"ZZB69AiiuPO"
+      },
+      {
+         "lastUpdated":"2017-10-15T14:40:49.263",
+         "code":"totalObservationsOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total Observations (OpenMRS)",
+         "id":"ZZB69AiiuBV"
+      },
+      {
+         "lastUpdated":"2017-05-16T21:01:14.865",
+         "created":"2016-02-21T06:53:20.730",
+         "name":"OpenMRS Uptime (%)",
+         "id":"OBJQIpvppBt"
+      },
+      {
+         "lastUpdated":"2017-09-14T12:26:55.761",
+         "created":"2016-02-21T06:26:42.724",
+         "name":"Total Memory (MB)",
+         "id":"FRANuyR9bKI"
+      },
+      {
+         "lastUpdated":"2017-10-15T03:39:07.845",
+         "created":"2016-07-11T05:05:03.038",
+         "name":"New Total Paediatrics Initial Encounters (Rwanda)",
+         "id":"UidOuL65vMw"
+      },
+      {
+         "lastUpdated":"2017-06-28T07:45:49.775",
+         "created":"2016-02-22T04:57:43.346",
+         "name":"Server Id",
+         "id":"yBHJmoeteNR"
+      },
+      {
+         "lastUpdated":"2016-09-05T09:01:45.953",
+         "created":"2016-05-16T04:12:31.363",
+         "name":"JVM Vendor",
+         "id":"yIMQP0rsprI"
+      },
+      {
+         "lastUpdated":"2017-06-28T07:40:41.875",
+         "created":"2016-06-15T19:39:36.920",
+         "name":"Server's Real Location",
+         "id":"hKJXqpumYZ6"
+      },
+      {
+         "lastUpdated":"2017-10-15T14:42:01.692",
+         "code":"totalVisitsOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total Visits (OpenMRS)",
+         "id":"ZZB69AiiuOI"
+      },
+      {
+         "lastUpdated":"2016-05-16T04:10:32.087",
+         "created":"2016-05-16T04:08:37.421",
+         "name":"Operating System Version",
+         "id":"l76OuWQxBYa"
+      },
+      {
+         "lastUpdated":"2017-09-14T12:27:17.114",
+         "created":"2016-02-21T06:27:03.298",
+         "name":"Free Memory (MB)",
+         "id":"ZPrLSHvWDm8"
+      },
+      {
+         "lastUpdated":"2017-10-15T03:38:47.751",
+         "created":"2016-07-06T12:33:19.037",
+         "name":"New Total Encounters (Rwanda)",
+         "id":"oUoKdxhelRG"
+      },
+      {
+         "lastUpdated":"2017-05-16T17:32:40.922",
+         "created":"2016-10-13T03:26:00.397",
+         "name":"Patient  CD4 Count  Test Results",
+         "id":"RxpqOFZRSDt"
+      },
+      {
+         "lastUpdated":"2017-08-30T08:07:50.384",
+         "code":"Previous_Month_Patients",
+         "created":"2017-08-28T08:17:37.731",
+         "name":"Previous Month Patients",
+         "id":"BBB69AiiuFF"
+      },
+      {
+         "lastUpdated":"2017-10-15T14:43:38.886",
+         "code":"totalNewEncountersOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total New Encounters (OpenMRS)",
+         "id":"ZZB69AiiuMM"
+      },
+      {
+         "lastUpdated":"2017-10-15T03:40:21.659",
+         "created":"2016-07-11T05:05:33.184",
+         "name":"Total Paediatrics Return Encounters (Rwanda)",
+         "id":"CdlLkU6tqSX"
+      },
+      {
+         "lastUpdated":"2017-10-15T03:40:07.993",
+         "created":"2016-02-10T05:19:47.725",
+         "name":"Total Observations (Rwanda)",
+         "id":"NorJph8rRjt"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:43:10.806",
+         "created":"2016-12-15T04:27:52.486",
+         "name":"active patient - 8m - VL (EMR)",
+         "id":"wHr69AiiuZU"
+      },
+      {
+         "lastUpdated":"2017-05-16T21:01:37.213",
+         "created":"2016-02-21T02:53:47.279",
+         "name":"System Uptime - LastMonth (%)",
+         "id":"q9MRIo5DX4I"
+      },
+      {
+         "lastUpdated":"2016-09-05T08:57:15.893",
+         "created":"2016-05-16T04:31:01.125",
+         "name":"File System Encoding",
+         "id":"RlDJSS2SRXL"
+      },
+      {
+         "lastUpdated":"2017-08-30T08:07:39.920",
+         "code":"Previous_Week_Patients",
+         "created":"2017-08-28T08:17:37.731",
+         "name":"Previous Week Patients",
+         "id":"BBB69AiiuEE"
+      },
+      {
+         "lastUpdated":"2017-08-30T08:08:02.676",
+         "code":"Previous_Month_Encounters",
+         "created":"2017-08-28T08:17:37.731",
+         "name":"Previous Month Encounters",
+         "id":"BBB69AiiuAA"
+      },
+      {
+         "lastUpdated":"2017-06-28T07:47:43.777",
+         "created":"2016-05-16T04:48:46.325",
+         "name":"Installed Modules",
+         "id":"ICTGPRAVZVZ"
+      },
+      {
+         "lastUpdated":"2017-10-15T14:44:39.250",
+         "code":"totalNewVisitsOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total New Visits (OpenMRS)",
+         "id":"ZZB69AiiuEE"
+      },
+      {
+         "lastUpdated":"2017-10-15T03:40:55.792",
+         "created":"2016-02-10T05:20:05.289",
+         "name":"Total Users (Rwanda)",
+         "id":"GKi8zBGuC3p"
+      },
+      {
+         "lastUpdated":"2017-09-18T05:36:05.553",
+         "created":"2016-07-01T00:51:28.393",
+         "name":"Server Uptime (minutes)",
+         "id":"RiyIySUEl1W"
+      }
+   ]
 }

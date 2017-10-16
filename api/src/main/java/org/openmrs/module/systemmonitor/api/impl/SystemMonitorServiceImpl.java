@@ -632,8 +632,6 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 					|| (SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE.exists() && !addedLocalDHISMappings())) {
 				try {
 					FileUtils.copyFile(mappingsFile, SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE);
-					FileUtils.copyFile(dataElementsFile,
-							SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);
 				} catch (FileNotFoundException e) {
 					if (e.getMessage().indexOf("Source") > -1
 							|| e.getMessage().indexOf(SystemMonitorConstants.SYSTEMMONITOR_MAPPING_FILENAME) > -1)
@@ -643,6 +641,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 						WindowsResourceFileNotFoundHack.addDHISDataElementsMetadataToSystemMonitorDataDirectory();
 				}
 			}
+			FileUtils.copyFile(dataElementsFile,
+					SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -728,8 +728,9 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 		String r1 = updatePreviouslySubmittedOrMissedSMTData();
 		String resp = getDao().pushPreviouslyFailedDataWhenOutOfInternet();
 		JSONObject r2 = getDao().runSMTEvaluatorAndLogOrPushData();
-		
-		return (StringUtils.isNotBlank(r1) ? r1 : "") + (StringUtils.isNotBlank(resp) ? resp : "") + (r2 != null ? r2.toString() : "");
+
+		return (StringUtils.isNotBlank(r1) ? r1 : "") + (StringUtils.isNotBlank(resp) ? resp : "")
+				+ (r2 != null ? r2.toString() : "");
 	}
 
 	@Override
@@ -1128,12 +1129,13 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 
 	@Override
 	public void rebootSystemMonitorTasks() {
-		Collection<TaskDefinition> tasks = Context.getSchedulerService().getRegisteredTasks(); 
-		
+		Collection<TaskDefinition> tasks = Context.getSchedulerService().getRegisteredTasks();
+
 		try {
-			if(tasks !=null) {
-				for(TaskDefinition task : tasks) {
-					if(task != null && StringUtils.isNotBlank(task.getTaskClass()) && task.getTaskClass().startsWith("org.openmrs.module.systemmonitor.scheduler.")) {
+			if (tasks != null) {
+				for (TaskDefinition task : tasks) {
+					if (task != null && StringUtils.isNotBlank(task.getTaskClass())
+							&& task.getTaskClass().startsWith("org.openmrs.module.systemmonitor.scheduler.")) {
 						Context.getSchedulerService().scheduleTask(task);
 					}
 				}
@@ -1267,14 +1269,24 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	public Integer fetchTotalPatientsCountPreviousMonth() {
 		return getDao().fetchTotalPatientsCountPreviousMonth();
 	}
-	
+
 	@Override
 	public String updatePreviouslySubmittedOrMissedSMTData() {
 		return getDao().updatePreviouslySubmittedOrMissedSMTData();
 	}
-	
+
 	@Override
 	public Integer numberofBackedUpDataFiles() {
 		return getDao().numberofBackedUpDataFiles();
+	}
+
+	@Override
+	public Integer basicOpenMRSObjectCount(@SuppressWarnings("rawtypes") Class clazz) {
+		return getDao().basicOpenMRSObjectCount(clazz);
+	}
+
+	@Override
+	public Integer basicOpenMRSObjectCountCreatedLast24Hours(@SuppressWarnings("rawtypes") Class clazz) {
+		return getDao().basicOpenMRSObjectCountCreatedLast24Hours(clazz);
 	}
 }
