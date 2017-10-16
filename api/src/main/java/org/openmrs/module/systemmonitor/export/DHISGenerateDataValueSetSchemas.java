@@ -96,8 +96,8 @@ public class DHISGenerateDataValueSetSchemas {
 			Integer openmrsDowntime = (Integer) openmrsUpAndDownTime[1];
 			
 			//down & up time minutes can only be recovered on a daily basis
-			openmrsUptime = openmrsUptime >= 0 && openmrsUptime <= 1440 ? openmrsUptime : 0;
-			openmrsDowntime = openmrsDowntime >= 0 && openmrsDowntime <= 1440 ? openmrsDowntime : 0;
+			openmrsUptime = openmrsUptime != null && openmrsUptime >= 0 && openmrsUptime <= 1440 ? openmrsUptime : 0;
+			openmrsDowntime = openmrsDowntime != null && openmrsDowntime >= 0 && openmrsDowntime <= 1440 ? openmrsDowntime : 0;
 
 			List<UpOrDownTimeInterval> upIntervals = (List<UpOrDownTimeInterval>) openmrsUpAndDownTime[2];
 
@@ -493,7 +493,7 @@ public class DHISGenerateDataValueSetSchemas {
 
 		if (allData != null && allData.length() > 0) {
 			for (int i = 0; i < allData.length(); i++) {
-				if (allData.getJSONObject(i) != null) {
+				if (allData.getJSONObject(i) != null && allData.getJSONObject(i).has("dataElement")) {
 					JSONObject json = new JSONObject();
 
 					json.put("value", allData.getJSONObject(i).get("value"));

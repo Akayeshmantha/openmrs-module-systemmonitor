@@ -632,8 +632,6 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 					|| (SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE.exists() && !addedLocalDHISMappings())) {
 				try {
 					FileUtils.copyFile(mappingsFile, SystemMonitorConstants.SYSTEMMONITOR_FINAL_MAPPINGFILE);
-					FileUtils.copyFile(dataElementsFile,
-							SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);
 				} catch (FileNotFoundException e) {
 					if (e.getMessage().indexOf("Source") > -1
 							|| e.getMessage().indexOf(SystemMonitorConstants.SYSTEMMONITOR_MAPPING_FILENAME) > -1)
@@ -643,6 +641,8 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 						WindowsResourceFileNotFoundHack.addDHISDataElementsMetadataToSystemMonitorDataDirectory();
 				}
 			}
+			FileUtils.copyFile(dataElementsFile,
+					SystemMonitorConstants.SYSTEMMONITOR_DATAELEMENTSMETADATA_FILE);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
