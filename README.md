@@ -9,3 +9,9 @@ Requires https://github.com/kaweesi/oshi to be installed in mvn locally.
 
 * If upgrading to update the previous indicator design, please run push from server instead of client first which will update all the data from May 2016 to current date only supporting until 31/03/2017
 * 
+
+---------------
+DHIS Metadata:
+
+* Dataelements at: http://82.196.9.250:8080/api/dataElementGroups/HZofpDxUOBY?fields=dataElements[:identifiable]
+* All DHIS2 metadata under meta folder
