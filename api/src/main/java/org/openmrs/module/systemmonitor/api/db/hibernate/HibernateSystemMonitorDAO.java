@@ -1487,7 +1487,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public Integer basicOpenMRSObjectCount(@SuppressWarnings("rawtypes") Class clazz) {
 		if(StringUtils.isNotBlank(getObjectTableNameFromClass(clazz))) {
-			String sql = "select count(*) from " + getObjectTableNameFromClass(clazz);
+			String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where date_created <= '" + sdf.format(getEvaluationAndReportingDate()) + "'";
 			Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 					.intValue();
 	
@@ -1499,7 +1499,7 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 	@Override
 	public Integer basicOpenMRSObjectCountCreatedLast24Hours(@SuppressWarnings("rawtypes") Class clazz) {
 		if(StringUtils.isNotBlank(getObjectTableNameFromClass(clazz))) {
-			String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where date_created >= DATE_SUB(NOW(), INTERVAL 24 HOUR) AND date_created <= NOW()";
+			String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where date_created >= DATE_SUB('" + sdf.format(getEvaluationAndReportingDate()) + "', INTERVAL 24 HOUR) AND date_created <= '" + sdf.format(getEvaluationAndReportingDate()) + "'";
 			Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
 					.intValue();
 	
