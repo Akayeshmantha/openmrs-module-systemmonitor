@@ -89,7 +89,7 @@ public class WindowsResourceFileNotFoundHack {
 			+ "\nDATA-ELEMENT_previousWeekPatients=BBB69AiiuEE"
 			+ "\nDATA-ELEMENT_previousMonthPatients=BBB69AiiuFF"
 			+ "\nDATA-ELEMENT_executionDateTime=BAB69AiiuZZ"
-			+ "\nDATA-ELEMENT_totalEncounters=ZZB69AiiuAA"
+			+ "\nDATA-ELEMENT_totalEncounters=BAB69AiiuZZ"
 			+ "\nDATA-ELEMENT_totalObservations=ZZB69AiiuBV"
 			+ "\nDATA-ELEMENT_totalUsers=ZZB69AiiuRT"
 			+ "\nDATA-ELEMENT_totalVisits=ZZB69AiiuOI"
