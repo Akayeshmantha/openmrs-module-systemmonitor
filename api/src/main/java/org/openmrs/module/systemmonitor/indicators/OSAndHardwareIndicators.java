@@ -183,13 +183,14 @@ public class OSAndHardwareIndicators {
 
 		try {
 			NetworkInterface network = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
-			byte[] mac = network.getHardwareAddress();
-			StringBuilder sb = new StringBuilder();
-
-			for (int i = 0; i < mac.length; i++) {
-				sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+			if (network != null) {
+				byte[] mac = network.getHardwareAddress();
+				StringBuilder sb = new StringBuilder();
+				for (int i = 0; i < mac.length; i++) {
+					sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+				}
+				macAdd = sb.toString();
 			}
-			macAdd = sb.toString();
 		} catch (NoClassDefFoundError e) {
 			e.printStackTrace();
 		} catch (Exception e) {
