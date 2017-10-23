@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
@@ -180,16 +181,20 @@ public class OSAndHardwareIndicators {
 	public String getMacAddress() {
 		String macAdd = "";
 
-		JSONArray networkInformation = getNetworkInformation();
-
-		if (networkInformation != null) {
-			for (int i = 0; i < networkInformation.length(); i++) {
-				if (networkInformation.getJSONObject(i) != null
-						&& StringUtils.isNotBlank(networkInformation.getJSONObject(i).getString("macAddress"))) {
-					macAdd = networkInformation.getJSONObject(i).getString("macAddress");
-					break;
+		try {
+			NetworkInterface network = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
+			if (network != null) {
+				byte[] mac = network.getHardwareAddress();
+				StringBuilder sb = new StringBuilder();
+				for (int i = 0; i < mac.length; i++) {
+					sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
 				}
+				macAdd = sb.toString();
 			}
+		} catch (NoClassDefFoundError e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return macAdd;
 	}
