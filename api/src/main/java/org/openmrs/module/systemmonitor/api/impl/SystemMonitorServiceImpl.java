@@ -1198,11 +1198,13 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 				for (int i = 0; i < dataValues.length(); i++) {
 					JSONObject json = new JSONObject();
 
-					json.put("orgUnit", dhisOrgUnitUid);
-					json.put("dataElement", dataValues.getJSONObject(i).getString("dataElement"));
-					json.put("period", dataValues.getJSONObject(i).getString("period"));
-					json.put("value", dataValues.getJSONObject(i).get("value"));
-					newDataValues.put(json);
+					if (dataValues.getJSONObject(i) != null && dataValues.getJSONObject(i).has("dataElement")) {
+						json.put("orgUnit", dhisOrgUnitUid);
+						json.put("dataElement", dataValues.getJSONObject(i).getString("dataElement"));
+						json.put("period", dataValues.getJSONObject(i).getString("period"));
+						json.put("value", dataValues.getJSONObject(i).get("value"));
+						newDataValues.put(json);
+					}
 				}
 			}
 		}
