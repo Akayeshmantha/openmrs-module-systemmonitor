@@ -29,12 +29,6 @@
 				code="systemmonitor.localReport" /></a>
 	</li>
 	<li
-		<c:if test='<%= request.getRequestURI().contains("/runAsSoonAsStarted") %>'>class="active"</c:if>>
-		<a
-		href="${pageContext.request.contextPath}/module/systemmonitor/runAsSoonAsStarted.form"><spring:message
-				code="systemmonitor.runAsSoonAsStarted" /></a>
-	</li>
-	<li
 		<c:if test='<%= request.getRequestURI().contains("/activityMonitor") %>'>class="active"</c:if>>
 		<a
 		href="${pageContext.request.contextPath}/module/systemmonitor/activityMonitor.form"><spring:message

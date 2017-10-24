@@ -13,5 +13,5 @@ Requires https://github.com/kaweesi/oshi to be installed in mvn locally.
 ---------------
 DHIS Metadata:
 
-* Dataelements at: http://82.196.9.250:8080/api/dataElementGroups/HZofpDxUOBY?fields=dataElements[:identifiable]
+* Dataelements at: http://82.196.9.250:8080/api/dataElementGroups/HZofpDxUOBY.json?fields=dataElements[:identifiable]
 * All DHIS2 metadata under meta folder
