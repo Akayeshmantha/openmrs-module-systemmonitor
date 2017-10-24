@@ -39,6 +39,12 @@
          "id":"nD2alAworkZ"
       },
       {
+         "lastUpdated":"2017-08-30T08:19:30.998",
+         "created":"2016-07-03T04:22:16.679",
+         "name":"Processor",
+         "id":"xr3kif2Vuzu"
+      },
+      {
          "lastUpdated":"2017-09-18T05:36:22.736",
          "created":"2016-07-01T00:52:08.802",
          "name":"OpenMRS Uptime (minutes)",
@@ -119,6 +125,13 @@
          "id":"JNsXijeCdIx"
       },
       {
+         "lastUpdated":"2017-10-15T15:32:18.608",
+         "code":"totalNewLocationsOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total New Locations (OpenMRS)",
+         "id":"PPB69AiiuAF"
+      },
+      {
          "lastUpdated":"2017-10-15T03:39:54.964",
          "created":"2016-02-10T05:19:34.196",
          "name":"Total Encounters (Rwanda)",
@@ -180,10 +193,24 @@
          "id":"ZZB69AiiuRT"
       },
       {
+         "lastUpdated":"2017-10-15T15:33:04.446",
+         "code":"totalFormsOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total Forms (OpenMRS)",
+         "id":"PPB69AiiuPR"
+      },
+      {
          "lastUpdated":"2016-08-27T05:49:50.763",
          "created":"2016-02-22T05:00:21.919",
          "name":"Primary Clinic Days",
          "id":"rb9ef1D53Fv"
+      },
+      {
+         "lastUpdated":"2017-10-15T15:29:43.742",
+         "code":"totalNewOrdersOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total New Orders (OpenMRS)",
+         "id":"PPB69AiiuAA"
       },
       {
          "lastUpdated":"2017-08-30T08:19:17.116",
@@ -262,6 +289,13 @@
          "created":"2016-05-16T04:24:23.282",
          "name":"System DateTime",
          "id":"vXlzpA8wi6K"
+      },
+      {
+         "lastUpdated":"2017-10-15T15:30:10.154",
+         "code":"totalNewConceptsOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total New Concepts (OpenMRS)",
+         "id":"PPB69AiiuAW"
       },
       {
          "lastUpdated":"2016-12-19T06:20:26.600",
@@ -357,6 +391,13 @@
          "id":"ec9fC1xmg8R"
       },
       {
+         "lastUpdated":"2017-10-15T15:33:15.756",
+         "code":"totalNewFormsOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total New Forms (OpenMRS)",
+         "id":"PPB69AiiuAR"
+      },
+      {
          "lastUpdated":"2017-08-30T08:08:45.810",
          "code":"Previous_Month_Observations",
          "created":"2017-08-28T08:17:37.731",
@@ -380,6 +421,12 @@
          "created":"2017-01-05T08:00:13.309",
          "name":"OpenMRS Downtime (minutes)",
          "id":"q5K2raiuqQh"
+      },
+      {
+         "lastUpdated":"2016-05-16T04:32:40.970",
+         "created":"2016-05-16T04:32:40.965",
+         "name":"Temporary Directory",
+         "id":"FveZHUNsC1o"
       },
       {
          "lastUpdated":"2017-10-15T14:43:59.774",
@@ -424,6 +471,13 @@
          "created":"2016-05-16T04:12:31.363",
          "name":"JVM Vendor",
          "id":"yIMQP0rsprI"
+      },
+      {
+         "lastUpdated":"2017-10-15T15:32:32.091",
+         "code":"totalLocationsOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total Locations (OpenMRS)",
+         "id":"PPB69AiiuPW"
       },
       {
          "lastUpdated":"2017-06-28T07:40:41.875",
@@ -544,6 +598,13 @@
          "created":"2016-07-01T00:51:28.393",
          "name":"Server Uptime (minutes)",
          "id":"RiyIySUEl1W"
+      },
+      {
+         "lastUpdated":"2017-10-15T15:29:29.696",
+         "code":"totalOrdersOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total Orders (OpenMRS)",
+         "id":"PPB69AiiuPP"
       }
    ]
 }
