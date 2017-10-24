@@ -100,7 +100,7 @@ public class SystemMonitorMainController {
 	@RequestMapping(value = "/module/systemmonitor/runAsSoonAsStarted", method = RequestMethod.POST)
 	public void postAutoRun(ModelMap model, HttpServletRequest request) {
 		Context.getService(SystemMonitorService.class).transferDHISMappingsAndMetadataFileToDataDirectory();
-		//Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
+		Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
 		Context.getService(SystemMonitorService.class).rebootSystemMonitorTasks();
 
 		request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "systemmonitor.runAsSoonAsStarted.success");

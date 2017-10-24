@@ -19,10 +19,9 @@ public class UpdateLocallyStoredDHISMetadataFromRemoteTask extends AbstractTask 
 
 	@Override
 	public void execute() {
-		/*log.info("Executing " + getClass() + " background task");
+		log.info("Executing " + getClass() + " background task");
 		SystemMonitorTask.authenticateHack();
 		Context.getService(SystemMonitorService.class).updateLocallyStoredDHISMetadata();
-		*/
 	}
 
 }
