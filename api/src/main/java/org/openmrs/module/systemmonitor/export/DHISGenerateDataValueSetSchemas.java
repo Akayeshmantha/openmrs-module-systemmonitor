@@ -87,20 +87,20 @@ public class DHISGenerateDataValueSetSchemas {
 			Integer openmrsUptime = (Integer) openmrsUpAndDownTime[0];
 
 			Integer openmrsDowntime = (Integer) openmrsUpAndDownTime[1];
-			
-			//down & up time minutes can only be recovered on a daily basis
-			openmrsUptime = openmrsUptime != null && openmrsUptime >= 0 && openmrsUptime <= 1440 ? openmrsUptime : 0;
-			openmrsDowntime = openmrsDowntime != null && openmrsDowntime >= 0 && openmrsDowntime <= 1440 ? openmrsDowntime : 0;
 
 			List<UpOrDownTimeInterval> upIntervals = (List<UpOrDownTimeInterval>) openmrsUpAndDownTime[2];
 
 			List<UpOrDownTimeInterval> downIntervals = (List<UpOrDownTimeInterval>) openmrsUpAndDownTime[3];
 
-			Integer openMRsUpTimePercentage = openmrsUptime != null && openmrsUptime >= 0 && openmrsUptime <= 100 ? (openmrsUptime * 100) / workingMinutesDifference
-					: null;
+			//down & up time minutes can only be recovered on a daily basis
+			openmrsUptime = openmrsUptime != null && openmrsUptime >= 0 && openmrsUptime <= 1440 ? openmrsUptime : 0;
+			openmrsDowntime = openmrsDowntime != null && openmrsDowntime >= 0 && openmrsDowntime <= 1440 ? openmrsDowntime : 0;
 
-			Integer openMRsDownTimePercentage = openmrsDowntime != null && openmrsDowntime >= 0 && openmrsDowntime <= 100 ? (openmrsDowntime * 100) / workingMinutesDifference
-					: null;
+			Integer openMRsUpTimePercentage = openmrsUptime != null && openmrsUptime >= 0 ? (openmrsUptime * 100) / workingMinutesDifference
+					: 0;
+
+			Integer openMRsDownTimePercentage = openmrsDowntime != null && openmrsDowntime >= 0 ? (openmrsDowntime * 100) / workingMinutesDifference
+					: 0;
 
 			String upIntervalString = convertUpOrDownTimeIntervalsToString(upIntervals);
 
@@ -385,6 +385,8 @@ public class DHISGenerateDataValueSetSchemas {
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_systemStartupCounts", numberOfDownTimes,
 					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_openmrsUptimeSecs", openmrsUptime,
+					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_openmrsUptime", openMRsUpTimePercentage,
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimeMinutes", openmrsDowntime,
@@ -394,6 +396,8 @@ public class DHISGenerateDataValueSetSchemas {
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimeIntervals", upIntervalString,
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_upTimeIntervals", downIntervalString,
+					systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_serverUptimeSecs", uptime,
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalEncounters_rwanda", encounterTotal,
 					systemMonitorService.getDHISTodayPeriod()));
@@ -413,8 +417,6 @@ public class DHISGenerateDataValueSetSchemas {
 					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_processor", processor,
 					systemMonitorService.getDHISCurrentMonthPeriod()));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_serverUptimeSecs", uptime,
-					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalMemory", totalMemory,
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_usedMemory", usedMemory,
@@ -423,8 +425,6 @@ public class DHISGenerateDataValueSetSchemas {
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_openmrsAppName", openmrsAPPName,
 					systemMonitorService.getDHISCurrentMonthPeriod()));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_openmrsUptimeSecs", openmrsUptime,
-					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_primaryCareDays", clinicDays,
 					systemMonitorService.getDHISCurrentMonthPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_primaryCareHours", clinicHours,
