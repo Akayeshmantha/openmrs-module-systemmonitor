@@ -305,6 +305,14 @@ public class DHISGenerateDataValueSetSchemas {
 					systemMonitorService.basicOpenMRSObjectCountCreatedLast24Hours(Encounter.class), systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalObservations_new",
 					systemMonitorService.basicOpenMRSObjectCountCreatedLast24Hours(Obs.class), systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalObservations_lastWeek",
+					systemMonitorService.basicOpenMRSObjectCountCreatedLastWeek(Obs.class), systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalObservations_lastMonth",
+					systemMonitorService.basicOpenMRSObjectCountCreatedLastMonth(Obs.class), systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalEncounters_lastWeek",
+					systemMonitorService.basicOpenMRSObjectCountCreatedLastWeek(Encounter.class), systemMonitorService.getDHISTodayPeriod()));
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalEncounters_lastMonth",
+					systemMonitorService.basicOpenMRSObjectCountCreatedLastMonth(Encounter.class), systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalUsers_new",
 					systemMonitorService.basicOpenMRSObjectCountCreatedLast24Hours(User.class), systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_totalPatients_new",
