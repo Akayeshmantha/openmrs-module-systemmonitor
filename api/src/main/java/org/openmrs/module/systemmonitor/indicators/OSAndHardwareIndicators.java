@@ -41,6 +41,8 @@ public class OSAndHardwareIndicators {
 									 * si.getHardware().getPowerSources( )
 									 */null;;
 
+	public String PROCESSOR_NAME = getLinuxProcessorName();
+
 	/**
 	 * Total Physical Memory (RAM) in Megabytes(MB)
 	 */
@@ -172,8 +174,6 @@ public class OSAndHardwareIndicators {
 			e.printStackTrace();
 		} catch (UnsatisfiedLinkError e) {
 			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return json;
 	}
@@ -232,15 +232,20 @@ public class OSAndHardwareIndicators {
 		return json;
 	}
 
-	public String getLinuxProcessorName() throws IOException {
+	public String getLinuxProcessorName() {
 		if (p != null && "Linux".equals(System.getProperties().getProperty("os.name"))
 				&& StringUtils.isBlank(p.getName())) {
 			String[] cmds = { "/bin/sh", "-c", "cat /proc/cpuinfo | grep 'name' | uniq" };
 
-			return executeCommand(cmds).replace("model name", "").replace(": ", "").replace(">", "");
+			try {
+				return executeCommand(cmds).replace("model name", "").replace(": ", "").replace(">", "");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
 			return p != null ? p.getName() : "";
 		}
+		return "";
 	}
 
 	private CentralProcessor getCentralProcessor() {
