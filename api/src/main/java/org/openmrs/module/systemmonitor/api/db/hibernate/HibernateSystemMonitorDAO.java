@@ -1507,6 +1507,30 @@ public class HibernateSystemMonitorDAO implements SystemMonitorDAO {
 		}
 		return 0;
 	}
+	
+	@Override
+	public Integer basicOpenMRSObjectCountCreatedLastWeek(@SuppressWarnings("rawtypes") Class clazz) {
+		if(StringUtils.isNotBlank(getObjectTableNameFromClass(clazz))) {
+			String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where date_created >= DATE_SUB('" + sdf.format(getEvaluationAndReportingDate()) + "', INTERVAL 1 WEEK) AND date_created <= '" + sdf.format(getEvaluationAndReportingDate()) + "'";
+			Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+					.intValue();
+	
+			return count;
+		}
+		return 0;
+	}
+	
+	@Override
+	public Integer basicOpenMRSObjectCountCreatedLastMonth(@SuppressWarnings("rawtypes") Class clazz) {
+		if(StringUtils.isNotBlank(getObjectTableNameFromClass(clazz))) {
+			String sql = "select count(*) from " + getObjectTableNameFromClass(clazz) + " where date_created >= DATE_SUB('" + sdf.format(getEvaluationAndReportingDate()) + "', INTERVAL 1 MONTH) AND date_created <= '" + sdf.format(getEvaluationAndReportingDate()) + "'";
+			Integer count = ((BigInteger) getSessionFactory().getCurrentSession().createSQLQuery(sql).uniqueResult())
+					.intValue();
+	
+			return count;
+		}
+		return 0;
+	}
 
 	@Override
 	public Integer rwandaPIHEMTGetTotalEncountersForYesterday() {

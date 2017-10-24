@@ -399,4 +399,8 @@ public interface SystemMonitorService extends OpenmrsService {
 	Integer basicOpenMRSObjectCount(@SuppressWarnings("rawtypes") Class clazz);
 
 	Integer basicOpenMRSObjectCountCreatedLast24Hours(@SuppressWarnings("rawtypes") Class clazz);
+	
+	Integer basicOpenMRSObjectCountCreatedLastMonth(@SuppressWarnings("rawtypes")Class clazz);
+
+	Integer basicOpenMRSObjectCountCreatedLastWeek(@SuppressWarnings("rawtypes")Class clazz);
 }

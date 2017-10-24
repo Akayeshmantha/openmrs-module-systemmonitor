@@ -180,6 +180,13 @@
          "id":"QZMqiNLOZNH"
       },
       {
+         "lastUpdated":"2017-10-24T20:46:31.435",
+         "code":"totalNObservationLastWeekOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total Observations Last Week (OpenMRS)",
+         "id":"XCR69AiiuOO"
+      },
+      {
          "lastUpdated":"2017-09-18T05:39:03.034",
          "created":"2016-07-11T05:03:50.692",
          "name":"New Adult Return Encounters",
@@ -391,6 +398,13 @@
          "id":"ec9fC1xmg8R"
       },
       {
+         "lastUpdated":"2017-10-24T20:50:03.127",
+         "code":"totalNEncountersLastMonthOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total Encounters Last Month (OpenMRS)",
+         "id":"XCR69AiiuOQ"
+      },
+      {
          "lastUpdated":"2017-10-15T15:33:15.756",
          "code":"totalNewFormsOpenMRS",
          "created":"2017-10-18T07:38:18.000",
@@ -459,6 +473,20 @@
          "created":"2016-07-11T05:05:03.038",
          "name":"New Total Paediatrics Initial Encounters (Rwanda)",
          "id":"UidOuL65vMw"
+      },
+      {
+         "lastUpdated":"2017-10-24T20:50:52.934",
+         "code":"totalNEncountersLastWeekOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total Encounters Last Week (OpenMRS)",
+         "id":"XCR69AiiuOA"
+      },
+      {
+         "lastUpdated":"2017-10-24T20:49:38.500",
+         "code":"totalNObservationLastMonthOpenMRS",
+         "created":"2017-10-18T07:38:18.000",
+         "name":"Total Observations Last Month (OpenMRS)",
+         "id":"XCR69AiiuOP"
       },
       {
          "lastUpdated":"2017-06-28T07:45:49.775",

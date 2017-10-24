@@ -1291,4 +1291,14 @@ public class SystemMonitorServiceImpl extends BaseOpenmrsService implements Syst
 	public Integer basicOpenMRSObjectCountCreatedLast24Hours(@SuppressWarnings("rawtypes") Class clazz) {
 		return getDao().basicOpenMRSObjectCountCreatedLast24Hours(clazz);
 	}
+
+	@Override
+	public Integer basicOpenMRSObjectCountCreatedLastMonth(@SuppressWarnings("rawtypes")Class clazz) {
+		return getDao().basicOpenMRSObjectCountCreatedLastMonth(clazz);
+	}
+
+	@Override
+	public Integer basicOpenMRSObjectCountCreatedLastWeek(@SuppressWarnings("rawtypes")Class clazz) {
+		return getDao().basicOpenMRSObjectCountCreatedLastWeek(clazz);
+	}
 }

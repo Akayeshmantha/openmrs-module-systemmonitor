@@ -331,4 +331,8 @@ public interface SystemMonitorDAO {
 	Integer basicOpenMRSObjectCount(@SuppressWarnings("rawtypes") Class clazz);
 
 	Integer basicOpenMRSObjectCountCreatedLast24Hours(@SuppressWarnings("rawtypes") Class clazz);
+
+	Integer basicOpenMRSObjectCountCreatedLastMonth(@SuppressWarnings("rawtypes")Class clazz);
+
+	Integer basicOpenMRSObjectCountCreatedLastWeek(@SuppressWarnings("rawtypes")Class clazz);
 }
