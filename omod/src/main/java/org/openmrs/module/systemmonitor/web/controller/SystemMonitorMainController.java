@@ -50,12 +50,14 @@ public class SystemMonitorMainController {
 	@RequestMapping(value = "/module/systemmonitor/pushToDHIS", method = RequestMethod.GET)
 	public void renderPushToDHIS(ModelMap model) {
 		model.addAttribute("response", "");
+		model.addAttribute("numberofBackedUps", Context.getService(SystemMonitorService.class).numberofBackedUpDataFiles());
 	}
 
 	@RequestMapping(value = "/module/systemmonitor/pushToDHIS", method = RequestMethod.POST)
 	public void pushToDHIS(ModelMap model) {
 		String response = Context.getService(SystemMonitorService.class).pushMonitoredDataToDHIS();
 
+		model.addAttribute("numberofBackedUps", Context.getService(SystemMonitorService.class).numberofBackedUpDataFiles());
 		model.addAttribute("response", response != null ? response
 				: Context.getMessageSourceService().getMessage("systemmonitor.pushToDHIS.serverInternetFailure"));
 	}

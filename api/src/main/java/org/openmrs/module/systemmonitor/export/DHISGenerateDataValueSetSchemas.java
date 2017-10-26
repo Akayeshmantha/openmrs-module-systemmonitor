@@ -401,9 +401,9 @@ public class DHISGenerateDataValueSetSchemas {
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimePercentage",
 					openMRsDownTimePercentage, systemMonitorService.getDHISTodayPeriod()));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimeIntervals", upIntervalString,
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimeIntervals", downIntervalString,
 					systemMonitorService.getDHISTodayPeriod()));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_upTimeIntervals", downIntervalString,
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_upTimeIntervals", upIntervalString,
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_serverUptimeSecs", uptime,
 					systemMonitorService.getDHISTodayPeriod()));
