@@ -39,7 +39,7 @@
 	
 				insiderTableData += "</table>";
 				reportTableData += "<tr><td>" + jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
-						+ "</td><td>" + insiderTableData + "</td></tr>";
+						+ "</td><td>" + jsonData[i].comment + "</td><td>" + insiderTableData + "</td></tr>";
 			} else if (jsonData[i].dataElementName === "Server's Real Location") {
 				var insiderTableData = "<table><tr><th>Country</th><td>"
 						+ jsonData[i].value.country
@@ -53,10 +53,10 @@
 						+ "</td></tr></table>";
 	
 				reportTableData += "<tr><td>" + jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
-						+ "</td><td>" + insiderTableData + "</td></tr>";
+						+ "</td><td>" + jsonData[i].comment + "</td><td>" + insiderTableData + "</td></tr>";
 			} else {
 				reportTableData += "<tr><td>" + jsonData[i].period + "</td><td>" + jsonData[i].dataElementName
-						+ "</td><td>" + jsonData[i].value
+						+ "</td><td>" jsonData[i].comment + "</td><td>" + jsonData[i].value
 						+ "</td></tr>";
 			}
 		}
@@ -85,6 +85,7 @@
 	<tr>
 		<th><spring:message code="systemmonitor.report.period" /></th>
 		<th><spring:message code="systemmonitor.report.indicator" /></th>
+		<th><spring:message code="systemmonitor.report.indicatorKey" /></th>
 		<th><spring:message code="systemmonitor.report.value" /></th>
 	</tr>
 </table>

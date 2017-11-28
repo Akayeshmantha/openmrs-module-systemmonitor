@@ -401,9 +401,9 @@ public class DHISGenerateDataValueSetSchemas {
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimePercentage",
 					openMRsDownTimePercentage, systemMonitorService.getDHISTodayPeriod()));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimeIntervals", downIntervalString,
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_downTimeIntervals", upIntervalString,
 					systemMonitorService.getDHISTodayPeriod()));
-			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_upTimeIntervals", upIntervalString,
+			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_upTimeIntervals", downIntervalString,
 					systemMonitorService.getDHISTodayPeriod()));
 			jsonDataValueSets.put(createBasicIndicatorJSONObject("DATA-ELEMENT_serverUptimeSecs", uptime,
 					systemMonitorService.getDHISTodayPeriod()));
@@ -569,14 +569,12 @@ public class DHISGenerateDataValueSetSchemas {
 		JSONObject json = new JSONObject();
 
 		if (StringUtils.isNotBlank(dhisDataElementMappingCode) && StringUtils.isNotBlank(period)) {
-
 			if (value == null)
 				value = "";
 			json.put("dataElement", DHISMapping.getDHISMappedObjectValue(dhisDataElementMappingCode));
 			json.put("period", period);
 			json.put("value", value);
-			if(StringUtils.isNotBlank(dhisDataElementMappingCode))
-				json.put("comment", dhisDataElementMappingCode.replace("DATA-ELEMENT_", ""));
+			json.put("comment", dhisDataElementMappingCode.replace("DATA-ELEMENT_", ""));
 		}
 		return json;
 	}
